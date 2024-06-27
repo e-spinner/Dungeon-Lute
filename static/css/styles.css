@@ -82,14 +82,6 @@ body {
     margin-top: 0;
 }
 
-#fileInput {
-    margin-bottom: 10px;
-}
-
-#button-details {
-    margin-top: 20px;
-}
-
 #button-details h3,
 #button-details h4,
 #button-details label,
@@ -114,23 +106,6 @@ body {
     background-color: var(--hover-accent); 
 }
 
-#button-details input[type="text"],
-#button-details input[type="file"] {
-    background-color: var(--secondary-background);
-    border: 1px solid var(--border-color);
-    color: var(--text);
-    padding: 8px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px var(--shadow-color);
-}
-
-#button-details input[type="text"]:focus,
-#button-details input[type="file"]:focus {
-    outline: none;
-    border-color: var(--accent);
-    background-color: var(--hover);
-}
-
 #soundList {
     list-style-type: none;
     padding: 0;
@@ -138,17 +113,26 @@ body {
 
 .sound-item {
     padding: 8px;
+    cursor: pointer;
     background-color: var(--secondary-background);
     border: 1px solid var(--border-color);
     border-radius: 5px;
     margin: 5px 0;
     box-shadow: 0 0 10px var(--shadow-color);
+    transition: background-color 0.3s ease;
+}
+
+.sound-item:hover {
+    background-color: var(--hover);
 }
 
 .sound-item.playing {
     background-color: var(--accent);
 }
 
+.sound-item.playing:hover {
+    background-color: var(--hover-accent);
+}
 /* Button Container */
 .button-container {
     display: flex;

@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener( 'DOMContentLoaded', ( event ) => {
     loadSoundboard();
-});
+} );
 
 let buttons = [];
 let activeButtonIndex = null;
@@ -8,37 +8,54 @@ let audio = null;
 let currentAudio = null;
 let lastPlayedSong = {};
 let history = [];
+let playlists = [];
+const FADE_OUT_DURATION = 1000; // Duration of fade out in milliseconds
 
 // Function to load the soundboard buttons
 function loadSoundboard() {
-    fetch('/get_buttons')
-        .then(response => response.json())
-        .then(data => {
+    fetch( '/get_buttons' )
+        .then( response => response.json() )
+        .then( data => {
             buttons = data;
             renderButtons();
-        });
+        } );
+
+    fetch( '/playlists' )
+    .then( response => response.json() )
+    .then( playlists => {
+        const playlistSelect = document.getElementById( 'playlist-select' );
+        playlists.forEach( playlist => {
+            const option = document.createElement( 'option' );
+            option.value = playlist;
+            option.innerText = playlist;
+            playlistSelect.appendChild( option );
+        } );
+    } );
 }
 
 // Function to add button-song combination to history
-function addToHistory(index, soundIndex) {
-    history.push({ index, soundIndex });
+function addToHistory( index, soundIndex ) {
+    history.push( { index, soundIndex } );
     updateHistoryDisplay();
 }
 
 // Function to update the history display
 function updateHistoryDisplay() {
-    const historyList = document.getElementById('historyList');
+    const historyList = document.getElementById( 'historyList' );
     historyList.innerHTML = '';
-    history.forEach((entry, index) => {
-        const listItem = document.createElement('li');
+    history.forEach( ( entry, index ) => {
+        const listItem = document.createElement( 'li' );
         listItem.innerText = `Step ${index + 1}: Button ${entry.index + 1} - Song ${entry.soundIndex + 1}`;
-        historyList.appendChild(listItem);
-    });
+        historyList.appendChild( listItem );
+    } );
 }
 
 // Function to rewind to previous button-song combination
 function rewindToPrevious() {
-    if (history.length > 1) {
+    if ( history.length > 1 ) {
+        let pause = document.getElementById( 'pause_play' );
+        pause.innerText = 'Pause';
+        
         history.pop(); // Remove the current button-song combination
         updateHistoryDisplay();
         const { index, soundIndex } = history[history.length - 1];
@@ -47,24 +64,25 @@ function rewindToPrevious() {
         stopCurrentAudio()
     
         activeButtonIndex = index;
-        playSound(index, soundIndex); 
-        showButtonDetails(index); 
+        playSound( index, soundIndex ); 
+        showButtonDetails( index ); 
 
         history.pop();
         updateHistoryDisplay();
+
     }
 }
 
 function next() {
     index = activeButtonIndex;
     stopCurrentAudio()
-    playRandomSound(index);
-    showButtonDetails(index);
+    playRandomSound( index );
+    showButtonDetails( index );
 }
 
 function pause_play() {
-    let button = document.getElementById('pause_play');
-    if (audio.paused) {
+    let button = document.getElementById( 'pause_play' );
+    if ( audio.paused ) {
         audio.play();
         button.innerText = 'Pause';
     }
@@ -76,21 +94,23 @@ function pause_play() {
 
 // Function to save the buttons
 function saveButtons() {
-    fetch('/save_buttons', {
+    fetch( '/save_buttons', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(buttons)
-    }).then(response => response.json())
-      .then(data => {
-          if (data.status === 'success') {
-              alert('Buttons saved successfully!');
+        body: JSON.stringify( buttons )
+    } ).then( response => response.json() )
+      .then( data => {
+          if ( data.status === 'success' ) {
+              alert( 'Buttons saved successfully!' );
           }
-      });
+      } );
 }
 
 function addButton() {
-    buttons.push({ name: '', sounds: [] });
-    renderButtons();
+    buttons.push( { name: '', sounds: [] } );
+    renderButtons();    
 }
+
+

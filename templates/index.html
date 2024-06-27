@@ -20,11 +20,11 @@
     <div id="button-details">
         <h3 id="button-title">Button Details</h3>
         <ul id="soundList"></ul>
-        <input type="file" id="fileInput">
-        <button onclick="uploadFile()">Upload Sound</button>
-        <br>
-        <label for="button-name">Name:</label>
-        <input type="text" id="button-name" oninput="updateButtonName()">
+        <label for="playlist-select">Local Folder:</label>
+        <select id="playlist-select" onchange="loadPlaylist()">
+            <option value="">--Select a Playlist--</option>
+        </select>
+
     </div>
 
     <div class="button-container">
