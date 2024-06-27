@@ -1,0 +1,177 @@
+:root {
+    --text: #fff;
+    --primary-background: #292b2c;
+    --secondary-background: #343a40;
+    --hover: #3e444a;
+    --accent: #007bff;
+    --hover-accent: #0056b3;
+    --border-color: #fff;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--primary-background);
+    color: var(--text);
+}
+
+#soundboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Sound Buttons */
+
+.sound-button {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    padding: 0;
+    background-color: var(--secondary-background);
+    color: var(--text);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.sound-button:hover {
+    background-color: var(--hover);
+}
+
+.sound-button.active {
+    background-color: var(--accent);
+    color: var(--text);
+}
+
+.sound-button.active:hover {
+    background-color: var(--hover-accent); 
+}
+
+/* Button Details */
+#button-details {
+    width: 100%;
+    max-width: 600px;
+    display: none;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--primary-background);
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
+#button-details.active {
+    display: block;
+}
+
+#button-title {
+    margin-top: 0;
+}
+
+#fileInput {
+    margin-bottom: 10px;
+}
+
+#button-details {
+    margin-top: 20px;
+}
+
+#button-details h3,
+#button-details h4,
+#button-details label,
+#button-details input,
+#button-details button,
+#button-details ul {
+    margin: 10px 0;
+    color: var(--text);
+}
+
+#button-details button{
+    background-color: var(--accent);
+    border: 1px solid var(--border-color);
+    color: var(--text);
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#button-details button:hover{
+    background-color: var(--hover-accent); 
+}
+
+#button-details input[type="text"],
+#button-details input[type="file"] {
+    background-color: var(--secondary-background);
+    border: 1px solid var(--border-color);
+    color: var(--text);
+    padding: 8px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
+#button-details input[type="text"]:focus,
+#button-details input[type="file"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    background-color: var(--hover);
+}
+
+#soundList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sound-item {
+    padding: 8px;
+    background-color: var(--secondary-background);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin: 5px 0;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.sound-item.playing {
+    background-color: var(--accent);
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.button-container button {
+    background-color: var(--accent);
+    border: 1px solid var(--border-color);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.button-container button:hover {
+    background-color: var(--hover-accent);
+}
+
+.button-container button:active {
+    background-color: var(--hover-accent);
+}
