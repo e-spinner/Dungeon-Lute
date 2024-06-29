@@ -1,44 +1,48 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soundboard</title>
+    <title>Dungeon Lute</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Add icon library -->
+    <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+
+    <h1>Dungeon Lute</h1>
+    
+    <div id="menu-bar">
+        <button title="save" onclick="save()" ><i class="fas fa-save"></i></button>
+        <div id="media-controls" >
+            <button title="rewind" onclick="rewind()" ><i class="fas fa-backward-step"></i></button>
+            <button title="toggle playback" onclick="pause_play()" ><i class="fas fa-play"></i></button>
+            <button title="random" onclick="next()" ><i class="fas fa-forward-step"></i></button>
+        </div>
+        <button title="edit" onclick="edit()" ><i class="fas fa-pencil"></i></button>
+    </div>
+    
     <div id="soundboard">
-        <!-- Sound buttons will be generated here by JavaScript -->
+        <!-- sound buttons will be generated here by JavaScript -->
     </div>
-
-    <div id="sound-controls" class="button-container">
-        <button onclick="rewindToPrevious()">Rewind</button>
-        <button id="pause_play" onclick="pause_play()">Pause</button>
-        <button onclick="next()">Next</button>
-    </div> 
-
-    <div id="button-details">
-        <h3 id="button-title">Button Details</h3>
-        <ul id="soundList"></ul>
-        <label for="playlist-select">Local Folder:</label>
-        <select id="playlist-select" onchange="loadPlaylist()">
-            <option value="">--Select a Playlist--</option>
-        </select>
-
+    
+    <div id="details" >
+        <h3 id="playlist-name">Playlist Name</h3>
+        <ul id="song-list">
+            <!-- song buttons will be generated here by JavaScript -->
+        </ul>
     </div>
-
-    <div class="button-container">
-        <button onclick="addButton()">Add New Button</button>
-        <button onclick="saveButtons()">Save Buttons</button>
-    </div>
-
+    
     <div id="history">
         <h3>History</h3>
         <ul id="historyList"></ul>
     </div>
-
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/soundboard.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/button-details.js') }}"></script>
+    
+    <script src="{{ url_for('static', filename='js/index/menu-bar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index/soundboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index/details.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/util.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,68 @@
+<!-- templates/edit.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Lute</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Add icon library -->
+    <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Editable title -->
+<h1 id="preset-name" contenteditable="true">Enter Preset Name</h1>
+
+<div id="available-playlists">
+  <div id="playlist-container">
+    <div class="playlist draggable" draggable="true">Playlist 0</div>
+    <div class="playlist draggable" draggable="true">Playlist 1</div>
+    <div class="playlist draggable" draggable="true">Playlist 2</div>
+    <div class="playlist draggable" draggable="true">Playlist 3</div>
+    <div class="playlist draggable" draggable="true">Playlist 4</div>
+    <div class="playlist draggable" draggable="true">Playlist 5</div>
+    <div class="playlist draggable" draggable="true">Playlist 6</div>
+    <div class="playlist draggable" draggable="true">Playlist 7</div>
+    <div class="playlist draggable" draggable="true">Playlist 8</div>
+    <div class="playlist draggable" draggable="true">Playlist 9</div>
+    <div class="playlist draggable" draggable="true">Playlist 10</div>
+    <div class="playlist draggable" draggable="true">Playlist 11</div>
+  </div>
+
+  <!-- Add more playlist items as needed -->
+</div>
+
+<table id="soundboard">
+  <tbody id="grid">
+    <tr class="row">
+      <td class="slot droppable"></td>
+      <td id="r" rowspan='1'>
+        <div>
+          <button id="r-add" title="add column" onclick="R()"><i class="fas fa-plus"></i></button>
+          <button id="r-remove" title="remove column" onclick="r()"><i class="fas fa-minus"></i></button>
+        </div>
+      </td>
+    </tr>
+
+    <tr id="bot">
+      <td id="d" colspan="1">
+        <div>
+          <button id="d-add" title="add row" onclick="D()"><i class="fas fa-plus"></i></button>
+          <button id="d-remove" title="remove row" onclick="d()"><i class="fas fa-minus"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Button to return and send slot data -->
+<button id="return" onclick="return()"><i class="fas fa-house"></i></button>
+
+<script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+    
+    
+    
+    <script src="{{ url_for('static', filename='js/edit/edit.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+</body>
+</html>

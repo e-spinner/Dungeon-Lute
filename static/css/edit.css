@@ -1,0 +1,142 @@
+
+/* EDIT */
+.slot {
+	width: 100px;
+	height: 100px;
+	padding: 0px;
+	background-color: var(--secondary-background);
+	color: var(--text);
+	border: 1px solid var(--secondary-background);
+	cursor: pointer;
+	transition: background-color 0.3s;
+	border-radius: 10px;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-size: 14px;
+	overflow: hidden;
+	box-shadow: 0 0 10px var(--shadow-color);
+}
+.slot.hover {
+	border: 1px solid var(--border-color);
+}
+table {
+  border-collapse: separate;
+  border-spacing: 10px; 
+}
+#d div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+#r div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+table button {
+    background-color: var(--accent);
+    border: 1px solid var(--border-color);
+    color: var(--text);
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+    transition: position 0.3s ease;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+table button:hover {
+		background-color: var(--hover-accent);
+}
+button.clicked {
+  transform: scale(1.2);
+}
+.slot.fade-in {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeIn 0.5s forwards;
+}
+.slot.fade-out, .row.fade-out {
+  opacity: 1;
+  transform: scale(1);
+  animation: fadeOut 0.5s forwards;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+#available-playlists {
+    width: 50%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+	  box-shadow: 0 0 10px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    position: relative;
+}
+#playlist-container {
+  display: flex;
+  overflow-x: auto;
+    position: relative;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+#available-playlists::before,
+#available-playlists::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 30px; /* Adjust the width of the gradient fade */
+    height: 100%;
+    pointer-events: none;
+    background-image: linear-gradient(to left, rgba(41, 43, 44, 0), rgba(41, 43, 44, 1));
+    z-index: 1;
+}
+#available-playlists::before {
+    left: 0;
+}
+#available-playlists::after {
+    right: 0;
+    background-image: linear-gradient(to right, rgba(41, 43, 44, 0), rgba(41, 43, 44, 1));
+}
+#available-playlists .playlist {
+  cursor: grab;
+}
+.slot.draggable {
+  cursor: grab;
+  background-color: var(--accent);
+}
+.slot.draggable:hover {
+  background-color: var(--hover-accent);
+}
+#return {
+    background-color: var(--accent);
+    border: 1px solid var(--border-color);
+    color: var(--text);
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+    transition: position 0.3s ease;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+#return:hover {
+  background-color: var(--hover-accent)
+}
