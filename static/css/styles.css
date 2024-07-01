@@ -49,17 +49,16 @@ body {
 }
 .playlist {
 	width: 100px;
-  min-width: 100px;
+    min-width: 100px;
 	height: 100px;
 	margin: 10px;
-	padding: 0;
+	padding: 5px;
 	background-color: var(--secondary-background);
 	color: var(--text);
 	border: 1px solid var(--border-color);
 	cursor: pointer;
 	transition: background-color 0.3s;
 	border-radius: 10px;
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	text-align: center;
@@ -82,7 +81,7 @@ body {
 	background-color: var(--primary-background);
 	box-shadow: 0 0 10px var(--shadow-color);
 }
-#details.active {
+#details.playing {
 	display: block;
 }
 #details #playlist-name { margin: 0; }
@@ -103,3 +102,16 @@ body {
 .song:hover { background-color: var(--hover); }
 .song.playing { background-color: var(--accent); }
 .song.playing:hover { background-color: var(--hover-accent); }
+
+button{
+	transition: transform 0.3s ease;
+}
+button.clicked {
+	transform: scale(1.2);
+  }
+.spacer {
+	width: 100px;
+	height: 100px;
+	padding: 6px;
+	
+}

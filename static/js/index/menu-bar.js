@@ -1,32 +1,16 @@
 // static/js/index/menu-bar.js
 
-let playlists = [];
 let playingIndex = null;
 let lastPlayedSong = {}
 let audio = null;
 let history = []
+let soundBoard = []
 
 const FADE_OUT_DURATION = 1000; 
 
-// save
-function save() {
-    log( 'menu-bar', 'saving preset...' )
-    fetch( `/save/${preset}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify( playlists )
-    }).then( response => response.json() )
-    .then( data => {
-        if ( data.status === 'success' ) {
-            alert( 'Save Successfull' );
-            log( 'menu-bar', 'saving successfull' )
-        }
-        else {
-            log( 'menu-bar', 'saving error' )
-        }
-    }); 
+// load
+function load(){
+
 }
 
 // rewind
@@ -40,7 +24,7 @@ function rewind() {
         updateHistoryDisplay();
         const { p_idx, s_idx } = history[ history.length - 1 ];
 
-        stopCurrentAudio();
+        stopCurrentSong();
 
         playingIndex = p_idx;
         playSong( p_idx, s_idx);
@@ -58,21 +42,23 @@ function rewind() {
 // pause / play
 function pause_play() {
     let audio_status = document.getElementById( 'pause_play' )
-    if ( audio.paused ) {
-        audio.play()
-        audio_status.classList.add( 'fa-pause' )
-        log( 'menu-bar', 'playing' )
-    }
-    else {
-        audio.pause()
-        audio_status.classList.remove( 'fa-play' )
-        log( 'menu-bar', 'paused' )
+
+    if (audio.paused) {
+        audio.play();
+        audio_status.classList.remove('fa-play');
+        audio_status.classList.add('fa-pause');
+        log('menu-bar', 'playing');
+    } else {
+        audio.pause();
+        audio_status.classList.remove('fa-pause');
+        audio_status.classList.add('fa-play');
+        log('menu-bar', 'paused');
     }
 }
 
 // next
 function next() {
-    stopCurrentAudio();
+    stopCurrentSong();
     playRandomSong( playingIndex )
     showPlaylist( playingIndex )
     log( 'menu-bar', 'going to next song' )

@@ -1,6 +1,6 @@
 // static/js/index/soundboard.js
 
-let preset = 'default'
+let preset = 'Testing'
 
 document.addEventListener( 'DOMContentLoaded', ( event ) => {
 
@@ -14,40 +14,61 @@ function loadSoundboard( preset ) {
     fetch( `/load/${preset}` )
     .then( response => response.json() )
     .then( data => {
-        playlists = data;
-
-        const soundboard = document.getElementById( 'soundboard' )
-        playlists.forEach( ( playlist, p_idx ) => {
-            const pl = document.createElement( 'button' );
-            pl.className = 'playlist';
-            pl.innerText = playlist.name ;
-            pl.onclick = () => togglePlaylist( p_idx );
-            soundboard.appendChild( pl )
+        
+        const grid = document.getElementById( 'grid' )
+        data.forEach( ( row ) => {
+            const tr = document.createElement( 'tr' )
+            tr.classList.add( 'row' )
+            row.forEach( ( playlist ) => {
+                const pl = document.createElement( 'td' );
+                if ( playlist != 'blank') {
+                    pl.classList.add( 'playlist' )
+                    pl.innerText = playlist;
+                    pl.onclick = () => togglePlaylist( playlist )
+                } else {
+                    pl.classList.add( 'spacer' );
+                }
+                tr.appendChild( pl )
+            });
+            grid.appendChild( tr )
         });
         log( 'soundboard', 'soundboard loaded' )
 
     });
 }
 
-// handle activation / deactivation of a playlisy
-function togglePlaylist( p_idx ) {
-    if ( playingIndex = p_idx ) {
-        if ( audio && !audio.paused ) {
-            stopCurrentSong();
-            const details = document.getElementById( 'details' );
-            details.classList.remove( 'active' );
-            log( 'soundboard', `stopped playlist: ${p_idx}` );
-            return;
+// handle activation / deactivation of a playlist
+function togglePlaylist( playlist ) {
+
+    fetch( '/playlists' )
+    .then( response => response.json() )
+    .then( playlists => {
+        const p_idx = Array.from( playlists ).indexOf( playlist )
+
+        if ( playingIndex == p_idx ) {
+            if ( audio && !audio.paused ) {
+                stopCurrentSong();
+                const details = document.getElementById( 'details' );
+                details.classList.remove( 'playing' );                
+                const pl_ids = document.querySelectorAll( '.playlist' ) ;
+                pl_ids.forEach( ( id ) => {
+                    if ( id.innerText == playlists[p_idx] ) {
+                        id.classList.remove( 'playing' )
+                    }
+                });
+                log( 'soundboard', `stopped playlist: ${p_idx}` );
+                return;
+            }
         }
-    }
-    log( 'soundboard', `starting playlist: ${p_idx}` );
+        log( 'soundboard', `starting playlist: ${p_idx}` );
 
-    fadeOutSong().then( () => {
-        stopCurrentSong()
+        fadeOutSong().then( () => {
+            stopCurrentSong()
 
-        playingIndex = p_idx
-        playRandomSong( p_idx )
-        showPlaylist( p_idx )
+            playingIndex = p_idx
+            playRandomSong( p_idx )
+            showPlaylist( p_idx )
+        });
     });
 }
 
@@ -57,9 +78,13 @@ function stopCurrentSong() {
         audio.pause();
         audio = null;
     }
-    if ( playingIndex !== null ) {
-        const playlistss = document.querySelectorAll( '.playlist' )
-        playlistss[playingIndex].classList.remove( 'playing' )
+    if ( playingIndex !== null ) {             
+                const pl_ids = document.querySelectorAll( '.playlist' ) ;
+                pl_ids.forEach( ( id ) => {
+
+                    id.classList.remove( 'playing' )
+
+                });
     }
     log( 'soundboard', 'stopping current song' )
 }
@@ -92,62 +117,89 @@ function playSong( p_idx, s_idx ) {
     fadeOutSong().then( () => {
         stopCurrentSong();
         
-        const playlistName = playlists[playingIndex].name;
-        const playlist = playlists[p_idx];
-        const song = playlist.songs[s_idx];
+        fetch( '/playlists' )
+        .then( response => response.json() )
+        .then( playlists => {
+            const playlist = playlists[p_idx];
+    
+            fetch( `/song/${playlist}` )
+            .then( response => response.json() )
+            .then( songs => {
+                const song = songs[s_idx]
 
-        if ( lastPlayedSong[p_idx] != song ) {
-            addToHistory( p_idx, s_idx );
-        }
-        lastPlayedSong[p_idx] = song;
+                if ( lastPlayedSong[p_idx] != song ) {
+                    addToHistory( p_idx, s_idx );
+                }
+                lastPlayedSong[p_idx] = song;
 
-        audio = new Audio( `/song/${playlistName}/${song}` );
-        audio.play();
-        audio.onended = () => playRandomSong( p_idx );
-        highlightPlayingSong( p_idx );
+                audio = new Audio( `/song/${playlist}/${song}` );
+                audio.play();
+                audio.onended = () => playRandomSong( p_idx );
+                highlightPlayingSong( p_idx );
 
-        const playlistss = document.querySelectorAll( '.playlist' ) ;
-        playlistss[ p_idx ].classList.add( ' playing' );
+                const pl_ids = document.querySelectorAll( '.playlist' ) ;
+                pl_ids.forEach( ( id ) => {
+                    if ( id.innerText == playlist ) {
+                        id.classList.add( 'playing' )
+                    }
+                });
 
-        
-        let audio_status = document.getElementById( 'pause_play' )
-        audio_status.classList.remove( 'fa-play' )
-        audio_status.classList.add( 'fa-pause' )
-        log( 'soundboard', `specifically playing ${p_idx}, ${s_idx}` )
+                
+                let audio_status = document.getElementById( 'pause_play' )
+                audio_status.classList.remove( 'fa-play' )
+                audio_status.classList.add( 'fa-pause' )
+                log( 'soundboard', `specifically playing ${p_idx}, ${s_idx}` )
+            });
+        });
     });
 }
 
 // play a random song from a specific playlist
 function playRandomSong( p_idx ) {
-    const playlistName = playlists[playingIndex].name;
-    const playlist = playlists[p_idx];
 
-    if ( playlist.songs.length > 0 ) {
-        const availableSongs = playlist.filter( song => song !== lastPlayedSong[p_idx] );
-        if ( availableSongs.length === 0 ) {
-            availableSongs.push( ...playlist.songs );
-        }
+    fetch( '/playlists' )
+    .then( response => response.json() )
+    .then( playlists => {
+        const playlist = playlists[p_idx];
 
-        const s_idx = Math.floor( Math.random() * availableSongs.length );
-        const song = availableSongs[s_idx];
+        fetch( `/song/${playlist}` )
+        .then( response => response.json() )
+        .then( songs => {
 
-        if ( lastPlayedSong[p_idx] != song ) {
-            addToHistory( p_idx, s_idx );
-        }
-        lastPlayedSong[p_idx] = song;
+            if ( songs.length > 0 ) {
+                const availableSongs = songs.filter( song => song !== lastPlayedSong[p_idx] );
+                if ( availableSongs.length === 0 ) {
+                    availableSongs.push( ...songs );
+                }
 
-        audio = new Audio( `/song/${playlistName}/${song}` );
-        audio.play();
-        audio.onended = () => playRandomSong( p_idx );
-        highlightPlayingSong( p_idx );
+                const s_idx = Math.floor( Math.random() * availableSongs.length );
+                const song = availableSongs[s_idx];
 
-        const playlistss = document.querySelectorAll( '.playlist' ) ;
-        playlistss[ p_idx ].classList.add( ' playing' );
+                if ( lastPlayedSong[p_idx] != song ) {
+                    addToHistory( p_idx, s_idx );
+                }
+                lastPlayedSong[p_idx] = song;
 
-        
-        let audio_status = document.getElementById( 'pause_play' )
-        audio_status.classList.remove( 'fa-play' )
-        audio_status.classList.add( 'fa-pause' )
-        log( 'soundboard', `randomly playing ${p_idx}, ${s_idx}` )
-    }
+                audio = new Audio( `/song/${playlist}/${song}` );
+                audio.play();
+                audio.onended = () => playRandomSong( p_idx );
+                highlightPlayingSong( p_idx );
+
+                const pl_ids = document.querySelectorAll( '.playlist' ) ;
+                pl_ids.forEach( ( id ) => {
+                    if ( id.innerText == playlist ) {
+                        id.classList.add( 'playing' )
+                    }
+                });
+
+                
+                let audio_status = document.getElementById( 'pause_play' )
+                audio_status.classList.remove( 'fa-play' )
+                audio_status.classList.add( 'fa-pause' )
+                log( 'soundboard', `randomly playing ${p_idx}, ${s_idx}` )
+   
+            }
+        });
+    });
+
 }

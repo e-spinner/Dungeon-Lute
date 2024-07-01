@@ -1,12 +1,7 @@
+
+/* Expanding slots */
 let cols = 1;
 let rows = 1;
-function animateButton(buttonId) {
-  const button = document.getElementById(buttonId);
-  button.classList.add("clicked");
-  setTimeout(() => {
-    button.classList.remove("clicked");
-  }, 300);
-}
 function R() {
   animateButton("r-add");
   let rows = document.querySelectorAll(".row");
@@ -27,6 +22,7 @@ function R() {
   let d = document.getElementById("d");
   cols += 1;
   d.colSpan += 1;
+  log( 'edit', 'expanding grid right')
 }
 function r() {
   animateButton("r-remove");
@@ -49,6 +45,7 @@ function r() {
       d.colSpan -= 1;
     }, 500);
   }
+  log( 'edit', 'retracting grid right')
 }
 function D() {
   animateButton("d-add");
@@ -77,6 +74,7 @@ function D() {
   rows += 1;
 
   grid.insertBefore(row, bot);
+  log( 'edit', 'expanding grid down')
 }
 function d() {
   animateButton("d-remove");
@@ -96,15 +94,26 @@ function d() {
       rows -= 1;
     }, 500); // Wait for the animation to complete
   }
+  log( 'edit', 'retracting grid down')
 }
 
+/* Dragging */
 document.addEventListener("DOMContentLoaded", function () {
-  const playlists = document.querySelectorAll(".playlist");
   const slots = document.querySelectorAll(".slot");
+  const playlistContainer = document.getElementById( 'playlist-container' );
 
-  // Add dragstart event listener to each playlist item
-  playlists.forEach((playlist) => {
-    playlist.addEventListener("dragstart", dragStart);
+  log( 'edit', 'initializing playlist list')
+  fetch( '/playlists' )
+  .then( response => response.json() )
+  .then( playlists => {
+    playlists.forEach( ( playlist ) => {
+      pl = document.createElement( 'div' );
+      pl.classList.add( 'playlist',  'draggable' );
+      pl.draggable = 'true';
+      pl.innerText = playlist;
+      pl.addEventListener( 'dragstart', dragStart );
+      playlistContainer.appendChild( pl )
+    });
   });
 
   // Add dragover event listener to each slot
@@ -112,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setSlot(slot);
   });
 });
-
 function dragStart(event) {
   event.dataTransfer.setData("text/plain", event.target.textContent);
   if ( this.classList.contains( 'slot' ) ) {
@@ -149,45 +157,50 @@ function setSlot(slot) {
   slot.addEventListener("drop", drop);
 }
 
+function save() {
+  const preset = document.getElementById( 'preset-name' );
+  let name = preset.innerText;
 
-// gets playlists
-// fetch( '/playlists' )
-// .then( response => response.json() )
-// .then( playlists => {
-//     const playlistSelect = document.getElementById( 'playlist-select' );
-//     playlists.forEach( playlist => {
-//         const option = document.createElement( 'option' );
-//         option.value = playlist;
-//         option.innerText = playlist;
-//         playlistSelect.appendChild( option );
-//     } );
-// } );
+  let soundBoard = [];
 
-// // Function to load songs from the selected playlist
-// function loadPlaylist() {
-//     const playlist = document.getElementById( 'playlist-select' ).value;
-//     if ( playlist ) {
-//         buttons[activeButtonIndex].name = playlist
-//         renderButtons()
-//         fetch( `/get_songs/${playlist}` )
-//             .then( response => response.json() )
-//             .then( songs => {
-//                 const soundList = document.getElementById( 'soundList' );
-//                 soundList.innerHTML = '';
-//                 songs.forEach( ( song, idx ) => {
-//                     const listItem = document.createElement( 'li' );
-//                     listItem.innerText = song;
-//                     listItem.className = 'sound-item';
-//                     listItem.dataset.index = idx; // Store the index in a data attribute
-//                     listItem.addEventListener( 'click', () => playSound( currentButtonIndex, idx ) ); // Add click event listener
-//                     soundList.appendChild( listItem );
-//                 } );
-//                 // Update the current button's sounds
-//                 if ( activeButtonIndex !== null ) {
-//                     buttons[activeButtonIndex].sounds = songs;
-//                 }
-//             } );
-//         handleButtonClick( activeButtonIndex )
-//         showButtonDetails( activeButtonIndex )
-//     }
-// }
+  const rows = document.querySelectorAll( '.row' );
+  rows.forEach( ( row ) => {
+    boardRow = []
+    const children = Array.from( row.children );
+    children.forEach( (child) => {
+      if ( child.classList.contains( 'slot' ) ) {
+        if ( child.classList.contains( 'draggable' ) ) {
+          boardRow.push( child.innerText );
+        } else {
+          boardRow.push( 'blank' )
+        }
+      }
+    });
+    soundBoard.push( boardRow )
+  });
+
+  log( 'edit', `saving preset - ${name}` )
+  fetch( `/save/${name}`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify( soundBoard )
+  }).then( response => response.json() )
+  .then( data => {
+      if ( data.status === 'success' ) {
+          alert( 'Save Successfull' );
+          log( 'edit', 'saving successfull' )
+      }
+      else {
+          log( 'edit', 'saving error' )
+      }
+
+      window.location.href = '/'
+      
+  }); 
+
+
+
+
+}

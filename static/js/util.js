@@ -24,3 +24,11 @@ function edit() {
     log( 'util', 'loading edit.html' )
     window.location.href = '/edit'
 }
+
+function animateButton(buttonId) {
+  const button = document.getElementById(buttonId);
+  button.classList.add("clicked");
+  setTimeout(() => {
+    button.classList.remove("clicked");
+  }, 300);
+}

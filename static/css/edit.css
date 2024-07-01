@@ -3,11 +3,10 @@
 .slot {
 	width: 100px;
 	height: 100px;
-	padding: 0px;
+	padding: 5px;
 	background-color: var(--secondary-background);
 	color: var(--text);
 	border: 1px solid var(--secondary-background);
-	cursor: pointer;
 	transition: background-color 0.3s;
 	border-radius: 10px;
 	align-items: center;
@@ -53,9 +52,6 @@ table button {
 table button:hover {
 		background-color: var(--hover-accent);
 }
-button.clicked {
-  transform: scale(1.2);
-}
 .slot.fade-in {
   opacity: 0;
   transform: scale(0.95);
@@ -81,7 +77,6 @@ button.clicked {
 #available-playlists {
     width: 50%;
     overflow-x: auto;
-    white-space: nowrap;
     padding: 10px 0;
 	  box-shadow: 0 0 10px var(--shadow-color);
     border: 1px solid var(--border-color);
@@ -114,6 +109,8 @@ button.clicked {
     background-image: linear-gradient(to right, rgba(41, 43, 44, 0), rgba(41, 43, 44, 1));
 }
 #available-playlists .playlist {
+	display: flex;
+	flex-wrap: wrap;
   cursor: grab;
 }
 .slot.draggable {
