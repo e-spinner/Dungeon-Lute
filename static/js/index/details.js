@@ -23,9 +23,13 @@ function showPlaylist( p_idx ) {
             songs.forEach( ( song, s_idx ) => {
                 const listItem = document.createElement( 'li' )
                 listItem.innerHTML = song;
+                listItem.id = song;
                 listItem.className = 'song';
                 listItem.dataset.index = s_idx;
-                listItem.addEventListener( 'click', () => playSong( p_idx, s_idx ) );
+                listItem.addEventListener( 'click', () =>  {
+                    playSong( p_idx, s_idx );
+                    animateButton(song);
+                });
                 songList.appendChild( listItem );
             });
         

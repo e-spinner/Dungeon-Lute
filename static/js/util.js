@@ -25,6 +25,18 @@ function edit() {
     window.location.href = '/edit'
 }
 
+function openMenu( menu ) {
+    animateButton(`${menu}-open`)
+    document.getElementById(`${menu}-menu`).style.width = '100%';    
+    document.getElementById(`${menu}`).classList.add('active');
+}
+
+function closeMenu( menu ) {
+    animateButton(`${menu}-close`)
+    document.getElementById(`${menu}-menu`).style.width = "0%";    
+    document.getElementById(`${menu}`).classList.remove('active');
+}
+
 function animateButton(buttonId) {
   const button = document.getElementById(buttonId);
   button.classList.add("clicked");

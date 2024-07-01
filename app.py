@@ -26,15 +26,17 @@ def get_presets():
     presets = []
     
     # Get a list of all.json files in the presets directory
-    json_files = [f for f in os.listdir(PRESETS_PATH) if f.endswith('.json')]
+    json_files = [ f for f in os.listdir( PRESETS_PATH ) if f.endswith( '.json' ) ]
     
     # Extract the names of the presets by removing the.json extension
     for preset in json_files:
-        name = presets[:-5]  # Remove the.json extension
-        presets.append(name)
+        name = preset[:-5]  # Remove the.json extension
+        presets.append( name )
+    
+    print( presets )
     
     # Return the list of preset names
-    return jsonify(presets)
+    return jsonify( presets )
     
 # Request for preset.json
 @app.route( '/load/<preset>' )
@@ -46,6 +48,17 @@ def get_preset( preset ):
         playlists = []
     return jsonify( playlists )  
     
+# Request deletion of a preset
+@app.route( '/del/<preset>')
+def del_preset( preset ) :
+    try:
+        os.remove(os.path.join(PRESETS_PATH, f'{preset}.json'))
+        return jsonify({"message": "Preset file deleted successfully"}), 200
+    except FileNotFoundError:
+        return jsonify({"error": "Preset file not found"}), 404
+    except PermissionError:
+        return jsonify({"error": "Permission denied"}), 403
+
 # ========== #
 # SOUNDBOARD #
 # ========== #
@@ -53,7 +66,7 @@ def get_preset( preset ):
 # Request current list of playlists
 @app.route( '/playlists' )
 def get_playlists():
-    playlists = [dir for dir in os.listdir( MUSIC_PATH ) if os.path.isdir( os.path.join( MUSIC_PATH, dir ) )]
+    playlists = [ dir for dir in os.listdir( MUSIC_PATH ) if os.path.isdir( os.path.join( MUSIC_PATH, dir ) ) ]
     return jsonify( playlists )
 
 # Request list of songs in  a playlist

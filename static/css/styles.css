@@ -20,12 +20,12 @@ body {
     color: var(--text);
 }
 
-/* MENU */
+/* MENU-BAR */
 #menu-bar {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-  gap: 20px;
+  	gap: 20px;
 }
 #menu-bar button {
     background-color: var(--accent);
@@ -65,6 +65,7 @@ body {
 	font-size: 14px;
 	overflow: hidden;
 	box-shadow: 0 0 10px var(--shadow-color);
+	transition: transform 0.5s ease;
 
 }
 .playlist:hover { background-color: var(--hover); }
@@ -98,20 +99,128 @@ body {
 	margin: 5px 0;
   box-shadow: 0 0 10px var(--shadow-color);
   transition: background-color 0.3s ease;
+  transition: transform 0.5s ease;
 }
 .song:hover { background-color: var(--hover); }
 .song.playing { background-color: var(--accent); }
 .song.playing:hover { background-color: var(--hover-accent); }
 
 button{
-	transition: transform 0.3s ease;
+	transition: transform 0.5s ease;
 }
-button.clicked {
-	transform: scale(1.2);
+.clicked {
+	transform: scale(1.1);
+	transition: transform 0.5s ease;
   }
 .spacer {
 	width: 100px;
 	height: 100px;
 	padding: 6px;
 	
+}
+
+/* SETTINGS */
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: var(--primary-background );
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+#settings, #presets {
+  display: none;
+}
+#settings.active, #presets.active {
+  display: flex;
+}
+.overlay-content {
+    position: relative;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+  flex-direction: column;
+    justify-content: center;
+  align-items: center;
+}
+
+.overlay-content a {
+    padding: 8px;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+    transition: 0.3s;
+    width: 30%;
+}
+
+.close-btn {
+    position: absolute;
+    top: 45px;
+    font-size: 36px;
+    background-color: var(--secondary-Background);
+    color: var(--text);
+    padding: 5px 10px;
+    cursor: pointer;
+	  border: 0px solid var(--border-color);
+}
+.close-btn:hover {
+  color: var(--accent);
+}
+
+.accent-bar {
+  background-color: var(--secondary-background);
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  border-left: 1px solid var(--border-color);
+}
+
+.preset-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+.preset-del {
+  background-color: var(--primary-background);
+  color: var(--text);
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 0px solid var(--border-color);
+  font-size: 24px;
+
+}
+.preset-del:hover {
+  color: var(--accent);
+}
+
+.fade-in {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeIn 0.5s forwards;
+}
+.fade-out {
+  opacity: 1;
+  transform: scale(1);
+  animation: fadeOut 0.5s forwards;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }

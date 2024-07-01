@@ -1,10 +1,9 @@
 // static/js/index/soundboard.js
 
-let preset = 'Testing'
-
 document.addEventListener( 'DOMContentLoaded', ( event ) => {
 
-    loadSoundboard( preset );
+    loadSoundboard( 'Default' );
+    loadPresets();
     log( 'soundboard', 'DOMContentLoaded' )
 });
 
@@ -24,7 +23,12 @@ function loadSoundboard( preset ) {
                 if ( playlist != 'blank') {
                     pl.classList.add( 'playlist' )
                     pl.innerText = playlist;
-                    pl.onclick = () => togglePlaylist( playlist )
+                    pl.id = playlist;
+                    pl.onclick = () => { 
+                        togglePlaylist( playlist );
+                        animateButton(playlist);
+
+                    }
                 } else {
                     pl.classList.add( 'spacer' );
                 }

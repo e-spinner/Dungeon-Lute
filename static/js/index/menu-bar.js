@@ -9,12 +9,60 @@ let soundBoard = []
 const FADE_OUT_DURATION = 1000; 
 
 // load
-function load(){
+function loadPresets(){
+    // Step 1: Fetch the list of presets
+    fetch( '/load' )
+        .then( response => response.json() )
+        .then( presets => {
 
+            const se = document.getElementById('presets')            
+            
+            presets.forEach( preset => {
+                const box = document.createElement( 'div' );
+
+                const p = document.createElement( 'a' );
+                
+                p.id = preset;
+                p.innerText = preset;
+                p.classList.add( 'song' );
+                p.addEventListener( 'click', () => {
+                    animateButton(preset);
+                    loadSoundboard(preset);
+                    closeMenu('presets')
+                    setTimeout(() => {
+                        closeMenu('settings')
+
+                    }, 300 );
+                });
+
+                box.appendChild( p )
+
+                const del = document.createElement( 'button' );
+                del.classList.add( 'preset-del' );
+                del.addEventListener( 'click', () => {
+                    fetch( `/del/${preset}` )
+                    .then( response => {
+                        box.classList.add( 'fade-out' )
+                    });
+                })
+                
+                const i = document.createElement( 'i' );
+                i.classList.add( 'far', 'fa-circle-xmark' );
+                del.appendChild(i)
+
+                box.append( del )
+
+                box.classList.add('preset-container')
+
+                se.appendChild( box );
+            });
+        })
 }
+
 
 // rewind
 function rewind() {
+    animateButton( 'rewind' )
     if ( history.length > 1 ) {
         let audio_status = document.getElementById( 'pause_play' )
         audio_status.classList.remove( 'fa-play' )
@@ -41,6 +89,7 @@ function rewind() {
 
 // pause / play
 function pause_play() {
+    animateButton( 'toggle' )
     let audio_status = document.getElementById( 'pause_play' )
 
     if (audio.paused) {
@@ -58,6 +107,7 @@ function pause_play() {
 
 // next
 function next() {
+    animateButton( 'next' )
     stopCurrentSong();
     playRandomSong( playingIndex )
     showPlaylist( playingIndex )
@@ -66,6 +116,7 @@ function next() {
 
 // edit 
 function edit() {
+    animateButton( 'edit' )
     buttons.push( { name: '', sounds: [] } );
     renderButtons();    
     log( 'edit', 'nothing happens for now' )
