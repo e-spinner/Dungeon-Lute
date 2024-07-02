@@ -9,6 +9,7 @@ app = Flask( __name__ )
 # Paths to directories
 MUSIC_PATH = os.path.join( app.root_path, 'music' )
 PRESETS_PATH = os.path.join( app.root_path, 'static', 'presets' )
+DATA_PATH = os.path.join( app.root_path, 'static', 'data' )
 
 # Home Page
 @app.route( '/' )
@@ -99,7 +100,27 @@ def log():
 
     
     return jsonify( {"status": "success"} )
+
+# save data to <data>.json
+@app.route( '/save/data/<data>', methods=['POST'] )
+def save_data( data ):
+    var = request.json
+    with open( os.path.join( DATA_PATH, str(data) + '.json' ), 'w' ) as file:
+        file.write( '' )
+        json.dump( var, file )
+    return jsonify( {"status": "success"} )
     
+# request data from <data>.json
+@app.route( '/load/data/<data>' )
+def load_data( data ):
+    try:
+        with open( os.path.join( DATA_PATH, str(data) + '.json' ), 'r' ) as file:
+            var = json.load( file )
+    except FileNotFoundError:
+        var = []
+    return jsonify( var ) 
+
+
 # ==== #
 # EDIT #
 # ==== #
@@ -111,7 +132,7 @@ def edit():
 
 # Save current setup to <name>.json
 @app.route( '/save/<name>', methods=['POST'] )
-def save( name ):
+def save_preset( name ):
     soundBoard = request.json
     with open( os.path.join( PRESETS_PATH, str(name) + '.json' ), 'w' ) as file:
         file.write( '' )

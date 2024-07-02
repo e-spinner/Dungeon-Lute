@@ -4,6 +4,16 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
 
     loadSoundboard( 'Default' );
     loadPresets();
+    const details = document.getElementById( 'details' ); 
+
+    fetch( '/load/data/color' )
+    .then( response => response.json() )
+    .then( data => {
+        if ( data.length > 0 ) {
+            save_colors(data)
+            colors = data
+        }
+    });
     log( 'soundboard', 'DOMContentLoaded' )
 });
 
@@ -43,6 +53,9 @@ function loadSoundboard( preset ) {
 
 // handle activation / deactivation of a playlist
 function togglePlaylist( playlist ) {
+    const details = document.getElementById( 'details' ); 
+    details.classList.add( 'fade-out' );  
+    details.classList.remove( 'fade-in' );   
 
     fetch( '/playlists' )
     .then( response => response.json() )
@@ -51,9 +64,7 @@ function togglePlaylist( playlist ) {
 
         if ( playingIndex == p_idx ) {
             if ( audio && !audio.paused ) {
-                stopCurrentSong();
-                const details = document.getElementById( 'details' );
-                details.classList.remove( 'playing' );                
+                stopCurrentSong();               
                 const pl_ids = document.querySelectorAll( '.playlist' ) ;
                 pl_ids.forEach( ( id ) => {
                     if ( id.innerText == playlists[p_idx] ) {
@@ -61,6 +72,7 @@ function togglePlaylist( playlist ) {
                     }
                 });
                 log( 'soundboard', `stopped playlist: ${p_idx}` );
+
                 return;
             }
         }

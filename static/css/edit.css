@@ -98,7 +98,8 @@ table button:hover {
     width: 30px; /* Adjust the width of the gradient fade */
     height: 100%;
     pointer-events: none;
-    background-image: linear-gradient(to left, rgba(41, 43, 44, 0), rgba(41, 43, 44, 1));
+    background-image: linear-gradient(to left, var(--primary-background-transparent), var(--primary-background-rgba));
+  
     z-index: 1;
 }
 #available-playlists::before {
@@ -106,8 +107,9 @@ table button:hover {
 }
 #available-playlists::after {
     right: 0;
-    background-image: linear-gradient(to right, rgba(41, 43, 44, 0), rgba(41, 43, 44, 1));
-}
+
+    background-image: linear-gradient(to right, var(--primary-background-transparent), var(--primary-background-rgba));
+  }
 #available-playlists .playlist {
 	display: flex;
 	flex-wrap: wrap;

@@ -33,7 +33,8 @@ function showPlaylist( p_idx ) {
                 songList.appendChild( listItem );
             });
         
-            details.classList.add( 'playing' );
+            details.classList.remove( 'fade-out' ); 
+            details.classList.add( 'fade-in' );   
             highlightPlayingSong( playlist );
 
         });

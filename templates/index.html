@@ -1,84 +1,117 @@
 <!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dungeon Lute</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <!-- Add icon library -->
-    <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
-</head>
-<body>
-    <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dungeon Lute</title>
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <!-- Add icon library -->
+        <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+    </head>
 
-    
-    <div id="menu-bar">
-        <button id='settings-open' title="settings" onclick="openMenu('settings')"><i class="fas fa-gear"></i></button>
-        <div id="media-controls" >
-            <button id="rewind" title="rewind" onclick="rewind()" ><i class="fas fa-backward-step"></i></button>
-            <button id="toggle" title="toggle playback" onclick="pause_play()" ><i id="pause_play" class="fas fa-pause"></i></button>
-            <button id="next" title="random" onclick="next()" ><i class="fas fa-forward-step"></i></button>
-        </div>
-        <button id="edit" title="edit" onclick="edit()" ><i class="fas fa-pencil"></i></button>
-    </div>
-    
-    <table id="soundboard">
-        <tbody id="grid">
-            <!-- soundboard grid will be generated here by JavaScript -->
-        </tbody>
-      </table>
-    
-    <div id="details" >
-        <h3 id="playlist-name">Playlist Name</h3>
-        <ul id="song-list">
-            <!-- song buttons will be generated here by JavaScript -->
-        </ul>
-    </div>
-    
-    <div id="history">
-        <h3>History</h3>
-        <ul id="historyList"></ul>
-    </div>
-
-    <!-- SETTINGS MENU -->
-    <div id="settings-menu" class="overlay">
-    
-        <div class="accent-bar">
-        <button id='settings-close' title='close settings' class='close-btn' onclick="closeMenu('settings')">
-            <i class='far fa-circle-xmark'></i>
-        </button>
-        </div>
+    <body>
+        <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
 
         
-        <div id="settings" class="overlay-content">
-            <h1>Settings</h1>
-            <a class="song" onclick="openMenu('presets')" id='presets-open'>Load Preset</a>
-            <a class="song" >Setup</a>
-            <a class="song" >Colors</a>
-            <a class="song" >Integrations</a>
+        <div class="menu-bar">
+            <button id='settings-open' title="open settings" onclick="openMenu('settings')"><i class="fas fa-gear"></i></button>
+            <div id="media-controls" >
+                <button id="rewind" title="play previous" onclick="rewind()" ><i class="fas fa-backward-step"></i></button>
+                <button id="toggle" title="toggle playback" onclick="pause_play()" ><i id="pause_play" class="fas fa-pause"></i></button>
+                <button id="next" title="play random" onclick="next()" ><i class="fas fa-forward-step"></i></button>
+            </div>
+            <button id="edit" title="open editor" onclick="edit()" ><i class="fas fa-pencil"></i></button>
         </div>
         
-        <!-- LOAD PRESET MENU -->
-        <div id="presets-menu" class="overlay">
+        <table id="soundboard">
+            <tbody id="grid">
+                <!-- soundboard grid will be generated here by JavaScript -->
+            </tbody>
+        </table>
+        
+        <div id="details" class="fade-out">
+            <h3 id="playlist-name"></h3>
+            <ul id="song-list">
+                <!-- song buttons will be generated here by JavaScript -->
+            </ul>
+        </div>
+        
+
+        <!-- SETTINGS MENU -->
+        <div id="settings-menu" class="overlay">
+        
+            <div class="accent-bar">
+                <button id='settings-close' title='close settings' class='close-btn' onclick="closeMenu('settings')">
+                    <i class='far fa-circle-xmark'></i>
+                </button>
+            </div>
+
             
-        <div class="accent-bar">
-            <button id='presets-close' title='close preset selection' class='close-btn' onclick="closeMenu('presets')">
-            <i class='far fa-circle-xmark'></i>
-            </button>
-        </div>
+            <div id="settings" class="overlay-content">
+                <h1>Settings</h1>
+                <a class="song" onclick="openMenu('presets')" id='presets-open'>Load Preset</a>            
+                <a class="song" onclick="openMenu('colors')" id='colors-open'>Color Editor</a>
+                <a class="song" >Setup</a>
+                <a class="song" >Integrations</a>
+            </div>
+            
+            <!-- LOAD PRESET MENU -->
+            <div id="presets-menu" class="overlay">
+                
+                <div class="accent-bar">
+                    <button id='presets-close' title='close preset selection' class='close-btn' onclick="closeMenu('presets')">
+                    <i class='far fa-circle-xmark'></i>
+                    </button>
+                </div>
 
+                
+                <div id='presets' class="overlay-content">
+                    <h1>Load Preset</h1>
+                    <!-- Generated by Java Script -->
+                </div>
+
+            </div>
+
+            <!-- LOAD COLOR EDITOR -->
+            <div id="colors-menu" class="overlay">
         
-        <div id='presets' class="overlay-content">
-            <h1>Load Preset</h1>
-            <!-- Generated by Java Script -->
+                <div class="accent-bar">
+                    <button id='colors-close' title='close color editor' class='close-btn' onclick="closeMenu('colors')">
+                    <i class='far fa-circle-xmark'></i>
+                    </button>
+                </div>
+
+                <div id='colors' class="overlay-content" >
+                
+                    <div id='color' class="overlay-content">
+                        <h1>Color Editor</h1>
+                        <div id='color-examples'>
+                        <div id='playing-example' class='playing playlist'>Default Playing Playlist Color</div>
+                        <div id='example' class='playlist'>Default Playlist Color</div>
+                    </div>
+                        
+                    <div id='color-grid'>
+                        <input type="color" title="set text color" id="text-color" value="#FFFFFF">
+                        <input type="color" title="set accent color" id="accent-color" value="#007bff">
+                        <input type="color" title="set secondary color" id="secondary-color" value="#343a40">
+                        <input type="color" title="set primary color" id="primary-color" value="#292b2c">
+                    </div>
+
+                    <div class='menu-bar'>
+                        <button id='color-save' title="save colors" onclick="save_colors(colors)"><i class="fas fa-save"></i></button>
+                        <button id='color-reset' title="reset colors" onclick="reset_colors()"><i class="fas fa-rotate-right"></i></button>
+                    </div>
+
+                </div>
+                    
+            </div>
+
         </div>
-        </div>
-  </div>
-    
-    <script src="{{ url_for('static', filename='js/index/menu-bar.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index/soundboard.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index/details.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/util.js') }}"></script>
-</body>
+        
+        <script src="{{ url_for('static', filename='js/index/menu-bar.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/index/soundboard.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/index/details.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+    </body>
 </html>

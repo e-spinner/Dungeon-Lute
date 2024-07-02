@@ -27,6 +27,8 @@ function loadPresets(){
                 p.classList.add( 'song' );
                 p.addEventListener( 'click', () => {
                     animateButton(preset);
+                    const grid = document.getElementById( 'grid' )
+                    grid.innerHTML=''
                     loadSoundboard(preset);
                     closeMenu('presets')
                     setTimeout(() => {
@@ -45,6 +47,7 @@ function loadPresets(){
                         box.classList.add( 'fade-out' )
                     });
                 })
+                del.title = `delete ${preset}`
                 
                 const i = document.createElement( 'i' );
                 i.classList.add( 'far', 'fa-circle-xmark' );
@@ -69,7 +72,6 @@ function rewind() {
         audio_status.classList.add( 'fa-pause' )
 
         history.pop();
-        updateHistoryDisplay();
         const { p_idx, s_idx } = history[ history.length - 1 ];
 
         stopCurrentSong();
@@ -79,7 +81,6 @@ function rewind() {
         showPlaylist( p_idx );
 
         history.pop()
-        updateHistoryDisplay()
         log( 'menu-bar', 'rewound succcessfull' )
     }
     else {
@@ -126,16 +127,4 @@ function edit() {
 function addToHistory( p_idx, s_idx ) {
     log( 'history', `adding ${p_idx}, ${s_idx} to history` )
     history.push( { p_idx, s_idx } );
-    updateHistoryDisplay();
-}
-
-function updateHistoryDisplay() {
-    const historyList = document.getElementById( 'historyList' );
-    historyList.innerHTML = '';
-    history.forEach( ( entry, p_idx ) => {
-        const listItem = document.createElement( 'li' );
-        listItem.innerText = `Step ${p_idx + 1}: Button ${entry.p_idx + 1} - Song ${entry.s_idx + 1}`;
-        historyList.appendChild( listItem );
-    } );
-    log( 'history', 'displaying history' )
 }

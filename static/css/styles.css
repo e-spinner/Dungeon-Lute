@@ -7,6 +7,17 @@
     --hover-accent: #0056b3;
     --border-color: #fff;
     --shadow-color: rgba(0, 0, 0, 0.5);
+
+    --primary-background-rgba: rgba(41, 43, 44, 1); /* Fully opaque */
+    --primary-background-transparent: rgba(41, 43, 44, 0); /* Fully transparent */
+
+    --t-text: #fff;
+    --t-primary-background: #292b2c;
+    --t-secondary-background: #343a40;
+    --t-hover: #3e444a;
+    --t-accent: #007bff;
+    --t-hover-accent: #0056b3;
+    --t-border-color: #fff;
 }
 
 /* GENERAL */
@@ -18,26 +29,27 @@ body {
     padding: 20px;
     background-color: var(--primary-background);
     color: var(--text);
+    
 }
 
 /* MENU-BAR */
-#menu-bar {
+.menu-bar {
+  margin-top: 15px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-  	gap: 20px;
+  gap: 20px;
 }
-#menu-bar button {
+.menu-bar button {
     background-color: var(--accent);
     border: 1px solid var(--border-color);
     color: var(--text);
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     box-shadow: 0 0 10px var(--shadow-color);
 }
-#menu-bar button:hover{
+.menu-bar button:hover{
 		background-color: var(--hover-accent);
 }
 
@@ -66,7 +78,7 @@ body {
 	overflow: hidden;
 	box-shadow: 0 0 10px var(--shadow-color);
 	transition: transform 0.5s ease;
-
+  
 }
 .playlist:hover { background-color: var(--hover); }
 .playlist.playing { background-color: var(--accent); }
@@ -75,15 +87,13 @@ body {
 /* DETAILS */
 #details {
 	max-width: 60%;
-	display: none;
+	display: block;
   border: 1px solid var(--border-color);
 	padding: 20px;
 	border-radius: 10px;
 	background-color: var(--primary-background);
 	box-shadow: 0 0 10px var(--shadow-color);
-}
-#details.playing {
-	display: block;
+  opacity: 1;
 }
 #details #playlist-name { margin: 0; }
 #song-list {
@@ -131,10 +141,10 @@ button{
     overflow-x: hidden;
     transition: 0.5s;
 }
-#settings, #presets {
+#settings, #presets, #colors {
   display: none;
 }
-#settings.active, #presets.active {
+#settings.active, #presets.active, #colors.active {
   display: flex;
 }
 .overlay-content {
@@ -180,7 +190,7 @@ button{
   width: 100px;
   display: flex;
   justify-content: center;
-  border-left: 1px solid var(--border-color);
+  border-left: 5px solid var(--border-color);
 }
 
 .preset-container {
@@ -201,7 +211,39 @@ button{
 .preset-del:hover {
   color: var(--accent);
 }
+#color-examples {
+  display: flex;
+  padding: 25px;
+  background-color: var(--t-primary-background);
+  border: 1px solid var(--t-border-color);
+  border-radius: 15px;
+  
+}
+#color-examples div {
+  display: flex;
+	background-color: var(--t-secondary-background);
+	color: var(--t-text);
+	border: 1px solid var(--t-border-color);
+}
+#color-examples div:hover { background-color: var(--t-hover); }
+#color-examples div.playing { background-color: var(--t-accent); }
+#color-examples div.playing:hover { background-color: var(--t-hover-accent); }
 
+#color-grid {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+input[type="color"] {
+    appearance: none;
+    border: none;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+/* ANIMATIONS */
 .fade-in {
   opacity: 0;
   transform: scale(0.95);

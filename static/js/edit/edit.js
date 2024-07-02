@@ -1,4 +1,3 @@
-
 /* Expanding slots */
 let cols = 1;
 let rows = 1;
@@ -101,6 +100,14 @@ function d() {
 document.addEventListener("DOMContentLoaded", function () {
   const slots = document.querySelectorAll(".slot");
   const playlistContainer = document.getElementById( 'playlist-container' );
+  fetch( '/load/data/color' )
+  .then( response => response.json() )
+  .then( data => {
+      if ( data.length > 0 ) {
+          save_colors(data)
+          colors = data
+      }
+  });
 
   log( 'edit', 'initializing playlist list')
   fetch( '/playlists' )
