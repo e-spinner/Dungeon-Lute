@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, redirect, render_template, request, jsonify, send_from_directory, url_for
 import os
 import json
 import datetime
+import threading
+import signal
+import webbrowser
 
 app = Flask( __name__ )
 
@@ -138,7 +141,20 @@ def save_preset( name ):
         json.dump( soundBoard, file )
     return jsonify( {"status": "success"} )
 
+# ============== #
+# SERVER CONTROl #
+# ============== #
+
+@app.route('/stop')
+def stop():
+    threading.Thread(target=shutdown_server).start()
+    return redirect(url_for('index'))
+
+def shutdown_server():
+    os.kill(os.getpid(), signal.SIGINT)
+
 if __name__ == '__main__':
-    app.run( debug=True )
-
-
+    webbrowser.open('http://localhost:5000/')
+    app.run(debug=True)
+    
+    

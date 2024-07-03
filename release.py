@@ -15,6 +15,7 @@ os.mkdir( './.release/static/data')
 
 # default color
 shutil.copy( './static/data/color-default.json', './.release/static/data/color.json' )
+shutil.copy( './static/presets/Default.json', './.release/static/presets/Default.json' )
 
 # html
 shutil.copy( './templates/edit.html', './.release/templates' )
@@ -59,3 +60,22 @@ subprocess.run([
     '--compress', 'passes=3,inline=true,pure_funcs=["log"]'
     ], check=True)
 
+import PyInstaller.__main__
+
+PyInstaller.__main__.run([
+    './.release/app.py',
+    '--onedir',
+    '--name', 'Dungeon Lute',
+    '--distpath', './.dist',
+    '--add-data', './.release/static/css/*:static/css',
+    '--add-data', './.release/static/js/*:static/js',
+    '--add-data', './.release/static/data/*:static/data',
+    '--add-data', './.release/static/presets/*:static/presets',
+    '--add-data', './.release/templates/*:templates',
+    '--noconfirm'
+])
+
+os.remove( './.dist/Dungeon Lute.spec')
+shutil.move( './Dungeon Lute.spec', './.dist/' )
+shutil.rmtree( './.dist/build')
+shutil.move( './build', './.dist/')

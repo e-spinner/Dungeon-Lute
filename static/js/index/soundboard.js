@@ -1,5 +1,4 @@
 // static/js/index/soundboard.js
-
 document.addEventListener( 'DOMContentLoaded', ( event ) => {
 
   if ( window.location.pathname == '/') {
