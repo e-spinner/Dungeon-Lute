@@ -2,8 +2,11 @@
 
 document.addEventListener( 'DOMContentLoaded', ( event ) => {
 
+  if ( window.location.pathname == '/') {
+
     loadSoundboard( 'Default' );
     loadPresets();
+    loadColor();
     const details = document.getElementById( 'details' ); 
 
     fetch( '/load/data/color' )
@@ -14,7 +17,20 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
             colors = data
         }
     });
+
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressHandle = document.getElementById('progressHandle');
+    progressContainer.addEventListener('click', (e) => {
+        const rect = progressContainer.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left; // Calculate click position within the container
+        const percentage = offsetX / rect.width; // Calculate percentage of click position
+        audio.currentTime = percentage * audio.duration; // Update audio current time
+        progressBar.style.width = `${percentage * 100}%`; // Update progress bar width
+        progressHandle.style.left = `${percentage * 100}%`;
+      });
     log( 'soundboard', 'DOMContentLoaded' )
+  }
 });
 
 // load in the playlists
@@ -149,6 +165,17 @@ function playSong( p_idx, s_idx ) {
                 lastPlayedSong[p_idx] = song;
 
                 audio = new Audio( `/song/${playlist}/${song}` );
+
+                audio.addEventListener('timeupdate', () => {
+                    if ( audio != null ) {
+                        const progressBar = document.getElementById('progressBar');
+                        const progressHandle = document.getElementById('progressHandle');
+                        const percentage = (audio.currentTime / audio.duration) * 100;
+                        progressBar.style.width = `${percentage}%`;
+                        progressHandle.style.left = `${percentage}%`;
+                    }
+                });
+
                 audio.play();
                 audio.onended = () => playRandomSong( p_idx );
                 highlightPlayingSong( p_idx );
@@ -197,6 +224,17 @@ function playRandomSong( p_idx ) {
                 lastPlayedSong[p_idx] = song;
 
                 audio = new Audio( `/song/${playlist}/${song}` );
+
+                audio.addEventListener('timeupdate', () => {
+                    if ( audio != null ) {
+                        const progressBar = document.getElementById('progressBar');
+                        const progressHandle = document.getElementById('progressHandle');
+                        const percentage = (audio.currentTime / audio.duration) * 100;
+                        progressBar.style.width = `${percentage}%`;
+                        progressHandle.style.left = `${percentage}%`;
+                    }
+                });
+
                 audio.play();
                 audio.onended = () => playRandomSong( p_idx );
                 highlightPlayingSong( p_idx );

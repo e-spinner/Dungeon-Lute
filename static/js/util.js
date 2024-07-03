@@ -3,20 +3,15 @@
 
 // log
 
-let debug_mode = true
-
 function log( origin, message ) {
+  fetch( '/log', {
 
-    if ( debug_mode == true ) {
-        fetch( '/log', {
-
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify( {origin: origin, message: message} )
-        })
-    }
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify( {origin: origin, message: message} )
+  })
 }
 
 // transfer to edit page to build playlists
@@ -64,7 +59,9 @@ function save_colors( c ) {
     document.documentElement.style.setProperty('--primary-background-rgba', `rgba(${primaryBackgroundRgb}, 1)`);
     document.documentElement.style.setProperty('--primary-background-transparent', `rgba(${primaryBackgroundRgb}, 0)`);
 
-    animateButton('color-save')
+    if ( window.location.pathname == '/]') {
+      animateButton('color-save')
+    }
 
     fetch( '/save/data/color', {
         method: 'POST',
@@ -95,30 +92,30 @@ function hexToRgb(hex) {
     return `${r}, ${g}, ${b}`;
 }
 
+function loadColor() {
+  document.getElementById('text-color').addEventListener('input', function() {
+    document.documentElement.style.setProperty('--t-text', this.value);
+    document.documentElement.style.setProperty('--t-border-color', this.value);
+    colors[0] = this.value;
+  });
 
-document.getElementById('text-color').addEventListener('input', function() {
-  document.documentElement.style.setProperty('--t-text', this.value);
-  document.documentElement.style.setProperty('--t-border-color', this.value);
-  colors[0] = this.value;
-});
+  document.getElementById('accent-color').addEventListener('input', function() {
+    document.documentElement.style.setProperty('--t-accent', this.value);
+    document.documentElement.style.setProperty('--t-hover-accent', adjustLightness(this.value, -10) );
+    colors[3] = this.value;
+  });
 
-document.getElementById('accent-color').addEventListener('input', function() {
-  document.documentElement.style.setProperty('--t-accent', this.value);
-  document.documentElement.style.setProperty('--t-hover-accent', adjustLightness(this.value, -10) );
-  colors[3] = this.value;
-});
+  document.getElementById('secondary-color').addEventListener('input', function() {
+    document.documentElement.style.setProperty('--t-secondary-background', this.value);
+    document.documentElement.style.setProperty('--t-hover', adjustLightness(this.value, 10) );
+    colors[2] = this.value;
+  });
 
-document.getElementById('secondary-color').addEventListener('input', function() {
-  document.documentElement.style.setProperty('--t-secondary-background', this.value);
-  document.documentElement.style.setProperty('--t-hover', adjustLightness(this.value, 10) );
-  colors[2] = this.value;
-});
-
-document.getElementById('primary-color').addEventListener('input', function() {
-  document.documentElement.style.setProperty('--t-primary-background', this.value);
-  colors[1] = this.value;
-});
-
+  document.getElementById('primary-color').addEventListener('input', function() {
+    document.documentElement.style.setProperty('--t-primary-background', this.value);
+    colors[1] = this.value;
+  });
+}
 
 function hexToHSL(hex) {
   // Convert hex to RGB

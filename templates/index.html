@@ -23,6 +23,11 @@
             </div>
             <button id="edit" title="open editor" onclick="edit()" ><i class="fas fa-pencil"></i></button>
         </div>
+          <div id="progressContainer" title='click to seek track'>
+            <div id="progressBar">
+                <div id="progressHandle"></div>
+              </div>
+          </div>
         
         <table id="soundboard">
             <tbody id="grid">
@@ -87,7 +92,7 @@
                     <div id='color' class="overlay-content">
                         <h1>Color Editor</h1>
                         <div id='color-examples'>
-                        <div id='playing-example' class='playing playlist'>Default Playing Playlist Color</div>
+                        <div id='playing-example' class='playing-ex playlist'>Default Playing Playlist Color</div>
                         <div id='example' class='playlist'>Default Playlist Color</div>
                     </div>
                         
@@ -108,10 +113,13 @@
             </div>
 
         </div>
-        
+
+        <!-- JS-START -->
         <script src="{{ url_for('static', filename='js/index/menu-bar.js') }}"></script>
         <script src="{{ url_for('static', filename='js/index/soundboard.js') }}"></script>
         <script src="{{ url_for('static', filename='js/index/details.js') }}"></script>
         <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+        <!-- JS-END -->
+
     </body>
 </html>

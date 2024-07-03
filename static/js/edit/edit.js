@@ -98,35 +98,37 @@ function d() {
 
 /* Dragging */
 document.addEventListener("DOMContentLoaded", function () {
-  const slots = document.querySelectorAll(".slot");
-  const playlistContainer = document.getElementById( 'playlist-container' );
-  fetch( '/load/data/color' )
-  .then( response => response.json() )
-  .then( data => {
-      if ( data.length > 0 ) {
-          save_colors(data)
-          colors = data
-      }
-  });
-
-  log( 'edit', 'initializing playlist list')
-  fetch( '/playlists' )
-  .then( response => response.json() )
-  .then( playlists => {
-    playlists.forEach( ( playlist ) => {
-      pl = document.createElement( 'div' );
-      pl.classList.add( 'playlist',  'draggable' );
-      pl.draggable = 'true';
-      pl.innerText = playlist;
-      pl.addEventListener( 'dragstart', dragStart );
-      playlistContainer.appendChild( pl )
+  if ( window.location.pathname == '/edit') {
+    const slots = document.querySelectorAll(".slot");
+    const playlistContainer = document.getElementById( 'playlist-container' );
+    fetch( '/load/data/color' )
+    .then( response => response.json() )
+    .then( data => {
+        if ( data.length > 0 ) {
+            save_colors(data)
+            colors = data
+        }
     });
-  });
 
-  // Add dragover event listener to each slot
-  slots.forEach((slot) => {
-    setSlot(slot);
-  });
+    log( 'edit', 'initializing playlist list')
+    fetch( '/playlists' )
+    .then( response => response.json() )
+    .then( playlists => {
+      playlists.forEach( ( playlist ) => {
+        pl = document.createElement( 'div' );
+        pl.classList.add( 'playlist',  'draggable' );
+        pl.draggable = 'true';
+        pl.innerText = playlist;
+        pl.addEventListener( 'dragstart', dragStart );
+        playlistContainer.appendChild( pl )
+      });
+    });
+
+    // Add dragover event listener to each slot
+    slots.forEach((slot) => {
+      setSlot(slot);
+    });
+  }
 });
 function dragStart(event) {
   event.dataTransfer.setData("text/plain", event.target.textContent);

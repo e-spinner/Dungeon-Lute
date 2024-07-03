@@ -1,11 +1,11 @@
 :root {
-    --text: #fff;
-    --primary-background: #292b2c;
-    --secondary-background: #343a40;
-    --hover: #3e444a;
-    --accent: #007bff;
-    --hover-accent: #0056b3;
-    --border-color: #fff;
+    --text: #000;
+    --primary-background: #000;
+    --secondary-background: #000;
+    --hover: #000;
+    --accent: #000;
+    --hover-accent: #000;
+    --border-color: #000;
     --shadow-color: rgba(0, 0, 0, 0.5);
 
     --primary-background-rgba: rgba(41, 43, 44, 1); /* Fully opaque */
@@ -51,6 +51,37 @@ body {
 }
 .menu-bar button:hover{
 		background-color: var(--hover-accent);
+}
+
+#progressContainer {
+  margin-top: 15px;
+  width: 342px;
+  background-color: var(--secondary-background);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--shadow-color);
+  cursor: pointer;
+  position: relative;
+}
+
+#progressBar {
+  width: 0;
+  height: 10px;
+  background-color: var(--accent);
+  transition: width 0.1s ease;
+}
+
+#progressHandle {
+  position: absolute;
+  top: 50%; /* Center the handle vertically */
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: var(--border-color);
+  border-radius: 50%;
+  transition: left 0.1s ease;
+  cursor: grab;
 }
 
 /* SOUNDBOARD */
@@ -226,8 +257,8 @@ button{
 	border: 1px solid var(--t-border-color);
 }
 #color-examples div:hover { background-color: var(--t-hover); }
-#color-examples div.playing { background-color: var(--t-accent); }
-#color-examples div.playing:hover { background-color: var(--t-hover-accent); }
+#color-examples div.playing-ex { background-color: var(--t-accent); }
+#color-examples div.playinge-ex:hover { background-color: var(--t-hover-accent); }
 
 #color-grid {
   margin-top: 25px;
@@ -241,6 +272,127 @@ input[type="color"] {
     width: 50px;
     height: 50px;
     cursor: pointer;
+}
+
+
+/* EDIT */
+.slot {
+	width: 100px;
+	height: 100px;
+	padding: 5px;
+	background-color: var(--secondary-background);
+	color: var(--text);
+	border: 1px solid var(--secondary-background);
+	transition: background-color 0.3s;
+	border-radius: 10px;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-size: 14px;
+	overflow: hidden;
+	box-shadow: 0 0 10px var(--shadow-color);
+}
+.slot.hover {
+	border: 1px solid var(--border-color);
+}
+table {
+  border-collapse: separate;
+  border-spacing: 10px; 
+}
+#d div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+#r div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+table button {
+    background-color: var(--accent);
+    border: 1px solid var(--border-color);
+    color: var(--text);
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+    transition: position 0.3s ease;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+table button:hover {
+		background-color: var(--hover-accent);
+}
+
+#available-playlists {
+  width: 50%;
+  overflow-x: auto;
+  padding: 10px 0;
+  box-shadow: 0 0 10px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  position: relative;
+}
+#playlist-container {
+display: flex;
+overflow-x: auto;
+  position: relative;
+padding-right: 10px;
+padding-left: 10px;
+}
+#available-playlists::before,
+#available-playlists::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 30px; /* Adjust the width of the gradient fade */
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(to left, var(--primary-background-transparent), var(--primary-background-rgba));
+
+  z-index: 1;
+}
+#available-playlists::before {
+  left: 0;
+}
+#available-playlists::after {
+  right: 0;
+
+  background-image: linear-gradient(to right, var(--primary-background-transparent), var(--primary-background-rgba));
+}
+#available-playlists .playlist {
+display: flex;
+flex-wrap: wrap;
+cursor: grab;
+}
+.slot.draggable {
+cursor: grab;
+background-color: var(--accent);
+}
+.slot.draggable:hover {
+background-color: var(--hover-accent);
+}
+#return {
+  background-color: var(--accent);
+  border: 1px solid var(--border-color);
+  color: var(--text);
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: position 0.3s ease;
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+#return:hover {
+background-color: var(--hover-accent)
 }
 
 /* ANIMATIONS */

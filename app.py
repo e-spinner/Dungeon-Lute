@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 import json
 import datetime
-import logging
 
 app = Flask( __name__ )
 
