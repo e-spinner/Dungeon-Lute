@@ -4,7 +4,6 @@ import json
 import datetime
 import threading
 import signal
-import webbrowser
 import time
 
 app = Flask( __name__ )
@@ -153,10 +152,12 @@ def stop():
 
 def shutdown_server():
     
-    time.sleep( 3 )
+    time.sleep( 0.4 )
     os.kill(os.getpid(), signal.SIGINT)
     
-
+@app.route('/info')
+def info():
+    return MUSIC_PATH
 
    
 

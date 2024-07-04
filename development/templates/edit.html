@@ -24,19 +24,24 @@
   <tbody id="grid">
     <tr class="row">
       <td class="slot droppable"></td>
-      <td id="r" rowspan='1'>
+      <td class="slot droppable"></td>
+      <td class="slot droppable"></td>
+      <td id="r" rowspan="2">
         <div>
-          <button id="r-add" title="add column" onclick="R()"><i class="fas fa-plus"></i></button>
-          <button id="r-remove" title="remove column" onclick="r()"><i class="fas fa-minus"></i></button>
+          <button id="r-add" title="add column" onclick="R()" class=""><i class="fas fa-plus" aria-hidden="true"></i></button>
+          <button id="r-remove" title="remove column" onclick="r()"><i class="fas fa-minus" aria-hidden="true"></i></button>
         </div>
       </td>
     </tr>
 
-    <tr id="bot">
-      <td id="d" colspan="1">
+    <tr class="row"><td class="slot droppable"></td>
+      <td class="slot droppable"></td>
+      <td class="slot droppable"></td>
+      <td></td></tr><tr id="bot">
+      <td id="d" colspan="3">
         <div>
-          <button id="d-add" title="add row" onclick="D()"><i class="fas fa-plus"></i></button>
-          <button id="d-remove" title="remove row" onclick="d()"><i class="fas fa-minus"></i></button>
+          <button id="d-add" title="add row" onclick="D()" class=""><i class="fas fa-plus" aria-hidden="true"></i></button>
+          <button id="d-remove" title="remove row" onclick="d()"><i class="fas fa-minus" aria-hidden="true"></i></button>
         </div>
       </td>
     </tr>
@@ -44,7 +49,7 @@
 </table>
 
 <!-- Button to return and send slot data -->
-<button id="return" title="save and return" onclick="save()"><i class="fas fa-save"></i></button>
+<button id="return" title="save and return" onclick="s()"><i class="fas fa-save"></i></button>
 
 <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
     

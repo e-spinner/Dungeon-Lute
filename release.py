@@ -7,10 +7,6 @@ import re
 # server
 shutil.copy( './development/app.py', './.release' )
 
-# default color
-shutil.copy( './development/static/data/color-default.json', './.release/static/data/color.json' )
-shutil.copy( './development/static/presets/Default.json', './.release/static/presets/Default.json' )
-
 # html
 shutil.copy( './development/templates/edit.html', './.release/templates' )
 shutil.copy( './development/templates/index.html', './.release/templates' )
@@ -45,20 +41,20 @@ for script in scripts:
 with open('./.release/static/js/scripts.js', 'w') as f:
     f.write(cjs)
     
-# # compress js 
-# subprocess.run([
-#     'uglifyjs', './.release/static/js/scripts.js', 
-#     '-o', './.release/static/js/scripts.js', 
-#     '-c', 
-#     '-m',
-#     '--compress', 'passes=3,inline=true,pure_funcs=["log"]'
-#     ], check=True)
+# compress js 
+subprocess.run([
+    'uglifyjs', './.release/static/js/scripts.js', 
+    '-o', './.release/static/js/scripts.js', 
+    '-c', 
+    '-m',
+    '--compress', 'passes=3,inline=true,pure_funcs=["log"]'
+    ], check=True)
 
 import PyInstaller.__main__
 
 PyInstaller.__main__.run([
     './.release/app.py',
-    '--onefile',
+    '--onedir',
     '--name', 'Dungeon Lute',
     '--distpath', './production',
     '--add-data', './.release/static/css/*:static/css',
@@ -66,11 +62,12 @@ PyInstaller.__main__.run([
     '--add-data', './.release/static/data/*:static/data',
     '--add-data', './.release/static/presets/*:static/presets',
     '--add-data', './.release/templates/*:templates',
-    '--add-data', './.release/music/Underground/*:music/Underground',
-    '--noconfirm'
+    '--noconfirm',
+    '--contents-directory', '.internal'
 ])
 
-os.remove( './production/Dungeon Lute.spec')
-shutil.move( './Dungeon Lute.spec', './production/' )
-shutil.rmtree( './production/build')
-shutil.move( './build', './production/')
+os.remove( './.release/Dungeon Lute.spec')
+shutil.move( './Dungeon Lute.spec', './.release/' )
+shutil.rmtree( './.release/build')
+shutil.move( './build', './.release/')
+shutil.copytree( './music', './production/Dungeon Lute/music')

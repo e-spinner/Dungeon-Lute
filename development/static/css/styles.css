@@ -415,7 +415,7 @@ button {
   background-color: var(--t-accent);
 }
 
-#color-examples div.playinge-ex:hover {
+#color-examples div.playing-ex:hover {
   background-color: var(--t-hover-accent);
 }
 
@@ -462,6 +462,7 @@ input[type="color"] {
 /* EDIT */
 .slot {
   min-width: 100px;
+  max-width: 100px;
   height: 100px;
   padding: 5px;
   background-color: var(--secondary-background);

@@ -1,7 +1,6 @@
 // static/js/index/details.js
 
-// display playlist details
-function showPlaylist( p_idx ) {
+function sp( p_idx ) {
     log( 'details', 'displaying playlist...' )
 
     fetch( '/playlists' )
@@ -24,15 +23,15 @@ function showPlaylist( p_idx ) {
                 listItem.className = 'song';
                 listItem.dataset.index = s_idx;
                 listItem.addEventListener( 'click', () =>  {
-                    playSong( p_idx, s_idx );
-                    animateButton(song);
+                    l( p_idx, s_idx );
+                    a(song);
                 });
                 songList.appendChild( listItem );
             });
         
             details.classList.remove( 'fade-out' ); 
             details.classList.add( 'fade-in' );   
-            highlightPlayingSong( playlist );
+            h( playlist );
 
         });
 
@@ -41,9 +40,7 @@ function showPlaylist( p_idx ) {
 
     log( 'details', 'playlist displayed' );
 }
-
-// highlight current song
-function highlightPlayingSong( s_idx ) {
+function h( s_idx ) {
     log( 'details', `highlighting ${s_idx}` )
     const songs = document.querySelectorAll( '.song' );
     songs.forEach( song => song.classList.remove( 'playing' ) );

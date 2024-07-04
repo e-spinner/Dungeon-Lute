@@ -13,15 +13,16 @@
 
         <!-- MEDIA CONTROLS -->
         <div id='media-controls' >
+            <h1>Dungeon Lute<h1>
             <!-- MENU-BAR -->
             <div class="menu-bar">
-                <button id='settings-open' title="open settings" onclick="openMenu('settings')"><i class="fas fa-gear"></i></button>
+                <button id='settings-open' title="open settings" onclick="om('settings')"><i class="fas fa-gear"></i></button>
                 <div>
-                    <button id="rewind" title="play previous" onclick="rewind()" ><i class="fas fa-backward-step"></i></button>
-                    <button id="toggle" title="toggle playback" onclick="pause_play()" ><i id="pause_play" class="fas fa-pause"></i></button>
-                    <button id="next" title="play random" onclick="next()" ><i class="fas fa-forward-step"></i></button>
+                    <button id="rewind" title="play previous" onclick="rw()" ><i class="fas fa-backward-step"></i></button>
+                    <button id="toggle" title="toggle playback" onclick="p()" ><i id="pause_play" class="fas fa-pause"></i></button>
+                    <button id="next" title="play random" onclick="n()" ><i class="fas fa-forward-step"></i></button>
                 </div>
-                <button id="edit" title="open editor" onclick="edit()" ><i class="fas fa-pencil"></i></button>
+                <button id="edit" title="open editor" onclick="e()" ><i class="fas fa-pencil"></i></button>
             </div>
             <!-- PROGRESS BAR -->
             <div id="progressContainer" title='seek track'>
@@ -57,22 +58,22 @@
         <!-- SETTINGS MENU -->
         <div id="settings-menu" class="overlay">
             <div class="accent-bar">
-                <button id='settings-close' title='close settings' class='close-btn' onclick="closeMenu('settings')">
+                <button id='settings-close' title='close settings' class='close-btn' onclick="cm('settings')">
                     <i class='far fa-circle-xmark'></i>
                 </button>
             </div>            
             <div id="settings" class="overlay-content">
                 <h1>Settings</h1>
-                <a class="song" onclick="openMenu('presets')" id='presets-open'>Load Preset</a>            
-                <a class="song" onclick="openMenu('colors')" id='colors-open'>Color Editor</a>
-                <a class="song" onclick="openMenu('setups')" id='setups-open'>Setup</a>
-                <a class="song" id='close-program' onclick="closeProgram()">Close Program</a>
+                <a class="song" onclick="om('presets')" id='presets-open'>Load Preset</a>            
+                <a class="song" onclick="om('colors')" id='colors-open'>Color Editor</a>
+                <a class="song" onclick="om('setups')" id='setups-open'>Setup</a>
+                <a class="song" id='close-program' onclick="c()">Close Program</a>
             </div>
             
             <!-- LOAD PRESET MENU -->
             <div id="presets-menu" class="overlay">
                 <div class="accent-bar">
-                    <button id='presets-close' title='close preset selection' class='close-btn' onclick="closeMenu('presets')">
+                    <button id='presets-close' title='close preset selection' class='close-btn' onclick="cm('presets')">
                     <i class='far fa-circle-xmark'></i>
                     </button>
                 </div>
@@ -85,7 +86,7 @@
             <!-- LOAD COLOR EDITOR -->
             <div id="colors-menu" class="overlay">
                 <div class="accent-bar">
-                    <button id='colors-close' title='close color editor' class='close-btn' onclick="closeMenu('colors')">
+                    <button id='colors-close' title='close color editor' class='close-btn' onclick="cm('colors')">
                     <i class='far fa-circle-xmark'></i>
                     </button>
                 </div>
@@ -104,8 +105,8 @@
                         <input type="color" title="set primary color" id="primary-color" value="#292b2c">
                     </div>
                     <div class='color-bar'>
-                        <button id='color-save' title="save colors" onclick="save_colors(colors)"><i class="fas fa-save"></i></button>
-                        <button id='color-reset' title="reset colors" onclick="reset_colors()"><i class="fas fa-rotate-right"></i></button>
+                        <button id='color-save' title="save colors" onclick="sc(colors)"><i class="fas fa-save"></i></button>
+                        <button id='color-reset' title="reset colors" onclick="rc()"><i class="fas fa-rotate-right"></i></button>
                     </div>
                 </div>  
             </div>
@@ -113,7 +114,7 @@
             <!-- LOAD SETUP MENU -->
             <div id='setups-menu' class='overlay'>
                 <div class="accent-bar">
-                    <button id='setups-close' title='close setup menu' class='close-btn' onclick="closeMenu('setups')">
+                    <button id='setups-close' title='close setup menu' class='close-btn' onclick="cm('setups')">
                     <i class='far fa-circle-xmark'></i>
                     </button>
                 </div>

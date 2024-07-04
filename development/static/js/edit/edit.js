@@ -2,11 +2,11 @@
 let cols = 1;
 let rows = 1;
 function R() {
-  animateButton("r-add");
+  a("r-add");
   let rows = document.querySelectorAll(".row");
   rows.forEach((row) => {
     let slot = document.createElement("td");
-    setSlot(slot);
+    ss(slot);
     slot.classList.add("slot", "fade-in", "droppable");
 
     const children = Array.from(row.children);
@@ -24,7 +24,7 @@ function R() {
   log( 'edit', 'expanding grid right')
 }
 function r() {
-  animateButton("r-remove");
+  a("r-remove");
   if (cols > 1) {
     let rows = document.querySelectorAll(".row");
     rows.forEach((row) => {
@@ -47,7 +47,7 @@ function r() {
   log( 'edit', 'retracting grid right')
 }
 function D() {
-  animateButton("d-add");
+  a("d-add");
   let grid = document.getElementById("grid");
   let row = document.createElement("tr");
   let bot = document.getElementById("bot");
@@ -56,7 +56,7 @@ function D() {
   for (let i = 0; i < cols; i++) {
     let slot = document.createElement("td");
     slot.classList.add("slot", "fade-in", "droppable");
-    setSlot(slot);
+    ss(slot);
     row.appendChild(slot);
 
     // Remove the fade-in class after the animation ends
@@ -76,7 +76,7 @@ function D() {
   log( 'edit', 'expanding grid down')
 }
 function d() {
-  animateButton("d-remove");
+  a("d-remove");
   if (rows > 1) {
     let grid = document.getElementById("grid");
     const children = Array.from(grid.children);
@@ -95,7 +95,6 @@ function d() {
   }
   log( 'edit', 'retracting grid down')
 }
-
 /* Dragging */
 document.addEventListener("DOMContentLoaded", function () {
   if ( window.location.pathname == '/edit') {
@@ -105,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .then( response => response.json() )
     .then( data => {
         if ( data.length > 0 ) {
-            save_colors(data)
+            sc(data)
             colors = data
         }
     });
@@ -119,18 +118,18 @@ document.addEventListener("DOMContentLoaded", function () {
         pl.classList.add( 'playlist',  'draggable' );
         pl.draggable = 'true';
         pl.innerText = playlist;
-        pl.addEventListener( 'dragstart', dragStart );
+        pl.addEventListener( 'dragstart', ds );
         playlistContainer.appendChild( pl )
       });
     });
 
     // Add dragover event listener to each slot
     slots.forEach((slot) => {
-      setSlot(slot);
+      ss(slot);
     });
   }
 });
-function dragStart(event) {
+function ds(event) {
   event.dataTransfer.setData("text/plain", event.target.textContent);
   if ( this.classList.contains( 'slot' ) ) {
     this.classList.remove( 'draggable' );
@@ -138,35 +137,34 @@ function dragStart(event) {
     this.innerText = '';
   }
 }
-function dragOver(event) {
+function dv(event) {
   event.preventDefault();
 }
-function dragEnter(event) {
+function de(event) {
   event.preventDefault();
   this.classList.add("hover");
 }
-function dragLeave() {
+function dl() {
   this.classList.remove("hover");
 }
-function drop(event) {
+function dr(event) {
   event.preventDefault();
   const data = event.dataTransfer.getData("text/plain");
   this.innerHTML = data;
   this.classList.add("draggable");
   this.draggable = "true";
   this.cursor = "grab";
-  this.addEventListener("dragstart", dragStart);
+  this.addEventListener("dragstart", ds);
   
   this.classList.remove("hover");
 }
-function setSlot(slot) {
-  slot.addEventListener("dragover", dragOver);
-  slot.addEventListener("dragenter", dragEnter);
-  slot.addEventListener("dragleave", dragLeave);
-  slot.addEventListener("drop", drop);
+function ss(slot) {
+  slot.addEventListener("dragover", dv);
+  slot.addEventListener("dragenter", de);
+  slot.addEventListener("dragleave", dl);
+  slot.addEventListener("drop", dr);
 }
-
-function save() {
+function s() {
   const preset = document.getElementById( 'preset-name' );
   let name = preset.innerText;
 
@@ -198,7 +196,6 @@ function save() {
   }).then( response => response.json() )
   .then( data => {
       if ( data.status === 'success' ) {
-          alert( 'Save Successfull' );
           log( 'edit', 'saving successfull' )
       }
       else {

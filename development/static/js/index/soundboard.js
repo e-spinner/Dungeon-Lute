@@ -3,15 +3,15 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
 
   if ( window.location.pathname == '/') {
 
-    loadSoundboard( 'Default' );
-    loadPresets();
-    loadColor();
+    ls( 'Default' );
+    lr();
+    lc();
 
     fetch( '/load/data/color' )
     .then( response => response.json() )
     .then( data => {
         if ( data.length > 0 ) {
-            save_colors(data)
+            sc(data)
             colors = data
             const scrubber = document.getElementById('scrubber')
             scrubber.value = 0
@@ -23,7 +23,7 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
         const percentage = scrubber.value;
         const newTime = (percentage / 100) * audio.duration;
         progressBar.style.width = `${percentage}%`;
-        current.innerText = formatTime(newTime);
+        current.innerText = ft(newTime);
     });
     
     scrubber.addEventListener('change', () => {
@@ -47,8 +47,7 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
 });
 
 let scrubbing = false;    
-// load in the playlists
-function loadSoundboard( preset ) {
+function ls( preset ) {
     log( 'soundboard', 'loading soundboard...' )
     fetch( `/load/${preset}` )
     .then( response => response.json() )
@@ -65,8 +64,8 @@ function loadSoundboard( preset ) {
                     pl.innerText = playlist;
                     pl.id = playlist;
                     pl.onclick = () => { 
-                        togglePlaylist( playlist );
-                        animateButton(playlist);
+                        t( playlist );
+                        a(playlist);
 
                     }
                 } else {
@@ -80,9 +79,7 @@ function loadSoundboard( preset ) {
 
     });
 }
-
-// handle activation / deactivation of a playlist
-function togglePlaylist( playlist ) {
+function t( playlist ) {
     const details = document.getElementById( 'details' ); 
     details.classList.add( 'fade-out' );  
     details.classList.remove( 'fade-in' );   
@@ -94,7 +91,7 @@ function togglePlaylist( playlist ) {
 
         if ( playingIndex == p_idx ) {
             if ( audio && !audio.paused ) {
-                stopCurrentSong();               
+                z();               
                 const pl_ids = document.querySelectorAll( '.playlist' ) ;
                 pl_ids.forEach( ( id ) => {
                     if ( id.innerText == playlists[p_idx] ) {
@@ -108,18 +105,16 @@ function togglePlaylist( playlist ) {
         }
         log( 'soundboard', `starting playlist: ${p_idx}` );
 
-        fadeOutSong().then( () => {
-            stopCurrentSong()
+        f().then( () => {
+            z()
 
             playingIndex = p_idx
-            playRandomSong( p_idx )
-            showPlaylist( p_idx )
+            L( p_idx )
+            sp( p_idx )
         });
     });
 }
-
-// stop currently playing song
-function stopCurrentSong() {
+function z() {
     if ( audio ) {
         audio.pause();
         audio = null;
@@ -134,9 +129,7 @@ function stopCurrentSong() {
     }
     log( 'soundboard', 'stopping current song' )
 }
-
-// fade out currently playing song
-function fadeOutSong() {
+function f() {
     return new Promise( ( resolve ) => {
         if ( audio ) {
             let volume = audio.volume;
@@ -157,11 +150,9 @@ function fadeOutSong() {
         }
     });
 }
-
-// play a specific song from a specific playlist
-function playSong( p_idx, s_idx ) {
-    fadeOutSong().then( () => {
-        stopCurrentSong();
+function l( p_idx, s_idx ) {
+    f().then( () => {
+        z();
         
         fetch( '/playlists' )
         .then( response => response.json() )
@@ -174,7 +165,7 @@ function playSong( p_idx, s_idx ) {
                 const song = songs[s_idx]
 
                 if ( lastPlayedSong[p_idx] != song ) {
-                    addToHistory( p_idx, s_idx );
+                    ah( p_idx, s_idx );
                 }
                 lastPlayedSong[p_idx] = song;
 
@@ -189,17 +180,17 @@ function playSong( p_idx, s_idx ) {
                         const percentage = (audio.currentTime / audio.duration) * 100;
                         progressBar.style.width = `${percentage}%`;
                         const current = document.getElementById('current')
-                        current.innerText = formatTime(audio.currentTime)
+                        current.innerText = ft(audio.currentTime)
                         const scrubber = document.getElementById('scrubber')
                         scrubber.value = percentage
                         const duration = document.getElementById('duration')
-                        duration.innerText = formatTime(audio.duration);
+                        duration.innerText = ft(audio.duration);
                     }
                 });
 
                 audio.play();
-                audio.onended = () => playRandomSong( p_idx );
-                highlightPlayingSong( p_idx );
+                audio.onended = () => L( p_idx );
+                h( p_idx );
 
                 const pl_ids = document.querySelectorAll( '.playlist' ) ;
                 pl_ids.forEach( ( id ) => {
@@ -217,9 +208,7 @@ function playSong( p_idx, s_idx ) {
         });
     });
 }
-
-// play a random song from a specific playlist
-function playRandomSong( p_idx ) {
+function L( p_idx ) {
 
     fetch( '/playlists' )
     .then( response => response.json() )
@@ -240,7 +229,7 @@ function playRandomSong( p_idx ) {
                 const song = availableSongs[s_idx];
 
                 if ( lastPlayedSong[p_idx] != song ) {
-                    addToHistory( p_idx, s_idx );
+                    ah( p_idx, s_idx );
                 }
                 lastPlayedSong[p_idx] = song;
 
@@ -255,17 +244,17 @@ function playRandomSong( p_idx ) {
                         const percentage = (audio.currentTime / audio.duration) * 100;
                         progressBar.style.width = `${percentage}%`;
                         const current = document.getElementById('current')
-                        current.innerText = formatTime(audio.currentTime)
+                        current.innerText = ft(audio.currentTime)
                         const scrubber = document.getElementById('scrubber')
                         scrubber.value = percentage
                         const duration = document.getElementById('duration')
-                        duration.innerText = formatTime(audio.duration);
+                        duration.innerText = ft(audio.duration);
                     }
                 });
 
                 audio.play();
-                audio.onended = () => playRandomSong( p_idx );
-                highlightPlayingSong( p_idx );
+                audio.onended = () => L( p_idx );
+                h( p_idx );
 
                 const pl_ids = document.querySelectorAll( '.playlist' ) ;
                 pl_ids.forEach( ( id ) => {

@@ -8,8 +8,7 @@ let soundBoard = []
 
 const FADE_OUT_DURATION = 1000; 
 
-// load
-function loadPresets(){
+function lr(){
     // Step 1: Fetch the list of presets
     fetch( '/load' )
         .then( response => response.json() )
@@ -26,13 +25,13 @@ function loadPresets(){
                 p.innerText = preset;
                 p.classList.add( 'song' );
                 p.addEventListener( 'click', () => {
-                    animateButton(preset);
+                    a(preset);
                     const grid = document.getElementById( 'grid' )
                     grid.innerHTML=''
-                    loadSoundboard(preset);
-                    closeMenu('presets')
+                    ls(preset);
+                    cm('presets')
                     setTimeout(() => {
-                        closeMenu('settings')
+                        cm('settings')
 
                     }, 300 );
                 });
@@ -61,11 +60,8 @@ function loadPresets(){
             });
         })
 }
-
-
-// rewind
-function rewind() {
-    animateButton( 'rewind' )
+function rw() {
+    a( 'rewind' )
     if ( history.length > 1 ) {
         let audio_status = document.getElementById( 'pause_play' )
         audio_status.classList.remove( 'fa-play' )
@@ -74,11 +70,11 @@ function rewind() {
         history.pop();
         const { p_idx, s_idx } = history[ history.length - 1 ];
 
-        stopCurrentSong();
+        z();
 
         playingIndex = p_idx;
-        playSong( p_idx, s_idx);
-        showPlaylist( p_idx );
+        l( p_idx, s_idx);
+        sp( p_idx );
 
         history.pop()
         log( 'menu-bar', 'rewound succcessfull' )
@@ -87,10 +83,8 @@ function rewind() {
         log( 'menu-bar', 'cannot rewind' )
     }
 }
-
-// pause / play
-function pause_play() {
-    animateButton( 'toggle' )
+function p() {
+    a( 'toggle' )
     let audio_status = document.getElementById( 'pause_play' )
 
     if (audio.paused) {
@@ -105,26 +99,14 @@ function pause_play() {
         log('menu-bar', 'paused');
     }
 }
-
-// next
-function next() {
-    animateButton( 'next' )
-    stopCurrentSong();
-    playRandomSong( playingIndex )
-    showPlaylist( playingIndex )
+function n() {
+    a( 'next' )
+    z();
+    L( playingIndex )
+    sp( playingIndex )
     log( 'menu-bar', 'going to next song' )
 }
-
-// edit 
-function edit() {
-    animateButton( 'edit' )
-    buttons.push( { name: '', sounds: [] } );
-    renderButtons();    
-    log( 'edit', 'nothing happens for now' )
-}
-
-// Function to add button-song combination to history
-function addToHistory( p_idx, s_idx ) {
+function ah( p_idx, s_idx ) {
     log( 'history', `adding ${p_idx}, ${s_idx} to history` )
     history.push( { p_idx, s_idx } );
 }
