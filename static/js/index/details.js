@@ -14,10 +14,7 @@ function showPlaylist( p_idx ) {
         .then( songs => {
             
             const details = document.getElementById( 'details' );
-            const name = document.getElementById( 'playlist-name' );
             const songList = document.getElementById( 'song-list' );
-        
-            name.innerText = playlist;
         
             songList.innerHTML = ''
             songs.forEach( ( song, s_idx ) => {

@@ -64,7 +64,7 @@ import PyInstaller.__main__
 
 PyInstaller.__main__.run([
     './.release/app.py',
-    '--onedir',
+    '--onefile',
     '--name', 'Dungeon Lute',
     '--distpath', './.dist',
     '--add-data', './.release/static/css/*:static/css',
@@ -72,6 +72,7 @@ PyInstaller.__main__.run([
     '--add-data', './.release/static/data/*:static/data',
     '--add-data', './.release/static/presets/*:static/presets',
     '--add-data', './.release/templates/*:templates',
+    '--add-data', './.release/music/Underground/*:static/musi/underground',
     '--noconfirm'
 ])
 

@@ -5,6 +5,7 @@ import datetime
 import threading
 import signal
 import webbrowser
+import time
 
 app = Flask( __name__ )
 
@@ -151,10 +152,15 @@ def stop():
     return redirect(url_for('index'))
 
 def shutdown_server():
+    
+    time.sleep( 3 )
     os.kill(os.getpid(), signal.SIGINT)
+    
+
+
+   
 
 if __name__ == '__main__':
     webbrowser.open('http://localhost:5000/')
     app.run(debug=True)
-    
     

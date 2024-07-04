@@ -1,215 +1,362 @@
 :root {
-    --text: #000;
-    --primary-background: #000;
-    --secondary-background: #000;
-    --hover: #000;
-    --accent: #000;
-    --hover-accent: #000;
-    --border-color: #000;
-    --shadow-color: rgba(0, 0, 0, 0.5);
+  --text: #fff;
+  --primary-background: #292b2c;
+  --secondary-background: #343a40;
+  --hover: #3e444a;
+  --accent: #007bff;
+  --hover-accent: #0056b3;
+  --border-color: #fff;
+  --shadow-color: rgba(0, 0, 0, 0.5);
 
-    --primary-background-rgba: rgba(41, 43, 44, 1); /* Fully opaque */
-    --primary-background-transparent: rgba(41, 43, 44, 0); /* Fully transparent */
+  --primary-background-rgba: rgba(41, 43, 44, 1);
+  /* Fully opaque */
+  --primary-background-transparent: rgba(41, 43, 44, 0);
+  /* Fully transparent */
 
-    --t-text: #fff;
-    --t-primary-background: #292b2c;
-    --t-secondary-background: #343a40;
-    --t-hover: #3e444a;
-    --t-accent: #007bff;
-    --t-hover-accent: #0056b3;
-    --t-border-color: #fff;
+  --t-text: #fff;
+  --t-primary-background: #292b2c;
+  --t-secondary-background: #343a40;
+  --t-hover: #3e444a;
+  --t-accent: #007bff;
+  --t-hover-accent: #0056b3;
+  --t-border-color: #fff;
+
+  --width: 315px;
 }
 
 /* GENERAL */
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: var(--primary-background);
-    color: var(--text);
-    
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--primary-background);
+  color: var(--text);
 }
 
-/* MENU-BAR */
+h1 {
+  display: none;
+  margin: 0;
+  font-size: 24pt;
+  text-align: center;
+}
+
+/* MEDIA CONTROLS */
+#media-controls{
+  width: var(--width);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--secondary-background);
+  box-shadow: 0 0 10px var(--shadow-color);
+
+}
 .menu-bar {
+  width: 100%;
   margin-top: 15px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 20px;
 }
+
 .menu-bar button {
-    background-color: var(--accent);
-    border: 1px solid var(--border-color);
-    color: var(--text);
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 0 10px var(--shadow-color);
+  background-color: var(--accent);
+  border: 1px solid var(--border-color);
+  color: var(--text);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--shadow-color);
 }
-.menu-bar button:hover{
-		background-color: var(--hover-accent);
+
+.menu-bar button:hover {
+  background-color: var(--hover-accent);
+}
+
+#time {
+  width: 100%;
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text);
+  font-size: 10pt;
 }
 
 #progressContainer {
   margin-top: 15px;
-  width: 342px;
-  background-color: var(--secondary-background);
+  width: 100%;
+  background-color: var(--primary-background);
   border: 1px solid var(--border-color);
   border-radius: 5px;
-  overflow: hidden;
   box-shadow: 0 0 10px var(--shadow-color);
   cursor: pointer;
   position: relative;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #progressBar {
-  width: 0;
-  height: 10px;
+  width: 0%;
+  height: 100%;
   background-color: var(--accent);
-  transition: width 0.1s ease;
+  border-radius: 5px;
+  width: var(--width);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-#progressHandle {
+#scrubber {
+  -webkit-appearance: none;
+  appearance: none;
+  appearance: none;
+  background: #ddd;
+  outline: none;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
   position: absolute;
-  top: 50%; /* Center the handle vertically */
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  background-color: var(--border-color);
-  border-radius: 50%;
-  transition: left 0.1s ease;
+}
+
+#scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 5px;
+  height: 20px;
+  background: var(--accent);
   cursor: grab;
+  border-radius: 20%;
+  border: 1px solid var(--border-color);
+}
+
+#scrubber::-moz-range-thumb {
+  width: 5px;
+  height: 20px;
+  background: var(--accent);
+  cursor: grab;
+  border-radius: 20%;
+  border: 1px solid var(--border-color);
+}
+
+#scrubber::-ms-thumb {
+  width: 5px;
+  height: 20px;
+  background: var(--accent);
+  cursor: grab;
+  border-radius: 20%;
+  border: 1px solid var(--border-color);
 }
 
 /* SOUNDBOARD */
 #soundboard {
-	display: flex;
-	flex-wrap: wrap;
-	margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
 }
+
 .playlist {
-	width: 100px;
-    min-width: 100px;
-	height: 100px;
-	margin: 10px;
-	padding: 5px;
-	background-color: var(--secondary-background);
-	color: var(--text);
-	border: 1px solid var(--border-color);
-	cursor: pointer;
-	transition: background-color 0.3s;
-	border-radius: 10px;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	font-size: 14px;
-	overflow: hidden;
-	box-shadow: 0 0 10px var(--shadow-color);
-	transition: transform 0.5s ease;
-  
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  margin: 10px;
+  padding: 5px;
+  background-color: var(--secondary-background);
+  color: var(--text);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--shadow-color);
+  transition: transform 0.5s ease;
+
 }
-.playlist:hover { background-color: var(--hover); }
-.playlist.playing { background-color: var(--accent); }
-.playlist.playing:hover { background-color: var(--hover-accent); }
+
+.playlist:hover {
+  background-color: var(--hover);
+}
+
+.playlist.playing {
+  background-color: var(--accent);
+}
+
+.playlist.playing:hover {
+  background-color: var(--hover-accent);
+}
 
 /* DETAILS */
 #details {
-	max-width: 60%;
-	display: block;
+  width: var(--width);
+  display: block;
   border: 1px solid var(--border-color);
-	padding: 20px;
-	border-radius: 10px;
-	background-color: var(--primary-background);
-	box-shadow: 0 0 10px var(--shadow-color);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--primary-background);
+  box-shadow: 0 0 10px var(--shadow-color);
   opacity: 1;
 }
-#details #playlist-name { margin: 0; }
-#song-list {
-	list-style-type: none;
-	padding: 0;
+
+
+#song-container {
+  max-height: 300px;
+  padding: 0;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  overflow-y: scroll;
 }
+
+#song-display {
+  position: relative;
+
+}
+
+#song-display::before,
+#song-display::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30px;
+  width: 100%;
+  pointer-events: none;
+}
+
+#song-display::before {
+  top: 0;
+  background-image: linear-gradient(to top, var(--primary-background-transparent), var(--primary-background-rgba));
+}
+
+#song-display::after {
+  bottom: 0;
+  background-image: linear-gradient(to bottom, var(--primary-background-transparent), var(--primary-background-rgba));
+}
+
+#song-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
 .song {
-	padding: 8px;
-	cursor: pointer;
-	background-color: var(--secondary-background);
-	border: 1px solid var(--border-color);
-	border-radius: 5px;
-	margin: 5px 0;
+  padding: 8px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: var(--secondary-background);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
   box-shadow: 0 0 10px var(--shadow-color);
   transition: background-color 0.3s ease;
   transition: transform 0.5s ease;
 }
-.song:hover { background-color: var(--hover); }
-.song.playing { background-color: var(--accent); }
-.song.playing:hover { background-color: var(--hover-accent); }
 
-button{
-	transition: transform 0.5s ease;
+#song-name {
+  padding: 8px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: var(--accent);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: 0 0 10px var(--shadow-color);
+  margin-bottom: 10px;
 }
+
+.song:hover {
+  background-color: var(--hover);
+}
+
+.song.playing {
+  display: none;
+}
+
+button {
+  transition: transform 0.5s ease;
+}
+
 .clicked {
-	transform: scale(1.1);
-	transition: transform 0.5s ease;
-  }
+  transform: scale(1.1);
+  transition: transform 0.5s ease;
+}
+
 .spacer {
-	width: 100px;
-	height: 100px;
-	padding: 6px;
-	
+  min-width: 100px;
+  height: 100px;
+  padding: 6px;
+
 }
 
 /* SETTINGS */
 .overlay {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: var(--primary-background );
-    overflow-x: hidden;
-    transition: 0.5s;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: var(--primary-background);
+  overflow-x: hidden;
+  transition: 0.5s;
 }
-#settings, #presets, #colors {
+
+#settings,
+#presets,
+#colors {
   display: none;
 }
-#settings.active, #presets.active, #colors.active {
+
+#settings.active,
+#presets.active,
+#colors.active {
   display: flex;
 }
+
 .overlay-content {
-    position: relative;
-    top: 25%;
-    width: 100%;
-    text-align: center;
-    display: flex;
+  position: relative;
+  top: 25%;
+  width: 100%;
+  max-height: 96vh;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
   flex-direction: column;
-    justify-content: center;
+  justify-content: center;
   align-items: center;
 }
 
 .overlay-content a {
-    padding: 8px;
-    text-decoration: none;
-    color: var(--text);
-    display: block;
-    transition: 0.3s;
-    width: 30%;
+  padding: 8px;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  transition: 0.3s;
+  width: 30%;
 }
 
 .close-btn {
-    position: absolute;
-    top: 45px;
-    font-size: 36px;
-    background-color: var(--secondary-Background);
-    color: var(--text);
-    padding: 5px 10px;
-    cursor: pointer;
-	  border: 0px solid var(--border-color);
+  position: absolute;
+  top: 45px;
+  font-size: 36px;
+  background-color: var(--secondary-Background);
+  color: var(--text);
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 0px solid var(--border-color);
 }
+
 .close-btn:hover {
   color: var(--accent);
+}
+
+#close-program {
+  background-color: var(--accent);
+}
+#close-program:hover {
+  background-color: var(--hover-accent);
 }
 
 .accent-bar {
@@ -230,6 +377,7 @@ button{
   width: 100%;
   justify-content: center;
 }
+
 .preset-del {
   background-color: var(--primary-background);
   color: var(--text);
@@ -239,26 +387,38 @@ button{
   font-size: 24px;
 
 }
+
 .preset-del:hover {
   color: var(--accent);
 }
+
 #color-examples {
   display: flex;
   padding: 25px;
   background-color: var(--t-primary-background);
   border: 1px solid var(--t-border-color);
   border-radius: 15px;
-  
+
 }
+
 #color-examples div {
   display: flex;
-	background-color: var(--t-secondary-background);
-	color: var(--t-text);
-	border: 1px solid var(--t-border-color);
+  background-color: var(--t-secondary-background);
+  color: var(--t-text);
+  border: 1px solid var(--t-border-color);
 }
-#color-examples div:hover { background-color: var(--t-hover); }
-#color-examples div.playing-ex { background-color: var(--t-accent); }
-#color-examples div.playinge-ex:hover { background-color: var(--t-hover-accent); }
+
+#color-examples div:hover {
+  background-color: var(--t-hover);
+}
+
+#color-examples div.playing-ex {
+  background-color: var(--t-accent);
+}
+
+#color-examples div.playinge-ex:hover {
+  background-color: var(--t-hover-accent);
+}
 
 #color-grid {
   margin-top: 25px;
@@ -266,71 +426,102 @@ button{
   flex-direction: row;
   gap: 15px;
 }
+
+.color-bar {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.color-bar button {
+  background-color: var(--accent);
+  max-height: 96vh;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  color: var(--text);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.color-bar button:hover {
+  background-color: var(--hover-accent);
+}
+
 input[type="color"] {
-    appearance: none;
-    border: none;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
+  appearance: none;
+  border: none;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
 }
 
 
 /* EDIT */
 .slot {
-	width: 100px;
-	height: 100px;
-	padding: 5px;
-	background-color: var(--secondary-background);
-	color: var(--text);
-	border: 1px solid var(--secondary-background);
-	transition: background-color 0.3s;
-	border-radius: 10px;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	font-size: 14px;
-	overflow: hidden;
-	box-shadow: 0 0 10px var(--shadow-color);
+  min-width: 100px;
+  height: 100px;
+  padding: 5px;
+  background-color: var(--secondary-background);
+  color: var(--text);
+  border: 1px solid var(--secondary-background);
+  transition: background-color 0.3s;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--shadow-color);
 }
+
 .slot.hover {
-	border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color);
 }
+
 table {
   border-collapse: separate;
-  border-spacing: 10px; 
+  border-spacing: 10px;
 }
+
 #d div {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 10px;
 }
+
 #r div {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 10px;
 }
+
 table button {
-    background-color: var(--accent);
-    border: 1px solid var(--border-color);
-    color: var(--text);
-    padding: 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    transition: transform 0.3s ease;
-    transition: position 0.3s ease;
-    box-shadow: 0 0 10px var(--shadow-color);
+  background-color: var(--accent);
+  border: 1px solid var(--border-color);
+  color: var(--text);
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: position 0.3s ease;
+  box-shadow: 0 0 10px var(--shadow-color);
 }
+
 table button:hover {
-		background-color: var(--hover-accent);
+  background-color: var(--hover-accent);
 }
 
 #available-playlists {
-  width: 50%;
+  width: 75%;
   overflow-x: auto;
   padding: 10px 0;
   box-shadow: 0 0 10px var(--shadow-color);
@@ -338,45 +529,54 @@ table button:hover {
   border-radius: 10px;
   position: relative;
 }
+
 #playlist-container {
-display: flex;
-overflow-x: auto;
+  display: flex;
+  overflow-x: auto;
   position: relative;
-padding-right: 10px;
-padding-left: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
+
 #available-playlists::before,
 #available-playlists::after {
   content: '';
   position: absolute;
   top: 0;
-  width: 30px; /* Adjust the width of the gradient fade */
+  width: 30px;
+  /* Adjust the width of the gradient fade */
   height: 100%;
   pointer-events: none;
   background-image: linear-gradient(to left, var(--primary-background-transparent), var(--primary-background-rgba));
 
   z-index: 1;
 }
+
 #available-playlists::before {
   left: 0;
 }
+
 #available-playlists::after {
   right: 0;
 
   background-image: linear-gradient(to right, var(--primary-background-transparent), var(--primary-background-rgba));
 }
+
 #available-playlists .playlist {
-display: flex;
-flex-wrap: wrap;
-cursor: grab;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: grab;
 }
+
 .slot.draggable {
-cursor: grab;
-background-color: var(--accent);
+  cursor: grab;
+  background-color: var(--accent);
 }
+
 .slot.draggable:hover {
-background-color: var(--hover-accent);
+  background-color: var(--hover-accent);
 }
+
 #return {
   background-color: var(--accent);
   border: 1px solid var(--border-color);
@@ -391,8 +591,9 @@ background-color: var(--hover-accent);
   transition: position 0.3s ease;
   box-shadow: 0 0 10px var(--shadow-color);
 }
+
 #return:hover {
-background-color: var(--hover-accent)
+  background-color: var(--hover-accent)
 }
 
 /* ANIMATIONS */
@@ -401,17 +602,20 @@ background-color: var(--hover-accent)
   transform: scale(0.95);
   animation: fadeIn 0.5s forwards;
 }
+
 .fade-out {
   opacity: 1;
   transform: scale(1);
   animation: fadeOut 0.5s forwards;
 }
+
 @keyframes fadeIn {
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
+
 @keyframes fadeOut {
   to {
     opacity: 0;

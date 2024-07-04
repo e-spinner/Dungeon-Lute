@@ -11,6 +11,14 @@ function log( origin, message ) {
           'Content-Type': 'application/json'
       },
       body: JSON.stringify( {origin: origin, message: message} )
+  });
+}
+
+function closeProgram() {
+  fetch( '/stop' )
+  .then( () => {
+    window.close()
+
   })
 }
 
@@ -23,7 +31,9 @@ function edit() {
 function openMenu( menu ) {
     animateButton(`${menu}-open`)
     document.getElementById(`${menu}-menu`).style.width = '100%';    
-    document.getElementById(`${menu}`).classList.add('active');
+    setTimeout( () => {
+      document.getElementById(`${menu}`).classList.add('active');
+    }, 300 );
 }
 
 function closeMenu( menu ) {
@@ -38,6 +48,13 @@ function animateButton(buttonId) {
   setTimeout(() => {
     button.classList.remove("clicked");
   }, 300);
+}
+
+    
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
 let colors = [ '#ffffff', '#292b2c', '#343a40', '#007bff']

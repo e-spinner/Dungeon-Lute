@@ -6,7 +6,6 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
     loadSoundboard( 'Default' );
     loadPresets();
     loadColor();
-    const details = document.getElementById( 'details' ); 
 
     fetch( '/load/data/color' )
     .then( response => response.json() )
@@ -14,24 +13,40 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
         if ( data.length > 0 ) {
             save_colors(data)
             colors = data
+            const scrubber = document.getElementById('scrubber')
+            scrubber.value = 0
         }
     });
 
+    scrubber.addEventListener('input', () => {
+        scrubbing = true;
+        const percentage = scrubber.value;
+        const newTime = (percentage / 100) * audio.duration;
+        progressBar.style.width = `${percentage}%`;
+        current.innerText = formatTime(newTime);
+    });
+    
+    scrubber.addEventListener('change', () => {
+        scrubbing = false;
+        const percentage = scrubber.value;
+        audio.currentTime = (percentage / 100) * audio.duration;
+    });
+    
     const progressContainer = document.getElementById('progressContainer');
     const progressBar = document.getElementById('progressBar');
-    const progressHandle = document.getElementById('progressHandle');
     progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
-        const offsetX = e.clientX - rect.left; // Calculate click position within the container
-        const percentage = offsetX / rect.width; // Calculate percentage of click position
-        audio.currentTime = percentage * audio.duration; // Update audio current time
-        progressBar.style.width = `${percentage * 100}%`; // Update progress bar width
-        progressHandle.style.left = `${percentage * 100}%`;
-      });
+        const offsetX = e.clientX - rect.left; 
+        const percentage = offsetX / rect.width; 
+        audio.currentTime = percentage * audio.duration; 
+        progressBar.style.width = `${percentage * 100}%`;
+    });
+
     log( 'soundboard', 'DOMContentLoaded' )
   }
 });
 
+let scrubbing = false;    
 // load in the playlists
 function loadSoundboard( preset ) {
     log( 'soundboard', 'loading soundboard...' )
@@ -165,13 +180,20 @@ function playSong( p_idx, s_idx ) {
 
                 audio = new Audio( `/song/${playlist}/${song}` );
 
+                const name = document.getElementById( 'song-name' );
+                name.innerText = song
+
                 audio.addEventListener('timeupdate', () => {
-                    if ( audio != null ) {
+                    if ( audio != null && !scrubbing ) {
                         const progressBar = document.getElementById('progressBar');
-                        const progressHandle = document.getElementById('progressHandle');
                         const percentage = (audio.currentTime / audio.duration) * 100;
                         progressBar.style.width = `${percentage}%`;
-                        progressHandle.style.left = `${percentage}%`;
+                        const current = document.getElementById('current')
+                        current.innerText = formatTime(audio.currentTime)
+                        const scrubber = document.getElementById('scrubber')
+                        scrubber.value = percentage
+                        const duration = document.getElementById('duration')
+                        duration.innerText = formatTime(audio.duration);
                     }
                 });
 
@@ -222,15 +244,22 @@ function playRandomSong( p_idx ) {
                 }
                 lastPlayedSong[p_idx] = song;
 
+                const name = document.getElementById( 'song-name' );
+                name.innerText = song
+
                 audio = new Audio( `/song/${playlist}/${song}` );
 
                 audio.addEventListener('timeupdate', () => {
-                    if ( audio != null ) {
+                    if ( audio != null && !scrubbing ) {
                         const progressBar = document.getElementById('progressBar');
-                        const progressHandle = document.getElementById('progressHandle');
                         const percentage = (audio.currentTime / audio.duration) * 100;
                         progressBar.style.width = `${percentage}%`;
-                        progressHandle.style.left = `${percentage}%`;
+                        const current = document.getElementById('current')
+                        current.innerText = formatTime(audio.currentTime)
+                        const scrubber = document.getElementById('scrubber')
+                        scrubber.value = percentage
+                        const duration = document.getElementById('duration')
+                        duration.innerText = formatTime(audio.duration);
                     }
                 });
 
