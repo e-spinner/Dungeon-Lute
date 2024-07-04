@@ -10,7 +10,7 @@ import time
 app = Flask( __name__ )
 
 # Paths to directories
-MUSIC_PATH = os.path.join( app.root_path, 'music' )
+MUSIC_PATH = os.path.join( os.path.dirname(app.root_path), 'music' )
 PRESETS_PATH = os.path.join( app.root_path, 'static', 'presets' )
 DATA_PATH = os.path.join( app.root_path, 'static', 'data' )
 
@@ -161,6 +161,6 @@ def shutdown_server():
    
 
 if __name__ == '__main__':
-    webbrowser.open('http://localhost:5000/')
+    
     app.run(debug=True)
     
