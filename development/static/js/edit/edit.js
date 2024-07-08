@@ -1,27 +1,29 @@
 /* Expanding slots */
-let cols = 1;
-let rows = 1;
+let cols = 3;
+let rows = 2;
 function R() {
   a("r-add");
-  let rows = document.querySelectorAll(".row");
-  rows.forEach((row) => {
-    let slot = document.createElement("td");
-    ss(slot);
-    slot.classList.add("slot", "fade-in", "droppable");
+  if ( cols < 3 ) {
+    let rows = document.querySelectorAll(".row");
+    rows.forEach((row) => {
+      let slot = document.createElement("td");
+      ss(slot);
+      slot.classList.add("slot", "fade-in", "droppable");
 
-    const children = Array.from(row.children);
-    row.insertBefore(slot, children[children.length - 1]);
+      const children = Array.from(row.children);
+      row.insertBefore(slot, children[children.length - 1]);
 
-    // Remove the fade-in class after the animation ends
-    setTimeout(() => {
-      slot.classList.remove("fade-in");
-    }, 500);
-  });
+      // Remove the fade-in class after the animation ends
+      setTimeout(() => {
+        slot.classList.remove("fade-in");
+      }, 500);
+    });
 
-  let d = document.getElementById("d");
-  cols += 1;
-  d.colSpan += 1;
-  log( 'edit', 'expanding grid right')
+    let d = document.getElementById("d");
+    cols += 1;
+    d.colSpan += 1;
+    log( 'edit', 'expanding grid right')
+  }
 }
 function r() {
   a("r-remove");

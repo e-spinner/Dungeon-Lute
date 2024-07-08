@@ -9,7 +9,9 @@ import time
 app = Flask( __name__ )
 
 # Paths to directories
-MUSIC_PATH = os.path.join( os.path.dirname(app.root_path), 'music' )
+PLAYLISTS_PATH = os.path.join( os.path.dirname(app.root_path), 'playlists' )
+SOUNDS_PATH = os.path.join( os.path.dirname(app.root_path), 'sfx' )
+SINGLES_PATH = os.path.join( os.path.dirname(app.root_path), 'single tracks' )
 PRESETS_PATH = os.path.join( app.root_path, 'static', 'presets' )
 DATA_PATH = os.path.join( app.root_path, 'static', 'data' )
 
@@ -69,20 +71,20 @@ def del_preset( preset ) :
 # Request current list of playlists
 @app.route( '/playlists' )
 def get_playlists():
-    playlists = [ dir for dir in os.listdir( MUSIC_PATH ) if os.path.isdir( os.path.join( MUSIC_PATH, dir ) ) ]
+    playlists = [ dir for dir in os.listdir( PLAYLISTS_PATH ) if os.path.isdir( os.path.join( PLAYLISTS_PATH, dir ) ) ]
     return jsonify( playlists )
 
 # Request list of songs in  a playlist
 @app.route( '/song/<playlist>' )
 def get_songs( playlist ):
-    playlist_path = os.path.join( MUSIC_PATH, playlist )
+    playlist_path = os.path.join( PLAYLISTS_PATH, playlist )
     songs = [file for file in os.listdir( playlist_path ) if file.endswith( '.mp3' )]
     return jsonify( songs )
 
 # Request song
 @app.route( '/song/<playlist>/<song>' )
 def get_song( playlist, song ):
-    return send_from_directory( MUSIC_PATH + '/' + playlist, song )
+    return send_from_directory( PLAYLISTS_PATH + '/' + playlist, song )
 
 # ========= #
 # UTILITIES #
@@ -157,7 +159,7 @@ def shutdown_server():
     
 @app.route('/info')
 def info():
-    return MUSIC_PATH
+    return PLAYLISTS_PATH
 
    
 

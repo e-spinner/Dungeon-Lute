@@ -1,140 +1,187 @@
 <!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dungeon Lute</title>
-        <link rel="stylesheet" href="/static/css/styles.css">
-        <!-- Add icon library -->
-        <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
 
-        <!-- MEDIA CONTROLS -->
-        <div id='media-controls' >
-            <h1>Dungeon Lute<h1>
-            <!-- MENU-BAR -->
-            <div class="menu-bar">
-                <button id='settings-open' title="open settings" onclick="om('settings')"><i class="fas fa-gear"></i></button>
-                <div>
-                    <button id="rewind" title="play previous" onclick="rw()" ><i class="fas fa-backward-step"></i></button>
-                    <button id="toggle" title="toggle playback" onclick="p()" ><i id="pause_play" class="fas fa-pause"></i></button>
-                    <button id="next" title="play random" onclick="n()" ><i class="fas fa-forward-step"></i></button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Lute</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Add icon library -->
+    <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- MEDIA CONTROLS -->
+    <div id='media-controls'>
+        <h1>Dungeon Lute</h1>
+                <!-- MENU-BAR -->
+                <div class="menu-bar">
+                    <button id='settings-open' title="open settings" onclick="om('settings')"><i
+                            class="fas fa-gear"></i></button>
+                    <div>
+                        <button id="rewind" title="play previous" onclick="rw()"><i
+                                class="fas fa-backward-step"></i></button>
+                        <button id="toggle" title="toggle playback" onclick="p()"><i id="pause_play"
+                                class="fas fa-pause"></i></button>
+                        <button id="next" title="play random" onclick="n()"><i class="fas fa-forward-step"></i></button>
+                    </div>
+                    <button id="edit" title="open editor" onclick="e()"><i class="fas fa-pencil"></i></button>
                 </div>
-                <button id="edit" title="open editor" onclick="e()" ><i class="fas fa-pencil"></i></button>
-            </div>
-            <!-- PROGRESS BAR -->
-            <div id="progressContainer" title='seek track'>
+                <!-- PROGRESS BAR -->
+                <div id="progressContainer" title='seek track'>
                     <div id="progressBar"></div>
                     <input id='scrubber' type='range' value='0' max='100' step='0.01'>
-            </div>
-            <!-- TIME BAR -->
-            <div id='time'>
-                <span id='current'>00:00</span>
-                <span id='duration'>00:00</span>
-            </div>
-        </div>
-        
-        <!-- SOUNDBOARD -->
-        <table id="soundboard">
-            <tbody id="grid">
-                <!-- soundboard grid will be generated here by JavaScript -->
-            </tbody>
-        </table>
-        
-        <!-- DETAILS -->
-        <div id="details" class="fade-out">
-            <h3 id="song-name"></h3>
-            <div id='song-display'>
-                <div id='song-container'>
-                    <ul id="song-list">
-                        <!-- song buttons will be generated here by JavaScript -->
-                    </ul>
                 </div>
-            </div>
-        </div>
+                <!-- TIME BAR -->
+                <div id='time'>
+                    <span id='current'>00:00</span>
+                    <span id='duration'>00:00</span>
+                </div>
+    </div>
 
-        <!-- SETTINGS MENU -->
-        <div id="settings-menu" class="overlay">
-            <div class="accent-bar">
-                <button id='settings-close' title='close settings' class='close-btn' onclick="cm('settings')">
-                    <i class='far fa-circle-xmark'></i>
-                </button>
-            </div>            
-            <div id="settings" class="overlay-content">
-                <h1>Settings</h1>
-                <a class="song" onclick="om('presets')" id='presets-open'>Load Preset</a>            
-                <a class="song" onclick="om('colors')" id='colors-open'>Color Editor</a>
-                <a class="song" onclick="om('setups')" id='setups-open'>Setup</a>
-                <a class="song" id='close-program' onclick="c()">Close Program</a>
-            </div>
-            
-            <!-- LOAD PRESET MENU -->
-            <div id="presets-menu" class="overlay">
-                <div class="accent-bar">
-                    <button id='presets-close' title='close preset selection' class='close-btn' onclick="cm('presets')">
-                    <i class='far fa-circle-xmark'></i>
-                    </button>
-                </div>
-                <div id='presets' class="overlay-content">
-                    <h1>Load Preset</h1>
-                    <!-- presets will be generated here by Java Script -->
-                </div>
-            </div>
+    <div class="tab-container">
+        <button class="tab-button" data-tab="tab1">Tab 1</button>
+        <button class="tab-button" data-tab="tab2">Tab 2</button>
+        <button class="tab-button" data-tab="tab3">Tab 3</button>
+    </div>
 
-            <!-- LOAD COLOR EDITOR -->
-            <div id="colors-menu" class="overlay">
-                <div class="accent-bar">
-                    <button id='colors-close' title='close color editor' class='close-btn' onclick="cm('colors')">
-                    <i class='far fa-circle-xmark'></i>
-                    </button>
-                </div>
-                <div id='colors' class="overlay-content" >
-                    <div id='color' class="overlay-content">
-                        <h1>Color Editor</h1>
-                        <div id='color-examples'>
-                            <div id='playing-example' class='playing-ex playlist'>Default Playing Playlist Color</div>
-                            <div id='example' class='playlist'>Default Playlist Color</div>
+    <!-- Media Display-->
+    <div id="display">
+        <div id="grad">
+            <div id='slider' style="transform: translateX(-33.3%);" >
+                <div id="tab1" class="tab-content">
+                    <!-- TRACKS -->
+                    <div id="tracks">
+                        <div id='track-display'>
+                            <div id='track-container'>
+                                <ul id="track-list">
+                                    <!-- track buttons will be generated here by JavaScript -->
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div id='color-grid'>
-                        <input type="color" title="set text color" id="text-color" value="#FFFFFF">
-                        <input type="color" title="set accent color" id="accent-color" value="#007bff">
-                        <input type="color" title="set secondary color" id="secondary-color" value="#343a40">
-                        <input type="color" title="set primary color" id="primary-color" value="#292b2c">
-                    </div>
-                    <div class='color-bar'>
-                        <button id='color-save' title="save colors" onclick="sc(colors)"><i class="fas fa-save"></i></button>
-                        <button id='color-reset' title="reset colors" onclick="rc()"><i class="fas fa-rotate-right"></i></button>
-                    </div>
-                </div>  
-            </div>
-
-            <!-- LOAD SETUP MENU -->
-            <div id='setups-menu' class='overlay'>
-                <div class="accent-bar">
-                    <button id='setups-close' title='close setup menu' class='close-btn' onclick="cm('setups')">
-                    <i class='far fa-circle-xmark'></i>
-                    </button>
                 </div>
-                <div id='setups' class="overlay-content" >
-                    <div id='music-path' class='setup song'>
-                        <span class='setup-text'>Music Path:</span>
-                        <input type='file' webkitdirectory multiple>
+                <div id="tab2" class="tab-content">
+                    <!-- SOUNDBOARD -->
+                    <table id="soundboard">
+                        <tbody id="grid">
+                            <!-- soundboard grid will be generated here by JavaScript -->
+                        </tbody>
+                    </table>
+
+                    <!-- DETAILS -->
+                    <div id="details" class="fade-out">
+                        <h3 id="song-name"></h3>
+                        <div id='song-display'>
+                            <div id='song-container'>
+                                <ul id="song-list">
+                                    <!-- song buttons will be generated here by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div id="tab3" class="tab-content">
+
+                    <!-- EFFECTS -->
+                    <div id="effect">
+                        <div id='effect-display'>
+                            <div id='effect-container'>
+                                <ul id="effect-list">
+                                    <!-- effect buttons will be generated here by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
 
-
+    <!-- SETTINGS MENU -->
+    <div id="settings-menu" class="overlay">
+        <div class="accent-bar">
+            <button id='settings-close' title='close settings' class='close-btn' onclick="cm('settings')">
+                <i class='far fa-circle-xmark'></i>
+            </button>
+        </div>
+        <div id="settings" class="overlay-content">
+            <h1>Settings</h1>
+            <a class="song" onclick="om('presets')" id='presets-open'>Load Preset</a>
+            <a class="song" onclick="om('colors')" id='colors-open'>Color Editor</a>
+            <a class="song" onclick="om('setups')" id='setups-open'>Setup</a>
+            <a class="song" id='close-program' onclick="c()">Close Program</a>
         </div>
 
-        <!-- JS-START -->
-        <script src="{{ url_for('static', filename='js/index/menu-bar.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/index/soundboard.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/index/details.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/util.js') }}"></script>
-        <!-- JS-END -->
+        <!-- LOAD PRESET MENU -->
+        <div id="presets-menu" class="overlay">
+            <div class="accent-bar">
+                <button id='presets-close' title='close preset selection' class='close-btn' onclick="cm('presets')">
+                    <i class='far fa-circle-xmark'></i>
+                </button>
+            </div>
+            <div id='presets' class="overlay-content">
+                <h1>Load Preset</h1>
+                <!-- presets will be generated here by Java Script -->
+            </div>
+        </div>
 
-    </body>
+        <!-- LOAD COLOR EDITOR -->
+        <div id="colors-menu" class="overlay">
+            <div class="accent-bar">
+                <button id='colors-close' title='close color editor' class='close-btn' onclick="cm('colors')">
+                    <i class='far fa-circle-xmark'></i>
+                </button>
+            </div>
+            <div id='colors' class="overlay-content">
+                <div id='color' class="overlay-content">
+                    <h1>Color Editor</h1>
+                    <div id='color-examples'>
+                        <div id='playing-example' class='playing-ex playlist'>Default Playing Playlist Color</div>
+                        <div id='example' class='playlist'>Default Playlist Color</div>
+                    </div>
+                </div>
+                <div id='color-grid'>
+                    <input type="color" title="set text color" id="text-color" value="#FFFFFF">
+                    <input type="color" title="set accent color" id="accent-color" value="#007bff">
+                    <input type="color" title="set secondary color" id="secondary-color" value="#343a40">
+                    <input type="color" title="set primary color" id="primary-color" value="#292b2c">
+                </div>
+                <div class='color-bar'>
+                    <button id='color-save' title="save colors" onclick="sc(colors)"><i
+                            class="fas fa-save"></i></button>
+                    <button id='color-reset' title="reset colors" onclick="rc()"><i
+                            class="fas fa-rotate-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOAD SETUP MENU -->
+        <div id='setups-menu' class='overlay'>
+            <div class="accent-bar">
+                <button id='setups-close' title='close setup menu' class='close-btn' onclick="cm('setups')">
+                    <i class='far fa-circle-xmark'></i>
+                </button>
+            </div>
+            <div id='setups' class="overlay-content">
+                <div id='music-path' class='setup song'>
+                    <span class='setup-text'>Music Path:</span>
+                    <input type='file' webkitdirectory multiple>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JS-START -->
+    <script src="{{ url_for('static', filename='js/index/menu-bar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index/soundboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index/details.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+    <!-- JS-END -->
+
+</body>
+
 </html>

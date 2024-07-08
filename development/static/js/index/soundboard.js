@@ -43,6 +43,26 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
     });
 
     log( 'soundboard', 'DOMContentLoaded' )
+
+    const buttons = document.querySelectorAll(".tab-button");
+    const slider = document.getElementById('slider');
+  
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tab = document.getElementById(button.dataset.tab);
+  
+          
+          if (tab.id == 'tab1') {
+            slider.style.transform = "translateX(0%)";
+          }
+          else if (tab.id == 'tab2') {
+            slider.style.transform = "translateX(-33.3%)";
+          }
+          else if (tab.id == 'tab3') {
+            slider.style.transform = "translateX(-66.7%)";
+          }
+      });
+    });
   }
 });
 
