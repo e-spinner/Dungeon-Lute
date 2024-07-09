@@ -49,6 +49,7 @@
   border-radius: 10px;
   background-color: var(--secondary-background);
   box-shadow: 0 0 10px var(--shadow-color);
+   position: relative;
  }
  .menu-bar {
   width: 100%;
@@ -62,8 +63,9 @@
  .menu-bar button {
   background-color: var(--accent);
   border: 1px solid var(--border-color);
-  color: var(--text);
+  fill: var(--text);
   padding: 5px 10px;
+  padding-top: 6px;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 0 10px var(--shadow-color)
@@ -146,6 +148,96 @@
   cursor: grab;
   border-radius: 20%;
   border: 1px solid var(--border-color)
+ }
+ 
+.tab-container {
+   position: absolute;
+   left: 0;
+  right: 0;
+  bottom: 0;
+   background-color: none;
+  display: flex;
+  justify-content: center;
+ }
+ 
+ .tab-button {
+   padding: 10px;
+   padding-top: 0;
+  cursor: pointer;
+   background-color: var(--secondary-background);
+  border: none;
+  outline: none;;
+  transition: color 0.3s
+ } 
+ svg {
+  fill: var(--text);
+ }
+ .tab-svg {
+  fill: var(--text);
+ }
+ .tab-button:hover .tab-svg {
+  fill: var(--hover-accent)
+ } 
+.tab-button.active .tab-svg {
+  fill: var(--accent)
+ }
+.tab-button.active:hover .tab-svg {
+  fill: var(--hover-accent)
+ }
+
+ 
+ .tab-content {
+  width: 357.5px
+ }
+ 
+ #slider {
+  margin-left: 50px;
+  display: flex;
+  flex-direction: row;
+  width: calc(407.5px * 3);
+  top: 50px;
+  left: 0;
+  transform: translateX(0%);
+  gap: 50px;
+  transition: opacity 0.5s, transform 0.5s
+ }
+ 
+ #display {
+  width: 457.5px;
+  overflow: hidden;
+  position: relative
+ }
+ 
+ #grad::before,
+ #grad::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 30px;
+ 
+  height: 100%;
+  pointer-events: none;
+  background-image: linear-gradient(
+  to left,
+  var(--primary-background-transparent),
+  var(--primary-background-rgba)
+  );
+ 
+  z-index: 1
+ }
+ 
+ #grad::before {
+  left: 0
+ }
+ 
+ #grad::after {
+  right: 0;
+ 
+  background-image: linear-gradient(
+  to right,
+  var(--primary-background-transparent),
+  var(--primary-background-rgba)
+  )
  }
  
  
@@ -301,7 +393,10 @@
  }
  
  button {
-  transition: transform 0.5s ease, background-color 0.3s ease;
+  transition: transform 0.5s ease, background-color 0.3s ease, fill 0.3s ease;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
  }
  
  .clicked {
@@ -373,8 +468,8 @@
   border: 0px solid var(--border-color)
  }
  
- .close-btn:hover {
-  color: var(--accent)
+ .close-btn:hover .delete{
+  fill: var(--accent)
  }
  
  #close-program {
@@ -412,8 +507,8 @@
   font-size: 24px
  }
  
- .preset-del:hover {
-  color: var(--accent)
+ .preset-del:hover .delete{
+  fill: var(--accent)
  }
  
  #color-examples {
@@ -465,6 +560,7 @@
   border: 1px solid var(--border-color);
   color: var(--text);
   padding: 5px 10px;
+  padding-top: 6px;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 0 10px var(--shadow-color)
@@ -650,77 +746,4 @@
   }
  }
  
- .tab-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px
- }
- 
- .tab-button {
-  padding: 10px 20px;
-  margin: 0 5px;
-  cursor: pointer;
-  background-color: #f1f1f1;
-  border: none;
-  outline: none;
-  transition: background-color 0.3s
- }
- 
- .tab-button:hover {
-  background-color: #ddd
- }
- 
- .tab-content {
-  width: 357.5px
- }
- 
- #slider {
-  margin-left: 50px;
-  display: flex;
-  flex-direction: row;
-  width: calc(407.5px * 3);
-  top: 50px;
-  left: 0;
-  transform: translateX(0%);
-  gap: 50px;
-  transition: opacity 0.5s, transform 0.5s
- }
- 
- #display {
-  width: 457.5px;
-  overflow: hidden;
-  position: relative
- }
- 
- #grad::before,
- #grad::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 30px;
- 
-  height: 100%;
-  pointer-events: none;
-  background-image: linear-gradient(
-  to left,
-  var(--primary-background-transparent),
-  var(--primary-background-rgba)
-  );
- 
-  z-index: 1
- }
- 
- #grad::before {
-  left: 0
- }
- 
- #grad::after {
-  right: 0;
- 
-  background-image: linear-gradient(
-  to right,
-  var(--primary-background-transparent),
-  var(--primary-background-rgba)
-  )
- }
  

@@ -52,17 +52,20 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
         const tab = document.getElementById(button.dataset.tab);
   
           
-          if (tab.id == 'tab1') {
-            slider.style.transform = "translateX(0%)";
-          }
-          else if (tab.id == 'tab2') {
-            slider.style.transform = "translateX(-33.3%)";
-          }
-          else if (tab.id == 'tab3') {
-            slider.style.transform = "translateX(-66.7%)";
-          }
+        if (tab.id == 'tab1') {
+        slider.style.transform = "translateX(0%)";
+        }
+        else if (tab.id == 'tab2') {
+        slider.style.transform = "translateX(-33.3%)";
+        }
+        else if (tab.id == 'tab3') {
+        slider.style.transform = "translateX(-66.7%)";
+        }
+        
+        Array.from(document.querySelectorAll('.tab-button')).forEach( (t) => { t.classList.remove('active') })
+        button.classList.add('active')
       });
-    });
+    }); 
   }
 });
 

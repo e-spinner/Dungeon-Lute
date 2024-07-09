@@ -47,10 +47,20 @@ function lr(){
                     });
                 })
                 del.title = `delete ${preset}`
+            
+                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("class", "delete");
+                svg.setAttribute("fill", "none");
+                svg.setAttribute("viewBox", "0 0 20 20");
+                svg.setAttribute("height", "20");
+                svg.setAttribute("width", "20");
                 
-                const i = document.createElement( 'i' );
-                i.classList.add( 'far', 'fa-circle-xmark' );
-                del.appendChild(i)
+                var use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+                use.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#delete" );
+                
+                svg.appendChild(use);
+
+                del.appendChild(svg)
 
                 box.append( del )
 
