@@ -11,7 +11,7 @@ app = Flask( __name__ )
 # Paths to directories
 PLAYLISTS_PATH = os.path.join( os.path.dirname(app.root_path), 'playlists' )
 SOUNDS_PATH = os.path.join( os.path.dirname(app.root_path), 'sfx' )
-SINGLES_PATH = os.path.join( os.path.dirname(app.root_path), 'single tracks' )
+TRACKS_PATH = os.path.join( os.path.dirname(app.root_path), 'tracks' )
 PRESETS_PATH = os.path.join( app.root_path, 'static', 'presets' )
 DATA_PATH = os.path.join( app.root_path, 'static', 'data' )
 
@@ -85,6 +85,28 @@ def get_songs( playlist ):
 @app.route( '/song/<playlist>/<song>' )
 def get_song( playlist, song ):
     return send_from_directory( PLAYLISTS_PATH + '/' + playlist, song )
+
+# Request current list of tracks
+@app.route( '/track')
+def get_tracks():
+    tracks = [track for track in os.listdir( TRACKS_PATH ) if track.endswith( '.mp3' )]
+    return jsonify(tracks)
+
+# Request track
+@app.route( '/track/<track>' )
+def get_track( track ):
+    return send_from_directory( TRACKS_PATH, track )
+
+# Request current list of sounds
+@app.route( '/sound')
+def get_sounds():
+    sounds = [sound for sound in os.listdir( SOUNDS_PATH ) if sound.endswith( '.mp3' )]
+    return jsonify(sounds)
+
+# Request sound
+@app.route( '/sound/<sound>' )
+def get_sound( sound ):
+    return send_from_directory( SOUNDS_PATH + '/' + sound )
 
 # ========= #
 # UTILITIES #

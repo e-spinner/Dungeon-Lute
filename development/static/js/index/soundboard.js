@@ -6,6 +6,8 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
     ls( 'Default' );
     lr();
     lc();
+    lt();
+    lf();
 
     fetch( '/load/data/color' )
     .then( response => response.json() )
@@ -102,6 +104,27 @@ function ls( preset ) {
 
     });
 }
+function lt() {
+    fetch( `/track` )
+    .then( response => response.json() )
+    .then( tracks => {
+        const trackList = document.getElementById('track-list')
+        tracks.forEach( ( track ) => {
+            const li = document.createElement('li')
+            li.innerHTML = track
+            li.id = track
+            li.className = 'track'
+            li.addEventListener( 'click', () => {
+                a(track)
+                T(track)
+            })
+            trackList.appendChild(li)
+        })
+    });
+}
+function lf() {
+
+}
 function t( playlist ) {
     const details = document.getElementById( 'details' ); 
     details.classList.add( 'fade-out' );  
@@ -151,6 +174,7 @@ function z() {
                 });
     }
     log( 'soundboard', 'stopping current song' )
+    document.querySelectorAll('.track').forEach((t)=>{t.classList.remove('playing')})
 }
 function f() {
     return new Promise( ( resolve ) => {
@@ -296,4 +320,44 @@ function L( p_idx ) {
         });
     });
 
+}
+function T( track ) {
+    playingIndex = -1
+    f().then( () => {
+        z();
+
+        audio = new Audio( `/track/${track}` );
+
+        audio.addEventListener('timeupdate', () => {
+            if ( audio != null && !scrubbing ) {
+                const progressBar = document.getElementById('progressBar');
+                const percentage = (audio.currentTime / audio.duration) * 100;
+                progressBar.style.width = `${percentage}%`;
+                const current = document.getElementById('current')
+                current.innerText = ft(audio.currentTime)
+                const scrubber = document.getElementById('scrubber')
+                scrubber.value = percentage
+                const duration = document.getElementById('duration')
+                duration.innerText = ft(audio.duration);
+            }
+        });
+
+        audio.play();
+        audio.onended = () => T( track );
+
+        
+        const t = document.getElementById( track ); 
+        t.classList.add( 'playing' );  
+        
+        const details = document.getElementById( 'details' ); 
+        details.classList.add( 'fade-out' );  
+        details.classList.remove( 'fade-in' );  
+
+        
+        let audio_status = document.getElementById( 'pause_play' )
+        audio_status.classList.remove( 'fa-play' )
+        audio_status.classList.add( 'fa-pause' )
+        log( 'soundboard', ` playing track: ${track}` )
+    });
+ 
 }

@@ -384,6 +384,7 @@
   margin-bottom: 10px
  }
  
+ .track:hover,
  .song:hover {
   background-color: var(--hover)
  }
@@ -391,7 +392,15 @@
  .song.playing {
   display: none
  }
- 
+ .effect.playing,
+ .track.playing {
+  background-color: var(--accent);
+ } 
+ .effect.playing:hover,
+ .track.playing:hover {
+  background-color: var(--hover-accent);
+ }
+
  button {
   transition: transform 0.5s ease, background-color 0.3s ease, fill 0.3s ease;
   display: inline-flex;
@@ -401,6 +410,13 @@
  
  .clicked {
   transform: scale(1.1);
+  transition: transform 0.5s ease, background-color 0.3s ease;
+ }
+
+ .song.clicked,
+ .effect.clicked,
+ .track.clicked {
+  transform: scaleY(1.1);
   transition: transform 0.5s ease, background-color 0.3s ease;
  }
  

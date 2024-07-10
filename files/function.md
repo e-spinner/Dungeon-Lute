@@ -46,8 +46,12 @@
 ## soundboard.js
 
 - ls = loadSoundboard
+- lt = loadTrack
+- lf = loadSfx
 - t = togglePlaylist
 - z = stopCurrentSong
 - f = fadeOutSong
 - l = playSong
 - L = playRandomSong
+- T = playTrack
+- Z = playSfx
