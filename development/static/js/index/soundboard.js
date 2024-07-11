@@ -7,7 +7,7 @@ document.addEventListener( 'DOMContentLoaded', ( event ) => {
     lr();
     lc();
     lt();
-    lf();
+    lz();
 
     fetch( '/load/data/color' )
     .then( response => response.json() )
@@ -122,8 +122,23 @@ function lt() {
         })
     });
 }
-function lf() {
-
+function lz() {
+    fetch( `/sound` )
+    .then( response => response.json() )
+    .then( sounds => {
+        const soundList = document.getElementById('effect-list')
+        sounds.forEach( ( sound ) => {
+            const li = document.createElement('li')
+            li.innerHTML = sound
+            li.id = sound
+            li.className = 'effect'
+            li.addEventListener( 'click', () => {
+                a(sound)
+                Z(sound)
+            })
+            soundList.appendChild(li)
+        })
+    });
 }
 function t( playlist ) {
     const details = document.getElementById( 'details' ); 
@@ -247,10 +262,7 @@ function l( p_idx, s_idx ) {
                 });
 
                 
-                let audio_status = document.getElementById( 'pause_play' )
-                audio_status.classList.remove( 'fa-play' )
-                audio_status.classList.add( 'fa-pause' )
-                log( 'soundboard', `specifically playing ${p_idx}, ${s_idx}` )
+                ap()
             });
         });
     });
@@ -311,10 +323,7 @@ function L( p_idx ) {
                 });
 
                 
-                let audio_status = document.getElementById( 'pause_play' )
-                audio_status.classList.remove( 'fa-play' )
-                audio_status.classList.add( 'fa-pause' )
-                log( 'soundboard', `randomly playing ${p_idx}, ${s_idx}` )
+                ap()
    
             }
         });
@@ -354,10 +363,39 @@ function T( track ) {
         details.classList.remove( 'fade-in' );  
 
         
-        let audio_status = document.getElementById( 'pause_play' )
-        audio_status.classList.remove( 'fa-play' )
-        audio_status.classList.add( 'fa-pause' )
-        log( 'soundboard', ` playing track: ${track}` )
+        ap()
     });
  
+}
+function Z( sound ) {
+    if ( sfx ) {
+        sfx.pause();
+        sfx = null;
+    }
+    const stop = document.getElementById('stop-button')
+    stop.classList.remove("hidden")
+    sfx = new Audio( `/sound/${sound}`)
+
+    sfx.play();
+    sfx.onended = () => {
+        const t = document.getElementById( sound ); 
+        t.classList.remove( 'playing' );  
+        stop.classList.add("hidden")
+    }
+
+
+    const t = document.getElementById( sound ); 
+    t.classList.add( 'playing' );  
+
+}
+function zZ() {
+
+    if ( sfx ) {
+        sfx.pause();
+        sfx = null;
+    }
+
+    const stop = document.getElementById('stop-button')
+    stop.classList.add("hidden")
+    Array.from( document.querySelectorAll('.effect') ).forEach( (s) => { s.classList.remove('playing') } )
 }

@@ -41,7 +41,10 @@
   text-align: center
  }
  
- 
+ .hidden {
+  display: none;
+ }
+
  #media-controls {
   width: var(--width);
   border: 1px solid var(--border-color);
@@ -185,6 +188,23 @@
   fill: var(--hover-accent)
  }
 
+ #stop-button {
+  padding: 10px;
+ cursor: pointer;
+  background-color: var(--secondary-background);
+ border: none;
+ outline: none;
+ transition: background-color 0.3s;
+   position: absolute;
+ bottom: 0;
+ left: 70%;
+}
+.stop-svg{
+  fill: var(--text);
+}
+#stop-button:hover .stop-svg {
+ fill: var(--accent);
+}
  
  .tab-content {
   width: 357.5px
@@ -384,6 +404,7 @@
   margin-bottom: 10px
  }
  
+ .effect:hover,
  .track:hover,
  .song:hover {
   background-color: var(--hover)

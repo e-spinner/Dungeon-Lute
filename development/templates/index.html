@@ -44,7 +44,22 @@
                 </button>
 
                 <button id="toggle" title="toggle playback" onclick="p()">
-                    <i id="pause_play" class="fas fa-pause"></i>
+                    <svg class="hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"
+                        id="Button-Pause" height="12" width="12">
+                        <g id="button-pause">
+                            <path id="Union" fill-rule="evenodd"
+                                d="M0 1.5C0 0.671573 0.671573 0 1.5 0H4c0.82843 0 1.5 0.671573 1.5 1.5v11c0 0.8284 -0.67157 1.5 -1.5 1.5H1.5C0.671573 14 0 13.3284 0 12.5v-11ZM10 0c-0.82843 0 -1.5 0.671573 -1.5 1.5v11c0 0.8284 0.67157 1.5 1.5 1.5h2.5c0.8284 0 1.5 -0.6716 1.5 -1.5v-11c0 -0.828427 -0.6716 -1.5 -1.5 -1.5H10Z"
+                                clip-rule="evenodd" stroke-width="1"></path>
+                        </g>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Button-Play" height="12"
+                        width="12">
+                        <g id="button-play">
+                            <path id="Union" fill="#000000" fill-rule="evenodd"
+                                d="M2.67593 0.019165c-0.29576 0 -0.58657 0.0753875 -0.84499 0.218948 -0.26314 0.134139 -0.48525 0.336896 -0.64277 0.58693 -0.15979 0.253627 -0.247004 0.546207 -0.252169 0.845927l-0.000075 0V12.3396H0.935852l0.000149 0.0086c0.005165 0.2997 0.092379 0.5923 0.252169 0.8459 0.15752 0.2501 0.37963 0.4528 0.64277 0.587 0.25842 0.1435 0.54923 0.2189 0.84499 0.2189 0.29995 0 0.59481 -0.0775 0.85596 -0.2251 0.00575 -0.0032 0.01143 -0.0066 0.01704 -0.0101l8.62977 -5.33745c0.2617 -0.13189 0.4826 -0.33282 0.6388 -0.5813 0.1611 -0.25659 0.2467 -0.55345 0.2467 -0.85647 0 -0.30301 -0.0856 -0.59988 -0.2467 -0.85646 -0.1563 -0.24874 -0.3776 -0.44984 -0.6396 -0.58172L3.54751 0.253465c-0.00515 -0.00316 -0.01036 -0.006227 -0.01562 -0.009199 -0.26115 -0.1475588 -0.55601 -0.225101 -0.85596 -0.225101Z"
+                                clip-rule="evenodd" stroke-width="1"></path>
+                        </g>
+                    </svg>
                 </button>
 
                 <button id="next" title="play random" onclick="n()">
@@ -121,6 +136,17 @@
 
         </div>
 
+        <button title="stop sfx" onclick="zZ()" id="stop-button" class="hidden">
+            <svg class="stop-svg" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 14 14" id="Button-Stop.svg" height="12" width="12">
+                <g id="button-stop">
+                    <path id="Union" fill-rule="evenodd"
+                        d="M1.5 0C0.671573 0 0 0.671573 0 1.5v11c0 0.8284 0.671573 1.5 1.5 1.5h11c0.8284 0 1.5 -0.6716 1.5 -1.5v-11c0 -0.828427 -0.6716 -1.5 -1.5 -1.5h-11Z"
+                        clip-rule="evenodd" stroke-width="1"></path>
+                </g>
+            </svg>
+        </button>
+
     </div>
 
     <!-- Media Display-->
@@ -181,8 +207,8 @@
         <div class="accent-bar">
 
             <button id='settings-close' title='close settings' class='close-btn' onclick="cm('settings')">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                    class="Delete.svg delete" height="20" width="20">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="Delete.svg delete"
+                    height="20" width="20">
                     <g id="delete">
                         <path id="Union" fill-rule="evenodd"
                             d="M1.70711 0.292893c-0.39053 -0.3905241 -1.023693 -0.3905241 -1.414217 0 -0.3905241 0.390524 -0.3905241 1.023687 0 1.414217L5.58579 7 0.292893 12.2929c-0.3905241 0.3905 -0.3905241 1.0237 0 1.4142 0.390524 0.3905 1.023687 0.3905 1.414217 0L7 8.41421l5.2929 5.29289c0.3905 0.3905 1.0237 0.3905 1.4142 0 0.3905 -0.3905 0.3905 -1.0237 0 -1.4142L8.41421 7l5.29289 -5.29289c0.3905 -0.39053 0.3905 -1.023693 0 -1.414217 -0.3905 -0.3905241 -1.0237 -0.3905241 -1.4142 0L7 5.58579 1.70711 0.292893Z"
@@ -204,9 +230,9 @@
         <div id="presets-menu" class="overlay">
             <div class="accent-bar">
 
-                <button id='presets-close' title='close preset selection' class='close-btn' onclick="cm('presets')">   
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                        class="Delete.svg delete" height="20" width="20">
+                <button id='presets-close' title='close preset selection' class='close-btn' onclick="cm('presets')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="Delete.svg delete"
+                        height="20" width="20">
                         <g id="delete">
                             <path id="Union" fill-rule="evenodd"
                                 d="M1.70711 0.292893c-0.39053 -0.3905241 -1.023693 -0.3905241 -1.414217 0 -0.3905241 0.390524 -0.3905241 1.023687 0 1.414217L5.58579 7 0.292893 12.2929c-0.3905241 0.3905 -0.3905241 1.0237 0 1.4142 0.390524 0.3905 1.023687 0.3905 1.414217 0L7 8.41421l5.2929 5.29289c0.3905 0.3905 1.0237 0.3905 1.4142 0 0.3905 -0.3905 0.3905 -1.0237 0 -1.4142L8.41421 7l5.29289 -5.29289c0.3905 -0.39053 0.3905 -1.023693 0 -1.414217 -0.3905 -0.3905241 -1.0237 -0.3905241 -1.4142 0L7 5.58579 1.70711 0.292893Z"
@@ -227,8 +253,8 @@
             <div class="accent-bar">
 
                 <button id='colors-close' title='close color editor' class='close-btn' onclick="cm('colors')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                        class="Delete.svg delete" height="20" width="20">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="Delete.svg delete"
+                        height="20" width="20">
                         <g id="delete">
                             <path id="Union" fill-rule="evenodd"
                                 d="M1.70711 0.292893c-0.39053 -0.3905241 -1.023693 -0.3905241 -1.414217 0 -0.3905241 0.390524 -0.3905241 1.023687 0 1.414217L5.58579 7 0.292893 12.2929c-0.3905241 0.3905 -0.3905241 1.0237 0 1.4142 0.390524 0.3905 1.023687 0.3905 1.414217 0L7 8.41421l5.2929 5.29289c0.3905 0.3905 1.0237 0.3905 1.4142 0 0.3905 -0.3905 0.3905 -1.0237 0 -1.4142L8.41421 7l5.29289 -5.29289c0.3905 -0.39053 0.3905 -1.023693 0 -1.414217 -0.3905 -0.3905241 -1.0237 -0.3905241 -1.4142 0L7 5.58579 1.70711 0.292893Z"

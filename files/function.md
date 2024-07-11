@@ -26,6 +26,7 @@
 - lr = loadPresets
 - rw = rewind
 - p = togglePlayback
+- ap = audioPlay
 - n = next
 - ah = addToHistory
 
@@ -47,7 +48,7 @@
 
 - ls = loadSoundboard
 - lt = loadTrack
-- lf = loadSfx
+- lz = loadSfx
 - t = togglePlaylist
 - z = stopCurrentSong
 - f = fadeOutSong

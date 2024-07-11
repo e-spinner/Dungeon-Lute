@@ -3,6 +3,7 @@
 let playingIndex = null;
 let lastPlayedSong = {}
 let audio = null;
+let sfx = null;
 let history = []
 let soundBoard = []
 
@@ -95,19 +96,26 @@ function rw() {
 }
 function p() {
     a( 'toggle' )
-    let audio_status = document.getElementById( 'pause_play' )
+    const pause =  document.getElementById('Button-Pause')
+    const play =  document.getElementById('Button-Play')
 
     if (audio.paused) {
         audio.play();
-        audio_status.classList.remove('fa-play');
-        audio_status.classList.add('fa-pause');
         log('menu-bar', 'playing');
+        play.classList.add('hidden')
+        pause.classList.remove('hidden')
     } else {
         audio.pause();
-        audio_status.classList.remove('fa-pause');
-        audio_status.classList.add('fa-play');
         log('menu-bar', 'paused');
+        play.classList.remove('hidden')
+        pause.classList.add('hidden')
     }
+}
+function ap() {
+    const pause =  document.getElementById('Button-Pause')
+    const play =  document.getElementById('Button-Play')
+    play.classList.add('hidden')
+    pause.classList.remove('hidden')
 }
 function n() {
     a( 'next' )

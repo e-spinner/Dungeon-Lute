@@ -106,7 +106,7 @@ def get_sounds():
 # Request sound
 @app.route( '/sound/<sound>' )
 def get_sound( sound ):
-    return send_from_directory( SOUNDS_PATH + '/' + sound )
+    return send_from_directory( SOUNDS_PATH, sound )
 
 # ========= #
 # UTILITIES #
