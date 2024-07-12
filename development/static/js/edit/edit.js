@@ -98,6 +98,7 @@ function d() {
   log( 'edit', 'retracting grid down')
 }
 /* Dragging */
+let color_list = []
 document.addEventListener("DOMContentLoaded", function () {
   if ( window.location.pathname == '/edit') {
     const slots = document.querySelectorAll(".slot");
@@ -110,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
             colors = data
         }
     });
+    let stylesheet = document.styleSheets[1]
 
     log( 'edit', 'initializing playlist list')
     fetch( '/playlists' )
@@ -122,13 +124,25 @@ document.addEventListener("DOMContentLoaded", function () {
         pl.innerText = playlist;
         pl.addEventListener( 'dragstart', ds );
         playlistContainer.appendChild( pl )
+
+        color_list.push( playlist )
+        stylesheet.insertRule( `#${playlist} { }`, 0 )
+        color_list.push( `${playlist}:hover` )
+        stylesheet.insertRule( `#${`${playlist}:hover`} { }`, 0 )
+        color_list.push( `${playlist}.playing` )
+        stylesheet.insertRule( `#${`${playlist}.playing`} { }`, 0 )
+        color_list.push( `${playlist}.playing:hover` )
+        stylesheet.insertRule( `#${`${playlist}.playing:hover`} { }`, 0 )
       });
     });
+
 
     // Add dragover event listener to each slot
     slots.forEach((slot) => {
       ss(slot);
     });
+
+    document.getElementById('accent-color').addEventListener('change', uc);
   }
 });
 function ds(event) {
@@ -137,6 +151,8 @@ function ds(event) {
     this.classList.remove( 'draggable' );
     this.draggable = false;
     this.innerText = '';
+    this.id = ''
+    this.dataset.color = '#000'
   }
 }
 function dv(event) {
@@ -153,12 +169,29 @@ function dr(event) {
   event.preventDefault();
   const data = event.dataTransfer.getData("text/plain");
   this.innerHTML = data;
+  this.id = data
   this.classList.add("draggable");
   this.draggable = "true";
   this.cursor = "grab";
   this.addEventListener("dragstart", ds);
+
+  Array.from(document.querySelectorAll('.slot')).forEach( (s) => { s.classList.remove('active', 'playing') })
+  this.classList.add('active', 'playing')
+  avc(this)
   
   this.classList.remove("hover");
+  this.onclick = () => {
+    if (this.classList.contains('active')) {
+        this.classList.remove('active', 'playing');
+    } else {
+        Array.from(document.querySelectorAll('.slot')).forEach((s) => {
+            s.classList.remove('active', 'playing');
+        });
+        this.classList.add('active', 'playing');
+        avc(this);
+    }
+  }
+  
 }
 function ss(slot) {
   slot.addEventListener("dragover", dv);
@@ -167,48 +200,82 @@ function ss(slot) {
   slot.addEventListener("drop", dr);
 }
 function s() {
-  const preset = document.getElementById( 'preset-name' );
+  const preset = document.getElementById('preset-name');
   let name = preset.innerText;
 
   let soundBoard = [];
 
-  const rows = document.querySelectorAll( '.row' );
-  rows.forEach( ( row ) => {
-    boardRow = []
-    const children = Array.from( row.children );
-    children.forEach( (child) => {
-      if ( child.classList.contains( 'slot' ) ) {
-        if ( child.classList.contains( 'draggable' ) ) {
-          boardRow.push( child.innerText );
-        } else {
-          boardRow.push( 'blank' )
-        }
-      }
-    });
-    soundBoard.push( boardRow )
+  const rows = document.querySelectorAll('.row');
+  rows.forEach((row) => {
+      let boardRow = [];
+      const children = Array.from(row.children);
+      children.forEach((child) => {
+          if (child.classList.contains('slot')) {
+              if (child.classList.contains('draggable')) {
+                  boardRow.push(child.innerText);
+              } else {
+                  boardRow.push('blank');
+              }
+          }
+      });
+      soundBoard.push(boardRow);
   });
 
-  log( 'edit', `saving preset - ${name}` )
-  fetch( `/save/${name}`, {
+  const stylesheet = document.styleSheets[1];
+  let cssRules = [];
+  for (let i = 0; i < stylesheet.cssRules.length; i++) {
+      cssRules.push(stylesheet.cssRules[i].cssText);
+  }
+
+  log('edit', `saving preset - ${name}`);
+  fetch(`/save/${name}`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify( soundBoard )
-  }).then( response => response.json() )
-  .then( data => {
-      if ( data.status === 'success' ) {
-          log( 'edit', 'saving successfull' )
-      }
-      else {
-          log( 'edit', 'saving error' )
-      }
+      body: JSON.stringify({
+          soundBoard: soundBoard,
+          cssRules: cssRules
+      })
+  }).then(response => response.json())
+      .then(data => {
+          if (data.status === 'success') {
+              log('edit', 'saving successful');
+          } else {
+              log('edit', 'saving error');
+          }
 
-      window.location.href = '/'
-      
-  }); 
+          window.location.href = '/'
+      });
+}
 
+function avc(slot) {
+  document.getElementById('accent-color').value = slot.dataset.color
+}
+function uc() {
+  let stylesheet = document.styleSheets[1]
+  const slot = document.querySelector('.active')
+  slot.setAttribute( 'data-color', document.getElementById('accent-color').value )
+  const accent = slot.dataset.color
 
+  const ruleChanges = [
+    { selector: `#${slot.id}`, color: al(accent, 25) },
+    { selector: `#${slot.id}:hover`, color: al(accent, 35) },
+    { selector: `#${slot.id}.playing`, color: al(accent, 0) },
+    { selector: `#${slot.id}.playing:hover`, color: al(accent, -10) }
+];
 
-
+ruleChanges.forEach(({ selector, color }) => {
+    let ruleIndex = -1;
+    for (let i = 0; i < stylesheet.cssRules.length; i++) {
+        if (stylesheet.cssRules[i].selectorText === selector) {
+            ruleIndex = i;
+            break;
+        }
+    }
+    if (ruleIndex !== -1) {
+        stylesheet.deleteRule(ruleIndex);
+        stylesheet.insertRule(`${selector} { background-color: ${color}; }`, ruleIndex);
+    }
+});
 }

@@ -1,11 +1,11 @@
 :root {
-  --text: #fff;
-  --primary-background: #292b2c;
-  --secondary-background: #343a40;
-  --hover: #3e444a;
-  --accent: #007bff;
-  --hover-accent: #0056b3;
-  --border-color: #fff;
+  --text: #000;
+  --primary-background: #000;
+  --secondary-background: #000;
+  --hover: #000;
+  --accent: #000;
+  --hover-accent: #000;
+  --border-color: #000;
   --shadow-color: rgba(0, 0, 0, 0.5);
  
   --primary-background-rgba: rgba(41, 43, 44, 1);
@@ -732,11 +732,18 @@
  
  .slot.draggable {
   cursor: grab;
-  background-color: var(--accent)
+  background-color: var(--secondary-background)
  }
  
  .slot.draggable:hover {
-  background-color: var(--hover-accent)
+  background-color: var(--hover)
+ }
+
+ .slot.draggable.active {
+  background-color: var(--accent);
+ }
+ .slot.draggable.active:hover {
+  background-color: var(--hover-accent);
  }
  
  #return {
@@ -744,6 +751,7 @@
   border: 1px solid var(--border-color);
   color: var(--text);
   padding: 5px;
+  margin-top: 25px;
   width: 30px;
   height: 30px;
   border-radius: 5px;

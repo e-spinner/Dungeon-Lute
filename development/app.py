@@ -159,10 +159,16 @@ def edit():
 # Save current setup to <name>.json
 @app.route( '/save/<name>', methods=['POST'] )
 def save_preset( name ):
-    soundBoard = request.json
+    data = request.json
+    sound_board = data['soundBoard']
+    css_rules = data['cssRules']
     with open( os.path.join( PRESETS_PATH, str(name) + '.json' ), 'w' ) as file:
         file.write( '' )
-        json.dump( soundBoard, file )
+        json.dump( sound_board, file )
+        
+    with open( os.path.join( app.root_path, 'static', 'css', 'colors.css' ), 'w' ) as file:
+        file.write( '' )
+        file.write( '\n'.join(css_rules) )
     return jsonify( {"status": "success"} )
 
 # ============== #

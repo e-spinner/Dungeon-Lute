@@ -43,6 +43,8 @@
 - dr = drop
 - ss = setSlot
 - s = savePreset
+- avc = activateColors
+- uc =updateColor
 
 ## soundboard.js
 
