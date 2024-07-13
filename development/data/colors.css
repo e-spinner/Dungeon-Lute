@@ -1,0 +1,12 @@
+#Chase.playing:hover { background-color: rgb(28, 121, 78); }
+#Chase.playing { background-color: rgb(38, 162, 104); }
+#Chase:hover { background-color: rgb(148, 230, 192); }
+#Chase { background-color: rgb(107, 220, 167); }
+#Underground.playing:hover { }
+#Underground.playing { }
+#Underground:hover { }
+#Underground { }
+#Sneak.playing:hover { }
+#Sneak.playing { }
+#Sneak:hover { }
+#Sneak { }

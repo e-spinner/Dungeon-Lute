@@ -1,24 +1,31 @@
-from flask import Flask, redirect, render_template, request, jsonify, send_from_directory, url_for
+from flask import *
 import os
 import json
 import datetime
 import threading
 import signal
 import time
+from cryptography.fernet import Fernet
 
 app = Flask( __name__ )
+
+key = b'1001101001-1001101001-1001101001-1001101001='
+encrypted = False
 
 # Paths to directories
 PLAYLISTS_PATH = os.path.join( os.path.dirname(app.root_path), 'playlists' )
 SOUNDS_PATH = os.path.join( os.path.dirname(app.root_path), 'sfx' )
 TRACKS_PATH = os.path.join( os.path.dirname(app.root_path), 'tracks' )
-PRESETS_PATH = os.path.join( app.root_path, 'static', 'presets' )
-DATA_PATH = os.path.join( app.root_path, 'static', 'data' )
+PRESETS_PATH = os.path.join( app.root_path, 'presets' )
+DATA_PATH = os.path.join( app.root_path, 'data' )
 
 # Home Page
 @app.route( '/' )
 def index():
-    return render_template( 'index.html' )
+    if encrypted:
+        return render_encrypted_template( 'index.html' )
+    else:
+        return render_template( 'index.html' )
 
 # ======== #
 # MENU-BAR #
@@ -37,8 +44,6 @@ def get_presets():
     for preset in json_files:
         name = preset[:-5]  # Remove the.json extension
         presets.append( name )
-    
-    print( presets )
     
     # Return the list of preset names
     return jsonify( presets )
@@ -157,7 +162,10 @@ def edit():
     with open( os.path.join( app.root_path, 'static', 'css', 'colors.css' ), 'w' ) as file:
         file.write( '' )
         
-    return render_template( 'edit.html' )  
+    if encrypted:
+        return render_encrypted_template( 'edit.html' )
+    else:
+        return render_template( 'edit.html' )  
 
 # Save current setup to <name>.json
 @app.route( '/save/<name>', methods=['POST'] )
@@ -169,32 +177,74 @@ def save_preset( name ):
         file.write( '' )
         json.dump( sound_board, file )
         
-    with open( os.path.join( app.root_path, 'static', 'css', 'colors.css' ), 'w' ) as file:
+    with open( os.path.join( app.root_path, 'data', 'colors.css' ), 'w' ) as file:
         file.write( '' )
         file.write( '\n'.join(css_rules) )
     return jsonify( {"status": "success"} )
+
+@app.route( '/data/colors.css' )
+def load_colors():
+    with open( os.path.join( app.root_path, 'data', 'colors.css'), 'rb' ) as file:
+        css = file.read()
+    return Response( css.decode( "utf-8" ), content_type='text/css' )   
 
 # ============== #
 # SERVER CONTROl #
 # ============== #
 
-@app.route('/stop')
+@app.route( '/stop' )
 def stop():
-    threading.Thread(target=shutdown_server).start()
-    return redirect(url_for('index'))
+    threading.Thread( target=shutdown_server ).start()
+    return redirect( url_for( 'index' ) )
 
 def shutdown_server():
     
     time.sleep( 0.4 )
-    os.kill(os.getpid(), signal.SIGINT)
+    os.kill( os.getpid(), signal.SIGINT )
     
-@app.route('/info')
+@app.route( '/info' )
 def info():
     return PLAYLISTS_PATH
 
-   
+# ========== #
+# ENCRYPTION #
+# ========== #
+
+def decrypt_file( file_path, key ):
+    f = Fernet( key )
+    with open( file_path, 'rb' ) as file:
+        encrypted_data = file.read()
+    decrypted_data = f.decrypt( encrypted_data )
+    return decrypted_data.decode( "utf-8" )
+
+@app.route( '/static/<dir>/<file>')
+def serve_static_file( dir, file ):
+    file_path = os.path.join( app.root_path, 'static', dir, file )
+    
+    if encrypted:
+        if os.path.exists( file_path ):
+            decrypted_data = decrypt_file( file_path, key )
+
+            mime_type = 'text/css' if file.endswith( '.css' ) else 'application/javascript'
+            return Response( decrypted_data, content_type=mime_type )
+        else:
+            abort( 404 )
+    
+    else:  
+        if os.path.exists( file_path ):
+            with open( file_path, 'rb' ) as f:
+                mime_type = 'text/css' if file.endswith( '.css' ) else 'application/javascript'
+                return Response( f.read(), content_type=mime_type )
+        
+def render_encrypted_template( template_name, **context ):
+    file_path = os.path.join( app.root_path, 'templates', template_name )
+    if os.path.exists( file_path ):
+        decrypted_data = decrypt_file( file_path, key )
+        return render_template_string( decrypted_data, **context )
+    else:
+        abort( 404 )
 
 if __name__ == '__main__':
     
-    app.run(debug=True)
+    app.run( debug=True )
     
