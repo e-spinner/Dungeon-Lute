@@ -1,23 +1,11 @@
-#Desert Exploration.playing:hover { }
-#Desert Exploration.playing { }
-#Desert Exploration:hover { }
-#Desert Exploration { }
-#Chase.playing:hover { background-color: rgb(28, 121, 78); }
-#Chase.playing { background-color: rgb(38, 162, 104); }
-#Chase:hover { background-color: rgb(148, 230, 192); }
-#Chase { background-color: rgb(107, 220, 167); }
-#City Exploration.playing:hover { }
-#City Exploration.playing { }
-#City Exploration:hover { }
-#City Exploration { }
-#Underground.playing:hover { background-color: rgb(147, 51, 0); }
-#Underground.playing { background-color: rgb(198, 69, 0); }
-#Underground:hover { background-color: rgb(255, 168, 121); }
-#Underground { background-color: rgb(255, 135, 70); }
-#Forest Exploration.playing:hover { }
-#Forest Exploration.playing { }
-#Forest Exploration:hover { }
-#Forest Exploration { }
+#Chase.playing:hover { }
+#Chase.playing { }
+#Chase:hover { }
+#Chase { }
+#Underground.playing:hover { }
+#Underground.playing { }
+#Underground:hover { }
+#Underground { }
 #Sneak.playing:hover { background-color: rgb(70, 38, 95); }
 #Sneak.playing { background-color: rgb(97, 53, 131); }
 #Sneak:hover { background-color: rgb(185, 150, 213); }

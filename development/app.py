@@ -154,6 +154,9 @@ def load_data( data ):
 # switch to edit page
 @app.route( '/edit' )
 def edit():
+    with open( os.path.join( app.root_path, 'static', 'css', 'colors.css' ), 'w' ) as file:
+        file.write( '' )
+        
     return render_template( 'edit.html' )  
 
 # Save current setup to <name>.json
