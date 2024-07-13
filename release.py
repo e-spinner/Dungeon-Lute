@@ -1,11 +1,22 @@
 import os
 import shutil
 import subprocess
-import json
-import re
+from cryptography.fernet import Fernet
 
 # server
 shutil.copy( './development/app.py', './.release' )
+
+# change encrypted to true
+with open('./.release/app.py', 'r') as file:
+    lines = file.readlines()
+
+for i, line in enumerate(lines):
+    if 'encrypted = False' in line:
+        lines[i] = 'encrypted = True\n'
+        break
+
+with open('./.release/app.py', 'w') as file:
+    file.writelines(lines)
 
 # html
 shutil.copy( './development/templates/edit.html', './.release/templates' )
@@ -50,6 +61,28 @@ subprocess.run([
     '--compress', 'passes=3,inline=true,pure_funcs=["log"]'
     ], check=True)
 
+# encrypt prgm-data
+def encrypt_file(file_path, key):
+    f = Fernet(key)
+    with open(file_path, 'rb') as file:
+        file_data = file.read()
+    encrypted_data = f.encrypt(file_data)
+    with open(file_path, 'wb') as file:
+        file.write(encrypted_data)
+
+def encrypt_directory(directory_path, key):
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            encrypt_file(file_path, key)
+
+
+key = b'1001101001-1001101001-1001101001-1001101001='
+
+encrypt_directory('/home/dev/Programs/soundboard/.release/templates', key)
+encrypt_directory('/home/dev/Programs/soundboard/.release/static', key)
+
+# pyinstaller
 import PyInstaller.__main__
 
 PyInstaller.__main__.run([
@@ -59,8 +92,8 @@ PyInstaller.__main__.run([
     '--distpath', './production',
     '--add-data', './.release/static/css/*:static/css',
     '--add-data', './.release/static/js/*:static/js',
-    '--add-data', './.release/static/data/*:static/data',
-    '--add-data', './.release/static/presets/*:static/presets',
+    '--add-data', './.release/data/*:data',
+    '--add-data', './.release/presets/*:presets',
     '--add-data', './.release/templates/*:templates',
     '--noconfirm',
     '--contents-directory', '.internal'
@@ -70,4 +103,6 @@ os.remove( './.release/Dungeon Lute.spec')
 shutil.move( './Dungeon Lute.spec', './.release/' )
 shutil.rmtree( './.release/build')
 shutil.move( './build', './.release/')
-shutil.copytree( './music', './production/Dungeon Lute/music')
+shutil.copytree( './playlists', './production/Dungeon Lute/playlists')
+shutil.copytree( './sfx', './production/Dungeon Lute/sfx')
+shutil.copytree( './tracks', './production/Dungeon Lute/tracks')

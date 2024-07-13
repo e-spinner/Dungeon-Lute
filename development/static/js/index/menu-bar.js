@@ -72,11 +72,9 @@ function lr(){
         })
 }
 function rw() {
+    alert(JSON.stringify(history))
     a( 'rewind' )
     if ( history.length > 1 ) {
-        let audio_status = document.getElementById( 'pause_play' )
-        audio_status.classList.remove( 'fa-play' )
-        audio_status.classList.add( 'fa-pause' )
 
         history.pop();
         const { p_idx, s_idx } = history[ history.length - 1 ];
