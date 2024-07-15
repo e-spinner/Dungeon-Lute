@@ -1,3 +1,5 @@
+from pathlib import Path
+import platform
 from flask import *
 import os
 import json
@@ -243,8 +245,112 @@ def render_encrypted_template( template_name, **context ):
         return render_template_string( decrypted_data, **context )
     else:
         abort( 404 )
+        
+# ========= #
+# USER-AUTH #
+# ========= #
+
+def create_tracking_file():
+    if platform.system() == "Windows":
+        path = Path(os.getenv('LOCALAPPDATA')) / ".DungeonLute"
+    elif platform.system() == "Linux":
+        path = Path.home() / ".local" / "share" / ".DungeonLute"
+    elif platform.system() == "Darwin":  # macOS
+        path = Path.home() / "Library" / "Application Support" / ".DungeonLute"
+    else:
+        raise Exception( "Unsupported OS" )
+
+    path.mkdir(parents=True, exist_ok=True)
+    tracking_file = path / ".z"
+    
+    if not tracking_file.exists():
+        with tracking_file.open('w') as file:
+            file.write( "If you see this leave it alone, I'll be sad" )
+
+def check_tracking_file():
+    if platform.system() == "Windows":
+        path = Path(os.getenv('LOCALAPPDATA')) / ".DungeonLute" / ".z"
+    elif platform.system() == "Linux":
+        path = Path.home() / ".local" / "share" / ".DungeonLute" / ".z"
+    elif platform.system() == "Darwin":
+        path = Path.home() / "Library" / "Application Support" / ".DungeonLute" / ".z"
+    else:
+        raise Exception( "Unsupported OS" )
+
+    return path.exists()
+
+auth = Flask( __name__ )
+
+authorized = False
+trial = False
+
+@auth.route( '/' )
+def authorize():
+    
+    date_file = Path( app.root_path ) / 'static' / '.z'
+    try:
+        with open(date_file, 'rb') as file:
+            f = Fernet( key )
+            # install_d = datetime.datetime.strptime( f.decrypt( file.read() ).decode(), '%Y-%m-%d').date()
+            install_d = datetime.datetime.strptime( file.read().decode(), '%Y-%m-%d').date()
+            
+        current_d = datetime.date.today()   
+        days = abs( ( install_d - current_d ).days )
+        
+        if days > 7:
+            template = 'auth.html'
+            os.remove( date_file )
+        else:
+            global trial
+            trial = True
+            print( 'trial: %s' % trial)
+            template = 'tauth.html'
+            
+    except FileNotFoundError:
+        template = 'auth.html'
+    
+    if encrypted:
+        return render_encrypted_template( template )
+    else:
+        return render_template( template )
+    
+@auth.route( '/trial' )
+def free_trial_pass():
+    
+    print( 'trial: %s' % trial)
+    if trial == True:
+        global authorized
+        authorized = True
+        print( 'authorized: %s' % authorized)
+        
+    
+    os.kill(os.getpid(), signal.SIGINT)
+    
+    return redirect( url_for( 'authorize' ) )
+    
+
 
 if __name__ == '__main__':
     
-    app.run( debug=True )
+    if not check_tracking_file():
+        # new installation
+        # create_tracking_file()
+        date_file = Path( app.root_path ) / 'static' / '.z'
+        with open( date_file, 'wb' ) as file:
+            f = Fernet(key)
+            # file.write( f.encrypt( datetime.date.today().strftime('%Y-%m-%d').encode() ) )
+            file.write( datetime.date.today().strftime('%Y-%m-%d').encode() )
+
+
+    auth.run(debug=False)
+
+
+    print( 'trial: %s' % trial)
+    print( 'authorized: %s' % authorized)
+    
+    while not authorized:
+        print("Waiting for authorization...")
+        time.sleep(1)
+
+    app.run(debug=True)
     
