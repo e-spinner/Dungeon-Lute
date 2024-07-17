@@ -21,6 +21,8 @@ with open('./.release/app.py', 'w') as file:
 # html
 shutil.copy( './development/templates/edit.html', './.release/templates' )
 shutil.copy( './development/templates/index.html', './.release/templates' )
+shutil.copy( './development/templates/auth.html', './.release/templates' )
+shutil.copy( './development/templates/tauth.html', './.release/templates' )
 
 # replace html <script>
 with open( './.release/templates/index.html', 'r' ) as file:

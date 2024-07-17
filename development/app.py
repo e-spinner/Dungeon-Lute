@@ -1,5 +1,10 @@
+import base64
+import hashlib
+import hmac
 from pathlib import Path
 import platform
+import random
+import string
 from flask import *
 import os
 import json
@@ -9,10 +14,14 @@ import signal
 import time
 from cryptography.fernet import Fernet
 
+version = '.0-03-22'
+
 app = Flask( __name__ )
 
 key = b'1001101001-1001101001-1001101001-1001101001='
 encrypted = False
+authorized = False
+trial = False
 
 # Paths to directories
 PLAYLISTS_PATH = os.path.join( os.path.dirname(app.root_path), 'playlists' )
@@ -24,6 +33,10 @@ DATA_PATH = os.path.join( app.root_path, 'data' )
 # Home Page
 @app.route( '/' )
 def index():
+    
+    if not authorized:
+        return authorize()
+    
     if encrypted:
         return render_encrypted_template( 'index.html' )
     else:
@@ -36,18 +49,13 @@ def index():
 # Request list of presets
 @app.route( '/load' )
 def get_presets():
-    # List to hold the names of all presets
     presets = []
-    
-    # Get a list of all.json files in the presets directory
     json_files = [ f for f in os.listdir( PRESETS_PATH ) if f.endswith( '.json' ) ]
     
-    # Extract the names of the presets by removing the.json extension
     for preset in json_files:
-        name = preset[:-5]  # Remove the.json extension
+        name = preset[:-5]  
         presets.append( name )
     
-    # Return the list of preset names
     return jsonify( presets )
     
 # Request for preset.json
@@ -250,41 +258,70 @@ def render_encrypted_template( template_name, **context ):
 # USER-AUTH #
 # ========= #
 
-def create_tracking_file():
+def create_salt():
     if platform.system() == "Windows":
         path = Path(os.getenv('LOCALAPPDATA')) / ".DungeonLute"
     elif platform.system() == "Linux":
         path = Path.home() / ".local" / "share" / ".DungeonLute"
-    elif platform.system() == "Darwin":  # macOS
+    elif platform.system() == "Darwin":
         path = Path.home() / "Library" / "Application Support" / ".DungeonLute"
     else:
         raise Exception( "Unsupported OS" )
 
     path.mkdir(parents=True, exist_ok=True)
-    tracking_file = path / ".z"
+    salt = path / version
     
-    if not tracking_file.exists():
-        with tracking_file.open('w') as file:
-            file.write( "If you see this leave it alone, I'll be sad" )
+    if not salt.exists():
+        with salt.open('wb') as file:
+            f = Fernet( key )
+            file.write( f.encrypt( os.urandom( 16 ) ) )
 
-def check_tracking_file():
+def check_salt():
     if platform.system() == "Windows":
-        path = Path(os.getenv('LOCALAPPDATA')) / ".DungeonLute" / ".z"
+        path = Path(os.getenv('LOCALAPPDATA')) / ".DungeonLute" / version
     elif platform.system() == "Linux":
-        path = Path.home() / ".local" / "share" / ".DungeonLute" / ".z"
+        path = Path.home() / ".local" / "share" / ".DungeonLute" / version
     elif platform.system() == "Darwin":
-        path = Path.home() / "Library" / "Application Support" / ".DungeonLute" / ".z"
+        path = Path.home() / "Library" / "Application Support" / ".DungeonLute" / version
     else:
         raise Exception( "Unsupported OS" )
 
     return path.exists()
 
-auth = Flask( __name__ )
+def read_salt():
+    if platform.system() == "Windows":
+        path = Path(os.getenv('LOCALAPPDATA')) / ".DungeonLute"
+    elif platform.system() == "Linux":
+        path = Path.home() / ".local" / "share" / ".DungeonLute"
+    elif platform.system() == "Darwin":
+        path = Path.home() / "Library" / "Application Support" / ".DungeonLute"
+    else:
+        raise Exception( "Unsupported OS" )
+    
+    _salt = path / version
+    
+    if _salt.exists():
+        with _salt.open('rb') as file:
+            f = Fernet( key )
+            salt = f.decrypt( file.read() )
+    return salt
+    
+def hash_username( username ):
 
-authorized = False
-trial = False
+    salt = read_salt()
+    hmac_hash = hmac.new( key, salt + username.encode(), hashlib.sha256 ).digest()
+    base64_hash = base64.urlsafe_b64encode( hmac_hash ).decode( 'utf-8' ).upper()
+    
+    random.seed( salt )
+    indices = sorted( random.sample( range( 0, len( base64_hash ) - 4 ), 3 ) )
+    
+    a = base64_hash[ indices[0]:indices[0] + 4 ]
+    b = base64_hash[ indices[1]:indices[1] + 4 ]
+    c = base64_hash[ indices[2]:indices[2] + 4 ]
 
-@auth.route( '/' )
+    license = f'{a}-{b}-{c}'
+    return license
+
 def authorize():
     
     date_file = Path( app.root_path ) / 'static' / '.z'
@@ -303,7 +340,6 @@ def authorize():
         else:
             global trial
             trial = True
-            print( 'trial: %s' % trial)
             template = 'tauth.html'
             
     except FileNotFoundError:
@@ -314,43 +350,49 @@ def authorize():
     else:
         return render_template( template )
     
-@auth.route( '/trial' )
+@app.route( '/trial' )
 def free_trial_pass():
     
-    print( 'trial: %s' % trial)
     if trial == True:
         global authorized
         authorized = True
-        print( 'authorized: %s' % authorized)
+    
+    time.sleep( 0.3 )
+    
+    return jsonify( {"status": "success"} )
+    
+@app.route( '/login', methods=['POST'] )
+def login():
+    data = request.json
+    username = data['username']
+    license = data['license'].upper()
+    
+    if license == hash_username( username ):
+        global authorized
+        authorized = True
         
+    time.sleep( 0.3 )
     
-    os.kill(os.getpid(), signal.SIGINT)
-    
-    return redirect( url_for( 'authorize' ) )
-    
+    return jsonify( {"status": "success"} )
 
+@app.route( '/payment', methods=['POST'] )
+def payment():
+    data = request.json
+    username = data['username']
+    license = hash_username( username )
+    
+    return jsonify( license )
 
 if __name__ == '__main__':
     
-    if not check_tracking_file():
+    if not check_salt():
         # new installation
-        # create_tracking_file()
+        create_salt()
         date_file = Path( app.root_path ) / 'static' / '.z'
         with open( date_file, 'wb' ) as file:
             f = Fernet(key)
             # file.write( f.encrypt( datetime.date.today().strftime('%Y-%m-%d').encode() ) )
             file.write( datetime.date.today().strftime('%Y-%m-%d').encode() )
-
-
-    auth.run(debug=False)
-
-
-    print( 'trial: %s' % trial)
-    print( 'authorized: %s' % authorized)
-    
-    while not authorized:
-        print("Waiting for authorization...")
-        time.sleep(1)
 
     app.run(debug=True)
     
