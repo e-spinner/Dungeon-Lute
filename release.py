@@ -21,6 +21,8 @@ with open('./.release/app.py', 'w') as file:
 # html
 shutil.copy( './development/templates/edit.html', './.release/templates' )
 shutil.copy( './development/templates/index.html', './.release/templates' )
+shutil.copy( './development/templates/auth.html', './.release/templates' )
+shutil.copy( './development/templates/tauth.html', './.release/templates' )
 
 # replace html <script>
 with open( './.release/templates/index.html', 'r' ) as file:
@@ -87,13 +89,11 @@ import PyInstaller.__main__
 
 PyInstaller.__main__.run([
     './.release/app.py',
-    '--onedir',
+    '--onefile',
     '--name', 'Dungeon Lute',
     '--distpath', './production',
     '--add-data', './.release/static/css/*:static/css',
     '--add-data', './.release/static/js/*:static/js',
-    '--add-data', './.release/data/*:data',
-    '--add-data', './.release/presets/*:presets',
     '--add-data', './.release/templates/*:templates',
     '--noconfirm',
     '--contents-directory', '.internal'
@@ -103,6 +103,3 @@ os.remove( './.release/Dungeon Lute.spec')
 shutil.move( './Dungeon Lute.spec', './.release/' )
 shutil.rmtree( './.release/build')
 shutil.move( './build', './.release/')
-shutil.copytree( './playlists', './production/Dungeon Lute/playlists')
-shutil.copytree( './sfx', './production/Dungeon Lute/sfx')
-shutil.copytree( './tracks', './production/Dungeon Lute/tracks')

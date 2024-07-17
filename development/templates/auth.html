@@ -1,0 +1,137 @@
+<!-- templates/auth.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dungeon Lute</title>
+  <style>
+    :root {
+      --width: 250px;
+    }
+
+    body {
+      background-color: #77767b;
+      color: #131313;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h3 {
+      margin: 0;
+    }
+
+    .box {
+      min-width: var(--width);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 15px 50px;
+      margin: 25px;
+      background-color: #c0bfbc;
+      border: 1px solid #131313;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #f66151;
+      border: 1px solid #131313;
+      padding: 5px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      transition: background-color 0.5s ease;
+    }
+
+    button:hover {
+      background-color: #f43520;
+    }
+
+    input {
+      text-align: center;
+      margin: 0 5px;
+      padding: 5px;
+      box-sizing: border-box;
+      border: 1px solid #131313;
+      border-radius: 5px;
+      color: #131313;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .license {
+      width: 60px;
+      text-transform: uppercase;
+      /* Display text in uppercase */
+    }
+
+    ::placeholder {
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="login" class='box'>
+    <h3>Username:</h3>
+    <input id='username'>
+    <h3>license key:</h3>
+    <div>
+      <input id='a' class="license" maxlength="4" placeholder="XXXX">
+      <span>-</span>
+      <input id='b' class="license" maxlength="4" placeholder="XXXX">
+      <span>-</span>
+      <input id='c' class="license" maxlength="4" placeholder="XXXX">
+    </div>
+    <button id='login-button' onclick='login()'>Login</button>
+  </div>
+
+  <div id="payment" class='box'>
+    <button id='payment-button' onclick='payment()'>Buy License</button>
+  </div>
+
+  <script>
+    function login() {
+      username = document.getElementById('username').value
+      license = `${document.getElementById('a').value}-${document.getElementById('b').value}-${document.getElementById('c').value}`
+      fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          license: license
+        })
+      })
+        .then(() => {
+          window.location.reload()
+        })
+    }
+    function payment() {
+      username = document.getElementById('username').value
+      fetch('/payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(data)
+        })
+    }
+  </script>
+</body>
+
+</html>
