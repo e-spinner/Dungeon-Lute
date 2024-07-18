@@ -40,8 +40,8 @@
 		}
 
 		#banner {
-			flex-direction: row;
 			background-color: #f66151;
+			gap: 0px;
 		}
 
 		button {
@@ -85,8 +85,9 @@
 <body>
 
 	<div id='banner' class='box'>
-		<h3 id='trial-text'>You have X days free<h3>
-				<button id='trial-button' onclick='trial()'>continue for free</button>
+		<h3 id='trial-text'>There are X days left in the beta test</h3>
+		<p>Thank you for your time and feedback!</p>
+		<p>Dungeon Lute v01-04-27</p>
 	</div>
 
 	<div id="login" class='box'>
@@ -103,11 +104,14 @@
 		<button id='login-button' onclick='login()'>Login</button>
 	</div>
 
-	<div id="payment" class='box'>
-		<button id='payment-button' onclick='payment()'>Buy License</button>
-	</div>
-
 	<script>
+		document.addEventListener('DOMContentLoaded', (event) => {
+			fetch('/trial-length')
+				.then((response) => response.json())
+				.then((data) => {
+					document.getElementById('trial-text').innerText = `There are ${data['days_left']} days left in the beta test`
+				})
+		})
 		function trial() {
 			fetch('/trial')
 				.then(() => {
@@ -129,22 +133,6 @@
 			})
 				.then(() => {
 					window.location.reload()
-				})
-		}
-		function payment() {
-			username = document.getElementById('username').value
-			fetch('/payment', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					username: username
-				})
-			})
-				.then(response => response.json())
-				.then(data => {
-					alert(data)
 				})
 		}
 	</script>

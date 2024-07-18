@@ -39,99 +39,21 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
-    button {
-      padding: 10px 20px;
+    #banner {
+      gap: 0px;
       background-color: #f66151;
-      border: 1px solid #131313;
-      padding: 5px 10px;
-      border-radius: 15px;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      transition: background-color 0.5s ease;
-    }
-
-    button:hover {
-      background-color: #f43520;
-    }
-
-    input {
-      text-align: center;
-      margin: 0 5px;
-      padding: 5px;
-      box-sizing: border-box;
-      border: 1px solid #131313;
-      border-radius: 5px;
-      color: #131313;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    }
-
-    .license {
-      width: 60px;
-      text-transform: uppercase;
-      /* Display text in uppercase */
-    }
-
-    ::placeholder {
-      color: #999;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="login" class='box'>
-    <h3>Username:</h3>
-    <input id='username'>
-    <h3>license key:</h3>
-    <div>
-      <input id='a' class="license" maxlength="4" placeholder="XXXX">
-      <span>-</span>
-      <input id='b' class="license" maxlength="4" placeholder="XXXX">
-      <span>-</span>
-      <input id='c' class="license" maxlength="4" placeholder="XXXX">
-    </div>
-    <button id='login-button' onclick='login()'>Login</button>
+  <div id='banner' class='box'>
+    <h3 id='trial-text'>The beta test has ended</h3>
+    <p>You can delete this program, Thank you for your time and feedback!</p>
+    <p>Dungeon Lute v01-04-27</p>
   </div>
 
-  <div id="payment" class='box'>
-    <button id='payment-button' onclick='payment()'>Buy License</button>
-  </div>
-
-  <script>
-    function login() {
-      username = document.getElementById('username').value
-      license = `${document.getElementById('a').value}-${document.getElementById('b').value}-${document.getElementById('c').value}`
-      fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username,
-          license: license
-        })
-      })
-        .then(() => {
-          window.location.reload()
-        })
-    }
-    function payment() {
-      username = document.getElementById('username').value
-      fetch('/payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: username
-        })
-      })
-        .then(response => response.json())
-        .then(data => {
-          alert(data)
-        })
-    }
-  </script>
 </body>
 
 </html>

@@ -18,10 +18,11 @@ version = '.0-03-22'
 
 app = Flask( __name__ )
 
-key = b'1001101001-1001101001-1001101001-1001101001='
+KEY = b'1001101001-1001101001-1001101001-1001101001='
 encrypted = False
 authorized = False
 trial = False
+TRIAL_LENGTH = 14
 
 def get_local_path():
 
@@ -244,8 +245,8 @@ def info():
 # ENCRYPTION #
 # ========== #
 
-def decrypt_file( file_path, key ):
-    f = Fernet( key )
+def decrypt_file( file_path, KEY ):
+    f = Fernet( KEY )
     with open( file_path, 'rb' ) as file:
         encrypted_data = file.read()
     decrypted_data = f.decrypt( encrypted_data )
@@ -257,7 +258,7 @@ def serve_static_file( dir, file ):
 
     if encrypted:
         if os.path.exists( file_path ):
-            decrypted_data = decrypt_file( file_path, key )
+            decrypted_data = decrypt_file( file_path, KEY )
 
             mime_type = 'text/css' if file.endswith( '.css' ) else 'application/javascript'
             return Response( decrypted_data, content_type=mime_type )
@@ -273,7 +274,7 @@ def serve_static_file( dir, file ):
 def render_encrypted_template( template_name, **context ):
     file_path = os.path.join( app.root_path, 'templates', template_name )
     if os.path.exists( file_path ):
-        decrypted_data = decrypt_file( file_path, key )
+        decrypted_data = decrypt_file( file_path, KEY )
         return render_template_string( decrypted_data, **context )
     else:
         abort( 404 )
@@ -291,7 +292,7 @@ def create_salt():
 
     if not salt.exists():
         with salt.open('wb') as file:
-            f = Fernet( key )
+            f = Fernet( KEY )
             file.write( f.encrypt( os.urandom( 16 ) ) )
 
 def check_salt():
@@ -304,14 +305,14 @@ def read_salt():
 
     if _salt.exists():
         with _salt.open('rb') as file:
-            f = Fernet( key )
+            f = Fernet( KEY )
             salt = f.decrypt( file.read() )
     return salt
 
 def hash_username( username ):
 
     salt = read_salt()
-    hmac_hash = hmac.new( key, salt + username.encode(), hashlib.sha256 ).digest()
+    hmac_hash = hmac.new( KEY, salt + username.encode(), hashlib.sha256 ).digest()
     base64_hash = base64.urlsafe_b64encode( hmac_hash ).decode( 'utf-8' ).upper()
 
     random.seed( salt )
@@ -329,14 +330,14 @@ def authorize():
     date_file = Path( app.root_path ) / 'static' / '.z'
     try:
         with open(date_file, 'rb') as file:
-            f = Fernet( key )
+            f = Fernet( KEY )
             # install_d = datetime.datetime.strptime( f.decrypt( file.read() ).decode(), '%Y-%m-%d').date()
             install_d = datetime.datetime.strptime( file.read().decode(), '%Y-%m-%d').date()
 
         current_d = datetime.date.today()
         days = abs( ( install_d - current_d ).days )
 
-        if days > 7:
+        if days > TRIAL_LENGTH:
             template = 'auth.html'
             os.remove( date_file )
         else:
@@ -363,27 +364,36 @@ def free_trial_pass():
 
     return jsonify( {"status": "success"} )
 
+@app.route( '/trial-length' )
+def get_trial():
+    
+    date_file = Path( app.root_path ) / 'static' / '.z'
+    with open(date_file, 'rb') as file:
+        f = Fernet( KEY )
+        # install_d = datetime.datetime.strptime( f.decrypt( file.read() ).decode(), '%Y-%m-%d').date()
+        install_d = datetime.datetime.strptime( file.read().decode(), '%Y-%m-%d').date()
+    current_d = datetime.date.today()
+    
+    trial_duration = datetime.timedelta(days=TRIAL_LENGTH)
+    trial_end_date = install_d + trial_duration
+    days_left = (trial_end_date - current_d).days
+    
+    # Return days left as JSON response
+    return jsonify({'days_left': days_left})
+
 @app.route( '/login', methods=['POST'] )
 def login():
     data = request.json
     username = data['username']
     license = data['license'].upper()
 
-    if license == hash_username( username ):
+    if license == 'BETA-TEST-0427' and  username == 'beta':
         global authorized
         authorized = True
 
     time.sleep( 0.3 )
 
     return jsonify( {"status": "success"} )
-
-@app.route( '/payment', methods=['POST'] )
-def payment():
-    data = request.json
-    username = data['username']
-    license = hash_username( username )
-
-    return jsonify( license )
 
 if __name__ == '__main__':
 
@@ -392,7 +402,7 @@ if __name__ == '__main__':
         create_salt()
         date_file = Path( app.root_path ) / 'static' / '.z'
         with open( date_file, 'wb' ) as file:
-            f = Fernet(key)
+            f = Fernet(KEY)
             # file.write( f.encrypt( datetime.date.today().strftime('%Y-%m-%d').encode() ) )
             file.write( datetime.date.today().strftime('%Y-%m-%d').encode() )
 
