@@ -55,13 +55,21 @@ with open('./.release/static/js/scripts.js', 'w') as f:
     f.write(cjs)
     
 # compress js 
-subprocess.run([
-    'uglifyjs', './.release/static/js/scripts.js', 
-    '-o', './.release/static/js/scripts.js', 
-    '-c', 
+# Locate the full path to uglifyjs
+uglifyjs_path = shutil.which("uglifyjs")
+if not uglifyjs_path:
+    raise FileNotFoundError("uglifyjs executable not found in PATH")
+
+command = [
+    uglifyjs_path, './.release/static/js/scripts.js',
+    '-o', './.release/static/js/scripts.js',
+    '-c',
     '-m',
     '--compress', 'passes=3,inline=true,pure_funcs=["log"]'
-    ], check=True)
+]
+print("Running command:", command)
+result = subprocess.run(command, check=True)
+print("Command executed successfully.")
 
 # encrypt prgm-data
 def encrypt_file(file_path, key):
@@ -81,8 +89,8 @@ def encrypt_directory(directory_path, key):
 
 key = b'1001101001-1001101001-1001101001-1001101001='
 
-encrypt_directory('/home/dev/Programs/soundboard/.release/templates', key)
-encrypt_directory('/home/dev/Programs/soundboard/.release/static', key)
+encrypt_directory('./.release/templates', key)
+encrypt_directory('./.release/static', key)
 
 # pyinstaller
 import PyInstaller.__main__
