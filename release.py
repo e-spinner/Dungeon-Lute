@@ -1,22 +1,8 @@
 import os
 import shutil
-import subprocess
-from cryptography.fernet import Fernet
 
 # server
 shutil.copy( './development/app.py', './.release' )
-
-# change encrypted to true
-with open('./.release/app.py', 'r') as file:
-    lines = file.readlines()
-
-for i, line in enumerate(lines):
-    if 'encrypted = False' in line:
-        lines[i] = 'encrypted = True\n'
-        break
-
-with open('./.release/app.py', 'w') as file:
-    file.writelines(lines)
 
 # html
 shutil.copy( './development/templates/edit.html', './.release/templates' )
@@ -54,44 +40,6 @@ for script in scripts:
 with open('./.release/static/js/scripts.js', 'w') as f:
     f.write(cjs)
     
-# compress js 
-# Locate the full path to uglifyjs
-uglifyjs_path = shutil.which("uglifyjs")
-if not uglifyjs_path:
-    raise FileNotFoundError("uglifyjs executable not found in PATH")
-
-command = [
-    uglifyjs_path, './.release/static/js/scripts.js',
-    '-o', './.release/static/js/scripts.js',
-    '-c',
-    '-m',
-    '--compress', 'passes=3,inline=true,pure_funcs=["log"]'
-]
-print("Running command:", command)
-result = subprocess.run(command, check=True)
-print("Command executed successfully.")
-
-# encrypt prgm-data
-def encrypt_file(file_path, key):
-    f = Fernet(key)
-    with open(file_path, 'rb') as file:
-        file_data = file.read()
-    encrypted_data = f.encrypt(file_data)
-    with open(file_path, 'wb') as file:
-        file.write(encrypted_data)
-
-def encrypt_directory(directory_path, key):
-    for root, dirs, files in os.walk(directory_path):
-        for file in files:
-            file_path = os.path.join(root, file)
-            encrypt_file(file_path, key)
-
-
-key = b'1001101001-1001101001-1001101001-1001101001='
-
-encrypt_directory('./.release/templates', key)
-encrypt_directory('./.release/static', key)
-
 # pyinstaller
 import PyInstaller.__main__
 

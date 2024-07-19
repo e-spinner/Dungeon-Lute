@@ -3,121 +3,122 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dungeon Lute</title>
-  <link rel="stylesheet" href="/static/css/styles.css">
-  <link rel="stylesheet" href="/static/css/colors.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dungeon Lute</title>
+	<link rel="stylesheet" href="/static/css/styles.css">
+	<link rel="stylesheet" href="/static/css/colors.css">
 </head>
 
 <body>
-  <!-- Editable title -->
-  <h1 id="preset-name" contenteditable="true">Enter Preset Name</h1>
+	<!-- Editable title -->
+	<h1 id="preset-name" contenteditable="true">Enter Preset Name</h1>
 
-  <div id="available-playlists">
-    <div id="playlist-container">
-    </div>
+	<div id="available-playlists">
+		<div id="playlist-container">
+		</div>
 
-  </div>
-
-  
-  <div id='colors-edit' >
-    <div id='color-grid'>
-        <input type="color" title="set accent color" id="accent-color" value="#000">
-    </div>
-  </div>
-
-  <table id="soundboard">
-    <tbody id="grid">
-      <tr class="row">
-        <td class="slot droppable"></td>
-        <td class="slot droppable"></td>
-        <td class="slot droppable"></td>
-        <td id="r" rowspan="2">
-          <div>
-
-            <button id="r-add" title="add column" onclick="R()" class="">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="add.svg" height="12"
-                width="12">
-                <g id="add">
-                  <path id="Union" fill-rule="evenodd"
-                    d="M8 1c0 -0.552285 -0.44772 -1 -1 -1S6 0.447715 6 1v5H1c-0.552285 0 -1 0.44772 -1 1s0.447715 1 1 1h5v5c0 0.5523 0.44772 1 1 1s1 -0.4477 1 -1V8h5c0.5523 0 1 -0.44772 1 -1s-0.4477 -1 -1 -1H8V1Z"
-                    clip-rule="evenodd" stroke-width="1"></path>
-                </g>
-              </svg>
-            </button>
-
-            <button id="r-remove" title="remove column" onclick="r()">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Subtract.svg" height="12"
-                width="12">
-                <g id="subtract">
-                  <path id="Vector 1931 (Stroke)" fill-rule="evenodd"
-                    d="M0 7c0 -0.55228 0.447715 -1 1 -1h12c0.5523 0 1 0.44772 1 1s-0.4477 1 -1 1H1c-0.552285 0 -1 -0.44772 -1 -1Z"
-                    clip-rule="evenodd" stroke-width="1"></path>
-                </g>
-              </svg>
-            </button>
-
-          </div>
-        </td>
-      </tr>
-
-      <tr class="row">
-        <td class="slot droppable"></td>
-        <td class="slot droppable"></td>
-        <td class="slot droppable"></td>
-        <td></td>
-      </tr>
-      <tr id="bot">
-        <td id="d" colspan="3">
-          <div>
-
-            <button id="d-add" title="add row" onclick="D()" class="">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="add.svg" height="12"
-                width="12">
-                <g id="add">
-                  <path id="Union" fill-rule="evenodd"
-                    d="M8 1c0 -0.552285 -0.44772 -1 -1 -1S6 0.447715 6 1v5H1c-0.552285 0 -1 0.44772 -1 1s0.447715 1 1 1h5v5c0 0.5523 0.44772 1 1 1s1 -0.4477 1 -1V8h5c0.5523 0 1 -0.44772 1 -1s-0.4477 -1 -1 -1H8V1Z"
-                    clip-rule="evenodd" stroke-width="1"></path>
-                </g>
-              </svg>
-            </button>
-
-            <button id="d-remove" title="remove row" onclick="d()">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Subtract.svg" height="12"
-                width="12">
-                <g id="subtract">
-                  <path id="Vector 1931 (Stroke)" fill-rule="evenodd"
-                    d="M0 7c0 -0.55228 0.447715 -1 1 -1h12c0.5523 0 1 0.44772 1 1s-0.4477 1 -1 1H1c-0.552285 0 -1 -0.44772 -1 -1Z"
-                    clip-rule="evenodd" stroke-width="1"></path>
-                </g>
-              </svg>
-            </button>
-
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Button to return and send slot data -->
-  <button id="return" title="save and return" onclick="s()">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Floppy-Disk.svg" height="12" width="12">
-      <g id="floppy-disk">
-        <path id="Subtract" fill-rule="evenodd"
-          d="M4.875 0.000507706C4.49342 0.0104768 4.12949 0.165624 3.85789 0.435009l-0.00144 0.001442L0.436447 3.85645l-0.000003 0 -0.00144 0.00145c-0.277116 0.27939 -0.43334264 0.65649 -0.4349995595 1.05H0V12.5c0 0.3978 0.158035 0.7794 0.43934 1.0607C0.720644 13.842 1.10217 14 1.5 14l0.63361 0V9.5c0 -0.34137 0.16522 -0.63802 0.40467 -0.83561 0.23602 -0.19478 0.53448 -0.28939 0.82624 -0.28939h7.27088c0.2918 0 0.5903 0.09461 0.8263 0.28939 0.2394 0.19759 0.4047 0.49424 0.4047 0.83561V14l0.6336 0c0.3978 0 0.7794 -0.158 1.0607 -0.4393S14 12.8978 14 12.5v-11c0 -0.39782 -0.158 -0.779351 -0.4393 -1.060656C13.2794 0.15804 12.8978 0.0000044107 12.5 0.0000044107L11.8664 0v3.5c0 0.32845 -0.1506 0.6227 -0.3827 0.82488 -0.2294 0.19978 -0.5242 0.30012 -0.8165 0.30012H6.07414c-0.29227 0 -0.58703 -0.10034 -0.81644 -0.30012C5.02555 4.1227 4.875 3.82845 4.875 3.5V0.000507706ZM10.6164 0H6.125v3.375h4.4914V0Zm0 14H3.38361V9.625h7.23279V14Z"
-          clip-rule="evenodd" stroke-width="1"></path>
-      </g>
-    </svg>
-  </button>
-
-  <script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+	</div>
 
 
-  <!-- JS-START -->
-  <script src="{{ url_for('static', filename='js/edit/edit.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/util.js') }}"></script>
-  <!-- JS-END -->
+	<div id='colors-edit'>
+		<div id='color-grid'>
+			<input type="color" title="set accent color" id="accent-color" value="#000">
+		</div>
+	</div>
+
+	<table id="soundboard">
+		<tbody id="grid">
+			<tr class="row">
+				<td class="slot droppable"></td>
+				<td class="slot droppable"></td>
+				<td class="slot droppable"></td>
+				<td id="r" rowspan="2">
+					<div>
+
+						<button id="r-add" title="add column" onclick="R()" class="">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="add.svg"
+								height="12" width="12">
+								<g id="add">
+									<path id="Union" fill-rule="evenodd"
+										d="M8 1c0 -0.552285 -0.44772 -1 -1 -1S6 0.447715 6 1v5H1c-0.552285 0 -1 0.44772 -1 1s0.447715 1 1 1h5v5c0 0.5523 0.44772 1 1 1s1 -0.4477 1 -1V8h5c0.5523 0 1 -0.44772 1 -1s-0.4477 -1 -1 -1H8V1Z"
+										clip-rule="evenodd" stroke-width="1"></path>
+								</g>
+							</svg>
+						</button>
+
+						<button id="r-remove" title="remove column" onclick="r()">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Subtract.svg"
+								height="12" width="12">
+								<g id="subtract">
+									<path id="Vector 1931 (Stroke)" fill-rule="evenodd"
+										d="M0 7c0 -0.55228 0.447715 -1 1 -1h12c0.5523 0 1 0.44772 1 1s-0.4477 1 -1 1H1c-0.552285 0 -1 -0.44772 -1 -1Z"
+										clip-rule="evenodd" stroke-width="1"></path>
+								</g>
+							</svg>
+						</button>
+
+					</div>
+				</td>
+			</tr>
+
+			<tr class="row">
+				<td class="slot droppable"></td>
+				<td class="slot droppable"></td>
+				<td class="slot droppable"></td>
+				<td></td>
+			</tr>
+			<tr id="bot">
+				<td id="d" colspan="3">
+					<div>
+
+						<button id="d-add" title="add row" onclick="D()" class="">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="add.svg"
+								height="12" width="12">
+								<g id="add">
+									<path id="Union" fill-rule="evenodd"
+										d="M8 1c0 -0.552285 -0.44772 -1 -1 -1S6 0.447715 6 1v5H1c-0.552285 0 -1 0.44772 -1 1s0.447715 1 1 1h5v5c0 0.5523 0.44772 1 1 1s1 -0.4477 1 -1V8h5c0.5523 0 1 -0.44772 1 -1s-0.4477 -1 -1 -1H8V1Z"
+										clip-rule="evenodd" stroke-width="1"></path>
+								</g>
+							</svg>
+						</button>
+
+						<button id="d-remove" title="remove row" onclick="d()">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Subtract.svg"
+								height="12" width="12">
+								<g id="subtract">
+									<path id="Vector 1931 (Stroke)" fill-rule="evenodd"
+										d="M0 7c0 -0.55228 0.447715 -1 1 -1h12c0.5523 0 1 0.44772 1 1s-0.4477 1 -1 1H1c-0.552285 0 -1 -0.44772 -1 -1Z"
+										clip-rule="evenodd" stroke-width="1"></path>
+								</g>
+							</svg>
+						</button>
+
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Button to return and send slot data -->
+	<button id="return" title="save and return" onclick="s()">
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Floppy-Disk.svg" height="12"
+			width="12">
+			<g id="floppy-disk">
+				<path id="Subtract" fill-rule="evenodd"
+					d="M4.875 0.000507706C4.49342 0.0104768 4.12949 0.165624 3.85789 0.435009l-0.00144 0.001442L0.436447 3.85645l-0.000003 0 -0.00144 0.00145c-0.277116 0.27939 -0.43334264 0.65649 -0.4349995595 1.05H0V12.5c0 0.3978 0.158035 0.7794 0.43934 1.0607C0.720644 13.842 1.10217 14 1.5 14l0.63361 0V9.5c0 -0.34137 0.16522 -0.63802 0.40467 -0.83561 0.23602 -0.19478 0.53448 -0.28939 0.82624 -0.28939h7.27088c0.2918 0 0.5903 0.09461 0.8263 0.28939 0.2394 0.19759 0.4047 0.49424 0.4047 0.83561V14l0.6336 0c0.3978 0 0.7794 -0.158 1.0607 -0.4393S14 12.8978 14 12.5v-11c0 -0.39782 -0.158 -0.779351 -0.4393 -1.060656C13.2794 0.15804 12.8978 0.0000044107 12.5 0.0000044107L11.8664 0v3.5c0 0.32845 -0.1506 0.6227 -0.3827 0.82488 -0.2294 0.19978 -0.5242 0.30012 -0.8165 0.30012H6.07414c-0.29227 0 -0.58703 -0.10034 -0.81644 -0.30012C5.02555 4.1227 4.875 3.82845 4.875 3.5V0.000507706ZM10.6164 0H6.125v3.375h4.4914V0Zm0 14H3.38361V9.625h7.23279V14Z"
+					clip-rule="evenodd" stroke-width="1"></path>
+			</g>
+		</svg>
+	</button>
+
+	<script src="https://kit.fontawesome.com/69a23d7d2f.js" crossorigin="anonymous"></script>
+
+
+	<!-- JS-START -->
+	<script src="{{ url_for('static', filename='js/edit/edit.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+	<!-- JS-END -->
 
 </body>
 
