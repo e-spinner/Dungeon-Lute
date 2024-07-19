@@ -9,7 +9,7 @@ import time
 import threading
 import signal
 
-version = '.0-03-22'
+version = '.0a-04-28'
 
 app = Flask( __name__ )
 

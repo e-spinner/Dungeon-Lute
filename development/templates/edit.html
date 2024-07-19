@@ -36,7 +36,7 @@
 				<td id="r" rowspan="2">
 					<div>
 
-						<button id="r-add" title="add column" onclick="R()" class="">
+						<button id="r-add" title="add column" onclick="expandRight()" class="">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="add.svg"
 								height="12" width="12">
 								<g id="add">
@@ -47,7 +47,7 @@
 							</svg>
 						</button>
 
-						<button id="r-remove" title="remove column" onclick="r()">
+						<button id="r-remove" title="remove column" onclick="retractRight()">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Subtract.svg"
 								height="12" width="12">
 								<g id="subtract">
@@ -72,7 +72,7 @@
 				<td id="d" colspan="3">
 					<div>
 
-						<button id="d-add" title="add row" onclick="D()" class="">
+						<button id="d-add" title="add row" onclick="expandDown()" class="">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="add.svg"
 								height="12" width="12">
 								<g id="add">
@@ -83,7 +83,7 @@
 							</svg>
 						</button>
 
-						<button id="d-remove" title="remove row" onclick="d()">
+						<button id="d-remove" title="remove row" onclick="retractDown()">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Subtract.svg"
 								height="12" width="12">
 								<g id="subtract">
@@ -101,7 +101,7 @@
 	</table>
 
 	<!-- Button to return and send slot data -->
-	<button id="return" title="save and return" onclick="s()">
+	<button id="return" title="save and return" onclick="savePreset()">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Floppy-Disk.svg" height="12"
 			width="12">
 			<g id="floppy-disk">
@@ -116,7 +116,7 @@
 
 
 	<!-- JS-START -->
-	<script src="{{ url_for('static', filename='js/edit/edit.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/edit.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/util.js') }}"></script>
 	<!-- JS-END -->
 

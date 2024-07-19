@@ -1,13 +1,13 @@
 /* Expanding slots */
 let cols = 3;
 let rows = 2;
-function R() {
-    a("r-add");
+function expandRight() {
+    animateButton("r-add");
     if (cols < 3) {
         let rows = document.querySelectorAll(".row");
         rows.forEach((row) => {
             let slot = document.createElement("td");
-            ss(slot);
+            setSlot(slot);
             slot.classList.add("slot", "fade-in", "droppable");
 
             const children = Array.from(row.children);
@@ -25,8 +25,8 @@ function R() {
         log('edit', 'expanding grid right')
     }
 }
-function r() {
-    a("r-remove");
+function retractRight() {
+    animateButton("r-remove");
     if (cols > 1) {
         let rows = document.querySelectorAll(".row");
         rows.forEach((row) => {
@@ -48,8 +48,8 @@ function r() {
     }
     log('edit', 'retracting grid right')
 }
-function D() {
-    a("d-add");
+function expandDown() {
+    animateButton("d-add");
     let grid = document.getElementById("grid");
     let row = document.createElement("tr");
     let bot = document.getElementById("bot");
@@ -58,7 +58,7 @@ function D() {
     for (let i = 0; i < cols; i++) {
         let slot = document.createElement("td");
         slot.classList.add("slot", "fade-in", "droppable");
-        ss(slot);
+        setSlot(slot);
         row.appendChild(slot);
 
         // Remove the fade-in class after the animation ends
@@ -77,8 +77,8 @@ function D() {
     grid.insertBefore(row, bot);
     log('edit', 'expanding grid down')
 }
-function d() {
-    a("d-remove");
+function retractDown() {
+    animateButton("d-remove");
     if (rows > 1) {
         let grid = document.getElementById("grid");
         const children = Array.from(grid.children);
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.length > 0) {
-                    sc(data)
+                    saveColors(data)
                     colors = data
                 }
             });
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     pl.classList.add('playlist', 'draggable');
                     pl.draggable = 'true';
                     pl.innerText = playlist;
-                    pl.addEventListener('dragstart', ds);
+                    pl.addEventListener('dragstart', dragstart);
                     playlistContainer.appendChild(pl)
 
                     color_list.push(playlist)
@@ -139,13 +139,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Add dragover event listener to each slot
         slots.forEach((slot) => {
-            ss(slot);
+            setSlot(slot);
         });
 
-        document.getElementById('accent-color').addEventListener('change', uc);
+        document.getElementById('accent-color').addEventListener('change', updateColor);
     }
 });
-function ds(event) {
+function dragstart(event) {
     event.dataTransfer.setData("text/plain", event.target.textContent);
     if (this.classList.contains('slot')) {
         this.classList.remove('draggable');
@@ -155,17 +155,17 @@ function ds(event) {
         this.dataset.color = '#000'
     }
 }
-function dv(event) {
+function dragOver(event) {
     event.preventDefault();
 }
-function de(event) {
+function dragEnter(event) {
     event.preventDefault();
     this.classList.add("hover");
 }
-function dl() {
+function dragLeave() {
     this.classList.remove("hover");
 }
-function dr(event) {
+function drop(event) {
     event.preventDefault();
     const data = event.dataTransfer.getData("text/plain");
     this.innerHTML = data;
@@ -173,11 +173,11 @@ function dr(event) {
     this.classList.add("draggable");
     this.draggable = "true";
     this.cursor = "grab";
-    this.addEventListener("dragstart", ds);
+    this.addEventListener("dragstart", dragstart);
 
     Array.from(document.querySelectorAll('.slot')).forEach((s) => { s.classList.remove('active', 'playing') })
     this.classList.add('active', 'playing')
-    avc(this)
+    activateColors(this)
 
     this.classList.remove("hover");
     this.onclick = () => {
@@ -188,18 +188,18 @@ function dr(event) {
                 s.classList.remove('active', 'playing');
             });
             this.classList.add('active', 'playing');
-            avc(this);
+            activateColors(this);
         }
     }
 
 }
-function ss(slot) {
-    slot.addEventListener("dragover", dv);
-    slot.addEventListener("dragenter", de);
-    slot.addEventListener("dragleave", dl);
-    slot.addEventListener("drop", dr);
+function setSlot(slot) {
+    slot.addEventListener("dragover", dragOver);
+    slot.addEventListener("dragenter", dragEnter);
+    slot.addEventListener("dragleave", dragLeave);
+    slot.addEventListener("drop", drop);
 }
-function s() {
+function savePreset() {
     const preset = document.getElementById('preset-name');
     let name = preset.innerText;
 
@@ -249,20 +249,20 @@ function s() {
         });
 }
 
-function avc(slot) {
+function activateColors(slot) {
     document.getElementById('accent-color').value = slot.dataset.color
 }
-function uc() {
+function updateColor() {
     let stylesheet = document.styleSheets[1]
     const slot = document.querySelector('.active')
     slot.setAttribute('data-color', document.getElementById('accent-color').value)
     const accent = slot.dataset.color
 
     const ruleChanges = [
-        { selector: `#${slot.id}`, color: al(accent, 25) },
-        { selector: `#${slot.id}:hover`, color: al(accent, 35) },
-        { selector: `#${slot.id}.playing`, color: al(accent, 0) },
-        { selector: `#${slot.id}.playing:hover`, color: al(accent, -10) }
+        { selector: `#${slot.id}`, color: adjustLightless(accent, 25) },
+        { selector: `#${slot.id}:hover`, color: adjustLightless(accent, 35) },
+        { selector: `#${slot.id}.playing`, color: adjustLightless(accent, 0) },
+        { selector: `#${slot.id}.playing:hover`, color: adjustLightless(accent, -10) }
     ];
 
     ruleChanges.forEach(({ selector, color }) => {

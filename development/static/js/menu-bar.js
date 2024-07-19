@@ -9,7 +9,7 @@ let soundBoard = []
 
 const FADE_OUT_DURATION = 1000;
 
-function lr() {
+function loadPresets() {
     // Step 1: Fetch the list of presets
     fetch('/load')
         .then(response => response.json())
@@ -26,13 +26,13 @@ function lr() {
                 p.innerText = preset;
                 p.classList.add('song');
                 p.addEventListener('click', () => {
-                    a(preset);
+                    animateButton(preset);
                     const grid = document.getElementById('grid')
                     grid.innerHTML = ''
-                    ls(preset);
-                    cm('presets')
+                    loadSoundboard(preset);
+                    closeMenu('presets')
                     setTimeout(() => {
-                        cm('settings')
+                        closeMenu('settings')
 
                     }, 300);
                 });
@@ -71,18 +71,18 @@ function lr() {
             });
         })
 }
-function rw() {
-    a('rewind')
+function rewind() {
+    animateButton('rewind')
     if (history.length > 1) {
 
         history.pop();
         const { p_idx, s_idx } = history[history.length - 1];
 
-        z();
+        stopCurrentSong();
 
         playingIndex = p_idx;
-        l(p_idx, s_idx);
-        sp(p_idx);
+        playSong(p_idx, s_idx);
+        showPlaylist(p_idx);
 
         history.pop()
         log('menu-bar', 'rewound succcessfull')
@@ -91,8 +91,8 @@ function rw() {
         log('menu-bar', 'cannot rewind')
     }
 }
-function p() {
-    a('toggle')
+function togglePlayback() {
+    animateButton('toggle')
     const pause = document.getElementById('Button-Pause')
     const play = document.getElementById('Button-Play')
 
@@ -108,20 +108,20 @@ function p() {
         pause.classList.add('hidden')
     }
 }
-function ap() {
+function audioPlay() {
     const pause = document.getElementById('Button-Pause')
     const play = document.getElementById('Button-Play')
     play.classList.add('hidden')
     pause.classList.remove('hidden')
 }
-function n() {
-    a('next')
-    z();
-    L(playingIndex)
-    sp(playingIndex)
+function next() {
+    animateButton('next')
+    stopCurrentSong();
+    playRandomSong(playingIndex)
+    showPlaylist(playingIndex)
     log('menu-bar', 'going to next song')
 }
-function ah(p_idx, s_idx) {
+function addToHistory(p_idx, s_idx) {
     log('history', `adding ${p_idx}, ${s_idx} to history`)
     history.push({ p_idx, s_idx });
 }

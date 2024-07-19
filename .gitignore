@@ -1,5 +1,3 @@
-playlists/*
-sfx/*
-tracks/*
-.release/*
-production/*
+**/playlists/**
+**/sfx/**
+**/tracks/**

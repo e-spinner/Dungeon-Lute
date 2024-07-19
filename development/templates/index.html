@@ -18,7 +18,7 @@
         <!-- MENU-BAR -->
         <div class="menu-bar">
 
-            <button id='settings-open' title="open settings" onclick="om('settings')">
+            <button id='settings-open' title="open settings" onclick="openMenu('settings')">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Cog.svg" height="12"
                     width="12">
                     <g id="cog">
@@ -31,7 +31,7 @@
 
             <div>
 
-                <button id="rewind" title="play previous" onclick="rw()">
+                <button id="rewind" title="play previous" onclick="rewind()">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Button-Previous.svg"
                         height="12" width="12">
                         <g id="button-previous">
@@ -42,7 +42,7 @@
                     </svg>
                 </button>
 
-                <button id="toggle" title="toggle playback" onclick="p()">
+                <button id="toggle" title="toggle playback" onclick="togglePlayback()">
                     <svg class="hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"
                         id="Button-Pause" height="12" width="12">
                         <g id="button-pause">
@@ -61,7 +61,7 @@
                     </svg>
                 </button>
 
-                <button id="next" title="play random" onclick="n()">
+                <button id="next" title="play random" onclick="next()">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Button-Next.svg"
                         height="12" width="12">
                         <g id="button-next">
@@ -74,7 +74,7 @@
 
             </div>
 
-            <button id="edit" title="open editor" onclick="e()">
+            <button id="edit" title="open editor" onclick="edit()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Pencil.svg" height="12"
                     width="12">
                     <g id="pencil">
@@ -135,7 +135,7 @@
 
         </div>
 
-        <button title="stop sfx" onclick="zZ()" id="stop-button" class="hidden">
+        <button title="stop sfx" onclick="stopCurrentSfx()" id="stop-button" class="hidden">
             <svg class="stop-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"
                 id="Button-Stop.svg" height="12" width="12">
                 <g id="button-stop">
@@ -205,7 +205,7 @@
     <div id="settings-menu" class="overlay">
         <div class="accent-bar">
 
-            <button id='settings-close' title='close settings' class='close-btn' onclick="cm('settings')">
+            <button id='settings-close' title='close settings' class='close-btn' onclick="closeMenu('settings')">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="Delete.svg delete"
                     height="20" width="20">
                     <g id="delete">
@@ -219,17 +219,18 @@
         </div>
         <div id="settings" class="overlay-content">
             <h1>Settings</h1>
-            <a class="song" onclick="om('presets')" id='presets-open'>Load Preset</a>
-            <a class="song" onclick="om('colors')" id='colors-open'>Color Editor</a>
-            <a class="song" onclick="om('setups')" id='setups-open'>Setup</a>
-            <a class="song" id='close-program' onclick="c()">Close Program</a>
+            <a class="song" onclick="openMenu('presets')" id='presets-open'>Load Preset</a>
+            <a class="song" onclick="openMenu('colors')" id='colors-open'>Color Editor</a>
+            <a class="song" onclick="openMenu('setups')" id='setups-open'>Setup</a>
+            <a class="song" id='close-program' onclick="closeProgram()">Close Program</a>
         </div>
 
         <!-- LOAD PRESET MENU -->
         <div id="presets-menu" class="overlay">
             <div class="accent-bar">
 
-                <button id='presets-close' title='close preset selection' class='close-btn' onclick="cm('presets')">
+                <button id='presets-close' title='close preset selection' class='close-btn'
+                    onclick="closeMenu('presets')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="Delete.svg delete"
                         height="20" width="20">
                         <g id="delete">
@@ -251,7 +252,7 @@
         <div id="colors-menu" class="overlay">
             <div class="accent-bar">
 
-                <button id='colors-close' title='close color editor' class='close-btn' onclick="cm('colors')">
+                <button id='colors-close' title='close color editor' class='close-btn' onclick="closeMenu('colors')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="Delete.svg delete"
                         height="20" width="20">
                         <g id="delete">
@@ -279,7 +280,7 @@
                 </div>
                 <div class='color-bar'>
 
-                    <button id='color-save' title="save colors" onclick="sc(colors)">
+                    <button id='color-save' title="save colors" onclick="saveColors(colors)">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" id="Floppy-Disk.svg"
                             height="12" width="12">
                             <g id="floppy-disk">
@@ -290,7 +291,7 @@
                         </svg>
                     </button>
 
-                    <button id='color-reset' title="reset colors" onclick="rc()">
+                    <button id='color-reset' title="reset colors" onclick="resetColors()">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"
                             id="Arrow-Round-Left.svg" height="12" width="12">
                             <g id="arrow-round-left">
@@ -308,9 +309,9 @@
     </div>
 
     <!-- JS-START -->
-    <script src="{{ url_for('static', filename='js/index/menu-bar.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index/soundboard.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index/details.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/menu-bar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/soundboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/details.js') }}"></script>
     <script src="{{ url_for('static', filename='js/util.js') }}"></script>
     <!-- JS-END -->
 
