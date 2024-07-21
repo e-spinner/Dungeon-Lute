@@ -1,5 +1,20 @@
 import os
 import shutil
+import zipfile
+
+import PyInstaller.__main__
+
+# ========== #
+# PARAMETERS #
+# ========== #
+
+RELEASE_DESTINATION = './releases'
+RELEASE_NAME = 'linux-v0a-04-28'
+
+# setup
+os.makedirs( './.release/static/css', exist_ok=True )
+os.makedirs( './.release/static/js', exist_ok=True )
+os.makedirs( './.release/templates', exist_ok=True )
 
 # server
 shutil.copy( './development/app.py', './.release' )
@@ -7,10 +22,8 @@ shutil.copy( './development/app.py', './.release' )
 # html
 shutil.copy( './development/templates/edit.html', './.release/templates' )
 shutil.copy( './development/templates/index.html', './.release/templates' )
-shutil.copy( './development/templates/auth.html', './.release/templates' )
-shutil.copy( './development/templates/tauth.html', './.release/templates' )
 
-# replace html <script>
+# replace html <script> with one file
 with open( './.release/templates/index.html', 'r' ) as file:
     content = file.read()
     js_start = content.find( '<!-- JS-START -->' )
@@ -30,24 +43,22 @@ shutil.copy( './development/static/css/styles.css', './.release/static/css' )
 
 # js
 cjs = ''
-scripts = [ './development/static/js/index/soundboard.js', './development/static/js/index/menu-bar.js', './development/static/js/index/details.js', './development/static/js/util.js', './development/static/js/edit/edit.js' ]
+scripts = [ './development/static/js/soundboard.js', './development/static/js/menu-bar.js', './development/static/js/details.js', './development/static/js/util.js', './development/static/js/edit.js' ]
 
 for script in scripts:
-    with open(script, 'r') as f:
+    with open( script, 'r' ) as f:
         js = f.read()
         cjs += js + '\n'
 
-with open('./.release/static/js/scripts.js', 'w') as f:
-    f.write(cjs)
+with open( './.release/static/js/scripts.js', 'w' ) as f:
+    f.write( cjs )
     
 # pyinstaller
-import PyInstaller.__main__
-
 PyInstaller.__main__.run([
     './.release/app.py',
     '--onefile',
     '--name', 'Dungeon Lute',
-    '--distpath', './production',
+    '--distpath', './Dungeon-Lute',
     '--add-data', './.release/static/css/*:static/css',
     '--add-data', './.release/static/js/*:static/js',
     '--add-data', './.release/templates/*:templates',
@@ -55,7 +66,29 @@ PyInstaller.__main__.run([
     '--contents-directory', '.internal'
 ])
 
-os.remove( './.release/Dungeon Lute.spec')
-shutil.move( './Dungeon Lute.spec', './.release/' )
-shutil.rmtree( './.release/build')
-shutil.move( './build', './.release/')
+# Cleanup
+shutil.rmtree( './.release' )
+os.remove( './Dungeon Lute.spec' )
+shutil.rmtree( './build' )
+
+os.makedirs( './Dungeon-Lute/playlists', exist_ok=True )
+os.makedirs( './Dungeon-Lute/tracks', exist_ok=True )
+os.makedirs( './Dungeon-Lute/sfx', exist_ok=True )
+
+shutil.copy( './development/playlists/.gitkeep', './Dungeon-Lute/playlists' )
+shutil.copy( './development/tracks/.gitkeep', './Dungeon-Lute/tracks' )
+shutil.copy( './development/sfx/.gitkeep', './Dungeon-Lute/sfx' )
+
+shutil.copy( './assets/readme.txt', './Dungeon-Lute' )
+
+# zip  release
+def zip_folder( folder_path, zip_name ):
+    with zipfile.ZipFile( zip_name, 'w', zipfile.ZIP_DEFLATED ) as zipf:
+        for root, dirs, files in os.walk( folder_path ):
+            for file in files:
+                file_path = os.path.join( root, file )
+                zipf.write( file_path, os.path.relpath( file_path, os.path.join( folder_path, '..' ) ) )
+
+zip_folder( './Dungeon-Lute', RELEASE_NAME )
+shutil.move( f'./{RELEASE_NAME}', RELEASE_DESTINATION )
+shutil.rmtree( './Dungeon-Lute' )

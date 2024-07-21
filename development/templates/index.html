@@ -92,6 +92,7 @@
             <div id="progressBar"></div>
             <input id='scrubber' type='range' value='0' max='100' step='0.01'>
         </div>
+
         <!-- TIME BAR -->
         <div id='time'>
             <span id='current'>00:00</span>
@@ -145,6 +146,12 @@
                 </g>
             </svg>
         </button>
+
+        <div id="main-control" class="volume-control">
+            <div class="volume-range" id="main-range"></div>
+            <input type="range" class="volume" id="main-volume" name="volume" min="0" max="1" step="0.01" value="0.5"
+                onchange="setVolume(this.value)">
+        </div>
 
     </div>
 
@@ -221,9 +228,11 @@
             <h1>Settings</h1>
             <a class="song" onclick="openMenu('presets')" id='presets-open'>Load Preset</a>
             <a class="song" onclick="openMenu('colors')" id='colors-open'>Color Editor</a>
-            <a class="song" onclick="openMenu('setups')" id='setups-open'>Setup</a>
             <a class="song" id='close-program' onclick="closeProgram()">Close Program</a>
+
         </div>
+
+
 
         <!-- LOAD PRESET MENU -->
         <div id="presets-menu" class="overlay">
@@ -307,6 +316,17 @@
         </div>
 
     </div>
+
+    <div id="side-text-left" class="side-text">
+        Developed by Elijah Spinner. If you enjoy Dungeon Lute, consider supporting future development:
+        <a href="https://ko-fi.com/dungeonlute" target="_blank">Support Dungeon Lute on Ko-fi</a>
+    </div>
+
+    <div id="side-text-right" class="side-text">
+        Developed by Elijah Spinner. If you enjoy Dungeon Lute, consider supporting future development:
+        <a href="https://ko-fi.com/dungeonlute" target="_blank">Support Dungeon Lute on Ko-fi</a>
+    </div>
+
 
     <!-- JS-START -->
     <script src="{{ url_for('static', filename='js/menu-bar.js') }}"></script>

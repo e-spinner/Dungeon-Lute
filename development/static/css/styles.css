@@ -118,7 +118,7 @@ h1 {
   -webkit-appearance: none;
   appearance: none;
   appearance: none;
-  background: #ddd;
+  background: none;
   outline: none;
   width: 100%;
   background-color: rgba(0, 0, 0, 0);
@@ -127,6 +127,7 @@ h1 {
 
 #scrubber::-webkit-slider-thumb {
   -webkit-appearance: none;
+  box-shadow: 0 0 10px var(--shadow-color);
   appearance: none;
   width: 5px;
   height: 20px;
@@ -137,6 +138,7 @@ h1 {
 }
 
 #scrubber::-moz-range-thumb {
+  box-shadow: 0 0 10px var(--shadow-color);
   width: 5px;
   height: 20px;
   background: var(--accent);
@@ -146,6 +148,7 @@ h1 {
 }
 
 #scrubber::-ms-thumb {
+  box-shadow: 0 0 10px var(--shadow-color);
   width: 5px;
   height: 20px;
   background: var(--accent);
@@ -215,6 +218,75 @@ svg {
   fill: var(--accent);
 }
 
+.volume-control {
+  position: absolute;
+  width: 25%;
+  bottom: 0;
+  margin: 10px;
+  background-color: var(--primary-background);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: 0 0 10px var(--shadow-color);
+  cursor: pointer;
+  height: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.volume-range {
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 0
+}
+
+.volume {
+  -webkit-appearance: none;
+  appearance: none;
+  appearance: none;
+  background: none;
+  outline: none;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute
+}
+
+.volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  box-shadow: 0 0 10px var(--shadow-color);
+  appearance: none;
+  width: 5px;
+  height: 10px;
+  background: var(--accent);
+  cursor: grab;
+  border-radius: 20%;
+  border: 1px solid var(--border-color)
+}
+
+.volume::-moz-range-thumb {
+  box-shadow: 0 0 10px var(--shadow-color);
+  width: 5px;
+  height: 10px;
+  background: var(--accent);
+  cursor: grab;
+  border-radius: 20%;
+  border: 1px solid var(--border-color)
+}
+
+.volume::-ms-thumb {
+  box-shadow: 0 0 10px var(--shadow-color);
+  width: 5px;
+  height: 10px;
+  background: var(--accent);
+  cursor: grab;
+  border-radius: 20%;
+  border: 1px solid var(--border-color)
+}
+
 .tab-content {
   width: 357.5px
 }
@@ -228,7 +300,8 @@ svg {
   left: 0;
   transform: translateX(0%);
   gap: 50px;
-  transition: opacity 0.5s, transform 0.5s
+  transition: opacity 0.5s, transform 0.5s;
+  z-index: 0;
 }
 
 #display {
@@ -789,5 +862,51 @@ table button:hover {
   to {
     opacity: 0;
     transform: scale(0.95)
+  }
+}
+
+.side-text {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-size: 10px;
+  color: var(--text);
+  writing-mode: vertical-rl;
+  text-align: center;
+  padding: 0 10px;
+  background-color: var(--secondary-background);
+  border-left: 5px solid var(--border-color)
+}
+
+#side-text-left {
+  left: 0;
+  transform: rotate(180deg);
+}
+
+#side-text-right {
+  right: 0;
+}
+
+.side-text a {
+  padding: 5px 0;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.side-text a:hover {
+  text-decoration: underline;
+  color: var(--hover-accent);
+}
+
+@media (max-width: 430px) {
+
+  #side-text-left,
+  #side-text-right {
+    display: none;
   }
 }

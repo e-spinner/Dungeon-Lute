@@ -9,6 +9,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
         loadTrack();
         loadSfx();
 
+        let initialVolume = document.getElementById('main-volume').value;
+        setVolume(initialVolume);
+
+        const volumeControl = document.getElementById('main-volume');
+
+        // Update the volume and the visual representation in real-time
+        volumeControl.addEventListener('input', (e) => {
+            setVolume(e.target.value);
+        });
+
+        // Ensure volume change is committed
+        volumeControl.addEventListener('change', (e) => {
+            setVolume(e.target.value);
+        });
+
         fetch('/load/data/color')
             .then(response => response.json())
             .then(data => {
@@ -237,6 +252,9 @@ function playSong(p_idx, s_idx) {
 
                         audio = new Audio(`/song/${playlist}/${song}`);
 
+                        let initialVolume = document.getElementById('main-volume').value;
+                        setVolume(initialVolume);
+
                         const name = document.getElementById('song-name');
                         name.innerText = song
 
@@ -300,6 +318,9 @@ function playRandomSong(p_idx) {
                         name.innerText = song
 
                         audio = new Audio(`/song/${playlist}/${song}`);
+
+                        let initialVolume = document.getElementById('main-volume').value;
+                        setVolume(initialVolume);
 
                         audio.addEventListener('timeupdate', () => {
                             if (audio != null && !scrubbing) {
@@ -402,4 +423,13 @@ function stopCurrentSfx() {
     const stop = document.getElementById('stop-button')
     stop.classList.add("hidden")
     Array.from(document.querySelectorAll('.effect')).forEach((s) => { s.classList.remove('playing') })
+}
+
+function setVolume(value) {
+    let volumeRange = document.getElementById('main-range');
+    volumeRange.style.width = (value * 100) + '%';
+
+    if (audio) {
+        audio.volume = value;
+    }
 }

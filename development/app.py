@@ -1,25 +1,23 @@
-from flask import *
+from flask import Flask, request, Response, render_template, jsonify, send_from_directory, redirect, url_for
 from pathlib import Path
-import platform #TODO: replace usages with sys
 import sys
-import os
-import json
-import datetime
-import time
-import threading
-import signal
-
-version = '.0a-04-28'
+from os import getenv, listdir, remove, kill, getpid
+from os.path import join, dirname, abspath, isdir
+from json import load, dump, JSONDecodeError
+from datetime import datetime
+from time import sleep
+from threading import Thread
+from signal import SIGINT
 
 app = Flask( __name__ )
 
 def get_local_path():
     """Determine the local path based on the operating system."""
-    if platform.system() == 'Windows':
-        path = Path( os.getenv( 'LOCALAPPDATA' ) ) / '.DungeonLute'
-    elif platform.system() == 'Linux':
+    if sys.platform == 'win32':
+        path = Path( getenv( 'LOCALAPPDATA' ) ) / '.DungeonLute'
+    elif sys.platform == 'linux':
         path = Path.home() / '.local' / 'share' / '.DungeonLute'
-    elif platform.system() == 'Darwin':
+    elif sys.platform == 'darwin':
         path = Path.home() / 'Library' / 'Application Support' / '.DungeonLute'
     else:
         raise Exception( 'Unsupported OS' )
@@ -32,16 +30,16 @@ def get_executable_path():
         executable_path = sys.executable
     else:
         executable_path = __file__
-    executable_path = os.path.dirname( os.path.abspath( executable_path ) )
+    executable_path = dirname( abspath( executable_path ) )
     
     return executable_path
 
 # Paths to directories
-PLAYLISTS_PATH = os.path.join( get_executable_path(), 'playlists' )
-SOUNDS_PATH = os.path.join( get_executable_path(), 'sfx' )
-TRACKS_PATH = os.path.join( get_executable_path(), 'tracks' )
-PRESETS_PATH = os.path.join( get_local_path(), 'presets' )
-DATA_PATH = os.path.join( get_local_path(), 'data' )
+PLAYLISTS_PATH = join( get_executable_path(), 'playlists' )
+SOUNDS_PATH = join( get_executable_path(), 'sfx' )
+TRACKS_PATH = join( get_executable_path(), 'tracks' )
+PRESETS_PATH = join( get_local_path(), 'presets' )
+DATA_PATH = join( get_local_path(), 'data' )
 
 @app.route( '/' )
 def index():
@@ -57,7 +55,7 @@ def index():
 def get_presets():
     """Return a list of available presets."""
     presets = []
-    json_files = [f for f in os.listdir( PRESETS_PATH ) if f.endswith( '.json' )]
+    json_files = [f for f in listdir( PRESETS_PATH ) if f.endswith( '.json' )]
     
     for preset in json_files:
         name = preset[:-5]
@@ -70,8 +68,8 @@ def get_presets():
 def get_preset( preset ):
     """Return the contents of a specific preset file."""
     try:
-        with open( os.path.join( PRESETS_PATH, str( preset ) + '.json' ), 'r' ) as file:
-            playlists = json.load( file )
+        with open( join( PRESETS_PATH, str( preset ) + '.json' ), 'r' ) as file:
+            playlists = load( file )
         s_log( 'menu-bar', f'Preset {preset} loaded successfully' )
         
     except FileNotFoundError:
@@ -84,7 +82,7 @@ def get_preset( preset ):
 def del_preset( preset ):
     """Delete a specific preset file."""
     try:
-        os.remove( os.path.join( PRESETS_PATH, f'{preset}.json' ) )
+        remove( join( PRESETS_PATH, f'{preset}.json' ) )
         s_log( 'menu-bar', f'Preset {preset} deleted successfully' )
         return jsonify( {'message': 'Preset file deleted successfully'} ), 200
     
@@ -103,7 +101,7 @@ def del_preset( preset ):
 @app.route( '/playlists' )
 def get_playlists():
     """Return a list of available playlists."""
-    playlists = [dir for dir in os.listdir( PLAYLISTS_PATH ) if os.path.isdir( os.path.join( PLAYLISTS_PATH, dir ) )]
+    playlists = [dir for dir in listdir( PLAYLISTS_PATH ) if isdir( join( PLAYLISTS_PATH, dir ) )]
     
     s_log( 'soundboard', f'Playlists loaded: {playlists}' )
     return jsonify( playlists )
@@ -111,8 +109,8 @@ def get_playlists():
 @app.route( '/song/<playlist>' )
 def get_songs( playlist ):
     """Return a list of songs in a specific playlist."""
-    playlist_path = os.path.join( PLAYLISTS_PATH, playlist )
-    songs = [file for file in os.listdir( playlist_path ) if file.endswith( '.mp3' )]
+    playlist_path = join( PLAYLISTS_PATH, playlist )
+    songs = [file for file in listdir( playlist_path ) if file.endswith( '.mp3' )]
     
     s_log( 'soundboard', f'Songs in playlist {playlist} loaded: {songs}' )
     return jsonify( songs )
@@ -127,7 +125,7 @@ def get_song( playlist, song ):
 @app.route( '/track' )
 def get_tracks():
     """Return a list of available tracks."""
-    tracks = [track for track in os.listdir( TRACKS_PATH ) if track.endswith( '.mp3' )]
+    tracks = [track for track in listdir( TRACKS_PATH ) if track.endswith( '.mp3' )]
     
     s_log( 'soundboard', f'Tracks loaded: {tracks}' )
     return jsonify( tracks )
@@ -142,7 +140,7 @@ def get_track( track ):
 @app.route( '/sound' )
 def get_sounds():
     """Return a list of available sounds."""
-    sounds = [sound for sound in os.listdir( SOUNDS_PATH ) if sound.endswith( '.mp3' )]
+    sounds = [sound for sound in listdir( SOUNDS_PATH ) if sound.endswith( '.mp3' )]
     
     s_log( 'soundboard', f'Sounds loaded: {sounds}' )
     return jsonify( sounds )
@@ -164,14 +162,14 @@ def log():
     data = request.get_json()
     origin = data['origin']
     message = data['message']
-    timestamp = datetime.datetime.now().strftime( '%d/%b/%Y %H:%M:%S' )
+    timestamp = datetime.now().strftime( '%d/%b/%Y %H:%M:%S' )
     
     print( f'\033[34m{request.remote_addr} - - [{timestamp}][{origin.upper()}]: {message}\033[0m' )
     return jsonify( {'status': 'success'} )
 
 def s_log( origin, message ):
     """Log server messages to the terminal."""
-    timestamp = datetime.datetime.now().strftime( '%d/%b/%Y %H:%M:%S' )
+    timestamp = datetime.now().strftime( '%d/%b/%Y %H:%M:%S' )
     print( f'\033[31mPY-SERVER - - [{timestamp}][{origin.upper()}]: {message}\033[0m' )
     
     
@@ -181,9 +179,9 @@ def save_data( data ):
     """Save JSON data to a file."""
     var = request.json
     
-    with open( os.path.join( DATA_PATH, str( data ) + '.json' ), 'w' ) as file:
+    with open( join( DATA_PATH, str( data ) + '.json' ), 'w' ) as file:
         file.write( '' )
-        json.dump( var, file )
+        dump( var, file )
         
     s_log( 'utilities', f'Data saved to {data}.json' )
     return jsonify( {'status': 'success'} )
@@ -192,15 +190,15 @@ def save_data( data ):
 def load_data( data ):
     """Load JSON data from a file."""
     try:
-        with open(os.path.join( DATA_PATH, str( data ) + '.json' ), 'r' ) as file:
-            var = json.load( file )
+        with open( join( DATA_PATH, str( data ) + '.json' ), 'r' ) as file:
+            var = load( file )
         s_log( 'utilities', f'Data loaded from {data}.json' )
         
     except FileNotFoundError:
         var = []
         s_log( 'utilities', f'Data file {data}.json not found' )
         
-    except json.JSONDecodeError:
+    except JSONDecodeError:
         var = []
         s_log( 'utilities', f'Error decoding JSON from file {data}.json' )
         
@@ -214,7 +212,7 @@ def load_data( data ):
 def edit():
     """Render the edit page and clear the colors.css file."""
     
-    with open( os.path.join( app.root_path, 'static', 'css', 'colors.css' ), 'w' ) as file:
+    with open( join( app.root_path, 'static', 'css', 'colors.css' ), 'w' ) as file:
         file.write( '' )
     s_log( 'edit', 'Switching to edit page' )
     
@@ -227,11 +225,11 @@ def save_preset( name ):
     sound_board = data['soundBoard']
     css_rules = data['cssRules']
     
-    with open( os.path.join( PRESETS_PATH, str( name ) + '.json' ), 'w' ) as file:
+    with open( join( PRESETS_PATH, str( name ) + '.json' ), 'w' ) as file:
         file.write( '' )
-        json.dump( sound_board, file )
+        dump( sound_board, file )
         
-    with open( os.path.join( DATA_PATH, 'color.css' ), 'w' ) as file:
+    with open( join( DATA_PATH, 'color.css' ), 'w' ) as file:
         file.write( '' )
         file.write( '\n'.join( css_rules ) )
         
@@ -242,7 +240,7 @@ def save_preset( name ):
 def load_colors():
     """Load and return the colors.css file."""
     
-    with open( os.path.join( DATA_PATH, 'color.css' ), 'rb' ) as file:
+    with open( join( DATA_PATH, 'color.css' ), 'rb' ) as file:
         css = file.read()
         
     s_log( 'edit', 'Colors.css loaded' )
@@ -255,16 +253,16 @@ def load_colors():
 @app.route( '/stop' )
 def stop():
     """Stop the server."""
-    threading.Thread( target=shutdown_server ).start()
+    Thread( target=shutdown_server ).start()
     
     s_log( 'server-control', 'Server stop requested' )
     return redirect( url_for( 'index' ) )
 
 def shutdown_server():
     """Shut down the server."""
-    time.sleep( 0.4 )
+    sleep( 0.4 )
     
-    os.kill( os.getpid(), signal.SIGINT )
+    kill( getpid(), SIGINT )
     s_log( 'server-control', 'Server shutting down' )
 
 # ====== #
@@ -286,9 +284,9 @@ if __name__ == '__main__':
         data.mkdir( parents=True, exist_ok=True )
         
         with open( data / 'color-default.json', 'w' ) as file:
-            json.dump( ['#ffffff', '#292b2c', '#343a40', '#007bff'], file )
+            dump( ['#ffffff', '#292b2c', '#343a40', '#007bff'], file )
         with open( data / 'color.json', 'w' ) as file:
-            json.dump( ['#ffffff', '#292b2c', '#343a40', '#007bff'], file )
+            dump( ['#241f31', '#241f31', '#c0bfbc', '#f66151'], file )
         with open( data / 'color.css', 'w' ) as file:
             file.write( '' )
 
