@@ -1,3 +1,9 @@
+/* 
+    Be warned, this is probably both the worst organized and least optimized file in this project.
+    It does work, if it is nearly impossible to find where a specific rule is
+    Eh, It'll do!
+*/
+
 :root {
   --text: #000;
   --primary-background: #000;
@@ -6,10 +12,10 @@
   --accent: #000;
   --hover-accent: #000;
   --border-color: #000;
+
   --shadow-color: rgba(0, 0, 0, 0.5);
 
   --primary-background-rgba: rgba(41, 43, 44, 1);
-
   --primary-background-transparent: rgba(41, 43, 44, 0);
 
 

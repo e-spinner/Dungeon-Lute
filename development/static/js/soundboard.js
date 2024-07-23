@@ -1,4 +1,5 @@
-// static/js/index/soundboard.js
+// static/js/soundboard.js
+
 document.addEventListener('DOMContentLoaded', (event) => {
 
     if (window.location.pathname == '/') {
@@ -14,12 +15,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         const volumeControl = document.getElementById('main-volume');
 
-        // Update the volume and the visual representation in real-time
         volumeControl.addEventListener('input', (e) => {
             setVolume(e.target.value);
         });
 
-        // Ensure volume change is committed
         volumeControl.addEventListener('change', (e) => {
             setVolume(e.target.value);
         });
@@ -210,6 +209,7 @@ function stopCurrentSong() {
     log('soundboard', 'stopping current song')
     document.querySelectorAll('.track').forEach((t) => { t.classList.remove('playing') })
 }
+
 function fadeOutSong() {
     return new Promise((resolve) => {
         if (audio) {
@@ -231,6 +231,7 @@ function fadeOutSong() {
         }
     });
 }
+
 function playSong(p_idx, s_idx) {
     fadeOutSong().then(() => {
         stopCurrentSong();
@@ -289,6 +290,7 @@ function playSong(p_idx, s_idx) {
             });
     });
 }
+
 function playRandomSong(p_idx) {
 
     fetch('/playlists')
