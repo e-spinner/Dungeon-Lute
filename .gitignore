@@ -1,5 +1,9 @@
-playlists/*
-sfx/*
-tracks/*
-.release/*
-production/*
+**/playlists/*
+**/sfx/*
+**/tracks/*
+
+!**/playlists/.gitkeep
+!**/sfx/.gitkeep
+!**/tracks/.gitkeep
+
+**/releases/*
