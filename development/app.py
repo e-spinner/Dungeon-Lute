@@ -140,7 +140,7 @@ def get_track( track ):
 @app.route( '/sound' )
 def get_sounds():
     """Return a list of available sounds."""
-    sounds = [sound for sound in listdir( SOUNDS_PATH ) if sound.endswith( '.mp3' )]
+    sounds = [sound for sound in listdir( SOUNDS_PATH ) if sound.endswith( '.mp3' ) or sound.endswith( '.wav' )]
     
     s_log( 'soundboard', f'Sounds loaded: {sounds}' )
     return jsonify( sounds )

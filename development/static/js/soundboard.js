@@ -136,28 +136,7 @@ function loadTrack() {
             })
         });
 }
-function loadSfx() {
-    log('loadSfx', 'begin')
-    fetch(`/sound`)
-        .then(response => response.json())
-        .then(sounds => {
-            const soundList = document.getElementById('effect-list')
-            log('loadSfx', `${soundList}`)
-            sounds.forEach((sound) => {
-                log('loadSfx', `${sound}`)
-                const li = document.createElement('li')
-                li.innerHTML = sound
-                li.id = sound
-                li.className = 'effect'
-                li.addEventListener('click', () => {
-                    animateButton(sound)
-                    playSfx(sound)
-                })
-                soundList.appendChild(li)
-            })
-            log('loadSfx', `done`)
-        });
-}
+
 function togglePlaylist(playlist) {
     const details = document.getElementById('details');
     details.classList.add('fade-out');
@@ -393,38 +372,6 @@ function playTrack(track) {
         audioPlay()
     });
 
-}
-function playSfx(sound) {
-    if (sfx) {
-        sfx.pause();
-        sfx = null;
-    }
-    const stop = document.getElementById('stop-button')
-    stop.classList.remove("hidden")
-    sfx = new Audio(`/sound/${sound}`)
-
-    sfx.play();
-    sfx.onended = () => {
-        const t = document.getElementById(sound);
-        t.classList.remove('playing');
-        stop.classList.add("hidden")
-    }
-
-
-    const t = document.getElementById(sound);
-    t.classList.add('playing');
-
-}
-function stopCurrentSfx() {
-
-    if (sfx) {
-        sfx.pause();
-        sfx = null;
-    }
-
-    const stop = document.getElementById('stop-button')
-    stop.classList.add("hidden")
-    Array.from(document.querySelectorAll('.effect')).forEach((s) => { s.classList.remove('playing') })
 }
 
 function setVolume(value) {

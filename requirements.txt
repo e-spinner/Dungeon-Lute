@@ -1,0 +1,13 @@
+altgraph==0.17.4
+blinker==1.8.2
+click==8.1.7
+Flask==3.0.3
+importlib_metadata==8.2.0
+itsdangerous==2.2.0
+Jinja2==3.1.4
+MarkupSafe==2.1.5
+packaging==24.1
+pyinstaller==6.9.0
+pyinstaller-hooks-contrib==2024.7
+Werkzeug==3.0.3
+zipp==3.19.2

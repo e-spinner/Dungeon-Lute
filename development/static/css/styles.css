@@ -447,19 +447,16 @@ svg {
       var(--primary-background-rgba))
 }
 
-#effect-list,
 #track-list,
 #song-list {
   list-style-type: none;
   padding-left: 0
 }
 
-#tracks,
-#effect {
+#tracks {
   margin-top: 20px;
 }
 
-.effect,
 .track,
 .song {
   padding: 8px;
@@ -484,7 +481,6 @@ svg {
   margin-bottom: 10px
 }
 
-.effect:hover,
 .track:hover,
 .song:hover {
   background-color: var(--hover)
@@ -494,12 +490,10 @@ svg {
   display: none
 }
 
-.effect.playing,
 .track.playing {
   background-color: var(--accent);
 }
 
-.effect.playing:hover,
 .track.playing:hover {
   background-color: var(--hover-accent);
 }
@@ -517,7 +511,6 @@ button {
 }
 
 .song.clicked,
-.effect.clicked,
 .track.clicked {
   transform: scaleY(1.1);
   transition: transform 0.5s ease, background-color 0.3s ease;
@@ -529,6 +522,54 @@ button {
   padding: 6px
 }
 
+#effect-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px;
+}
+
+.effect-button {
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  background-color: var(--secondary-background);
+  color: var(--text);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--shadow-color);
+  transition: transform 0.5s ease, background-color 0.3s ease;
+  position: relative;
+}
+
+.effect-button:hover {
+  background-color: var(--hover);
+}
+
+.effect-button.playing {
+  background-color: var(--accent);
+}
+
+.effect-button.playing:hover {
+  background-color: var(--hover-accent);
+}
+
+.sfx {
+  width: 60%;
+}
+
+.repeat {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 7px;
+  cursor: pointer;
+}
 
 .overlay {
   height: 100%;

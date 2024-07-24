@@ -1,92 +1,153 @@
 
-# Dungeon lute - beta v01.04.27
+# Dungeon lute
 
-Dungeon Lute is a ttrpg music manager that runs locally on your machine in a browser
+Dungeon Lute is a ttrpg sound manager. The main goal of this program is to create a way to play playlists of songs and layer ambiance on top, running in a browser. Its creation is a direct deflection  of working on my homebrew campaign; I switched to using Obsidian for DM'ing and wanted a sound manager in the side tab.
+
+Using python & Flask as a method to locally host a server, the program is built with the standard suite of html, css, and js.
 
 ## Installation
 
-Download the latest release, and select the .zip for your OS, currently supporting:
+Dungeon Lute is avaiable in Binary for Linux Ubuntu and Windows 11, for other OS, see Building From Source below.
 
-- Windows 11
-- Linux Ubuntu 22.04.3 LTS ( might work on other distros, would love to know )
+### Binary Installation
 
-Then unzip the folder to wherever you would like to use it, and use the executable to run it.
+For users who prefer a straightforward installation process and wish to run Dungeon Lute as an executable program without compiling from source, download the latest binary release from the [Releases page](https://github.com/e-spinner/Dungeon-Lute/releases).
 
-A Note for Windows, as this is a new program, and not signed, windows defender will attack and quarantine it with a vengence. A Signing liscense costs a fat enough chunk of money that I will not be signing this for now. In order to still provide some sense of a legit program I have uploaded the .zip to <https://www.virustotal.com/>, feel free to do the same with what you download to verify it is the same program.
+### Building from Source
 
-For Virus Total:
+If you wish to build Dungeon Lute from source, follow these instructions. This method requires Python 3.9 or newer.
 
-- Linux: [Check the file on VirusTotal](https://www.virustotal.com/gui/file/7945df174cfc761e35022b4e746c55d03881f097b3a792ecccd6b02f0e81ea66?nocache=1)
-  - sha-256: 7945df174cfc761e35022b4e746c55d03881f097b3a792ecccd6b02f0e81ea66
-- Windows: [Check the file on VirusTotal](https://www.virustotal.com/gui/file/4be9a750ec1540c93d4655b259a3b70d8232f1dfc6cd0d788a5828f1d67ff7ae/behavior)
-  - sha-256: 4be9a750ec1540c93d4655b259a3b70d8232f1dfc6cd0d788a5828f1d67ff7ae
+#### Prerequisites
 
-## Questions, Comments, and Concerns
+Ensure you have Python 3.9 or newer installed on your system. You can check your Python version by running `python --version` in your terminal.
 
-Please feel free to leave any here in this server: <https://discord.gg/ym66nuTFut/>, as this is in beta, I would greatly appreciate any feedback and comments on what need to be improved, or what is missing! Thank you for your time and considerations.
+#### Steps
+
+1. Clone the Dungeon Lute repository to your local machine:
+
+   ```bash
+   git clone https://github.com/e-spinner/Dungeon-Lute.git
+   ```
+
+2. Navigate to the cloned directory:
+
+   ```bash
+   cd Dungeon-Lute
+   ```
+
+3. Install the required Python dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Build the program using the provided release script. Replace `<destination>` with the directory where you want the built program to be placed. Omit `-z` if you do not wish to automatically zip the output:
+
+   ```bash
+   python release.py -d <destination> -z
+   ```
+
+This process will compile Dungeon Lute and place the executable (or optionally a zipped version) in the specified destination directory.
 
 ## Usage
 
-To add a playlist to the program, add a folder to the playlists directory in the folder containing the app, The name in the program will be the nae of the folder, and all .mp3's will be recognized as songs in the playlist.
+This guide will assume you are running the binary version of Dungeon Lute.
 
-To add a sfx / ambiance, add the desired .mp3 file to the sfx directory in the folder containing the app.
+### Adding your music
 
-To add a singleton track add the desired .mp3 file to the tracks directory in the folder containing the app.
-
-When the app is run, naviagte to <http://localhost:5000/> in any browser on your machine to access the program. On windows machines it will open a command line prompt that will show the server running, to close the program you may close that windows
-
-*IMPORTANT:* To close the app on linux, you must either use the shutdown option in the settings, or use System Monitor to end the process
-
-### What can it do?
-
-to enter the program during the beta test you must enter the beta license:
+Dungeon Lute takes the following file structure:
 
 ```bash
-username: beta
-license: BETA-TEST-0427
+.
+├── Dungeon Lute
+├── LICENSE
+├── playlists
+│   ├── Playlist-1
+│   │   ├── song-1.mp3
+│   │   └── song 2.mp3
+│   └── playlist-2
+│       └── song-1.mp3
+├── readme.txt
+├── sfx
+│   ├── sfx-1.mp3
+│   ├── sfx 2.mp3
+│   └── sfx-3.wav
+└── tracks
+    └── track 1.mp3
 ```
 
-![alt text](assets/login.png)
+Place folders of songs into the platlists directory for them to be recognized as a playlist. The name of the program will be the name of the folder. It MUST not contain any spaces.
 
-Once signed in you will be greeted with the following:
+Place .mp3 files inside of playlist folders, sfx directory, or the track directory for them to be recognized. Their names CAN contian spaces.
 
-![alt text](assets/landing.png)
+Additionally, .wav files can be placed inside of the sfx directory.
 
-This is the main page of the program, and where most of the magic happens. You can slide the bottom view between the tracks, playlists, and sfx display, these will show whatever was in thier repective directories when the page was laoded. To update for any changes you made to the files, refresh the page.
+### Running Dungeon Lute
 
-The skip button will play a random track from the current playlist excluding the previoud song, and the previous button will play the previous song played, this can switch to a previous playlist
+Run the Dongeon Lute Binary, this will start a locally hosted server that can be accessed by navigating to [http://localhost:5000](http://localhost:5000/) in any browser. Depending on your OS it will open a dialog of server logs.
 
-The settings menu looks like this:
+### Using Dungeon Lute
 
-![alt text](assets/settings.png)
+When navigating to [http://localhost:5000](http://localhost:5000/) in a browser, it will automaticaly load the `Default` preset.
 
-- Load Preset will open another menu where you can load or delete presets, to change the default preset, Save it as Defalut in the preset Editor
-- Color Editor will open another menu where you can customize the colors of the applcication to whatever you would like. There is also a reset to default button. If you turn it to colors that you cannot see, use the inspect tool to find the reset color button, good luck!
-- Setup does nothing
-- Close Program shuts down the server and refreshes the page
+![landing](./assets//img/landing.png)
 
-The Preset editor looks like this:
+You can slide the active view below the control panel to show your Tracks, PLaylists, or SFX. SFX will play over the actively playing song, and the active song can be from a playlist or track.
 
-![alt text](assets/edit.png)
+To load a preset other than `Default` open the settings and click on preset manager. Here you can load other prestes you have created, and also delete unwanted presets.
 
-You can name the Preset by using the textbox at the top of the page. name it Default to make it load automatically
+The Settings menu also provides options for changing the colors of the program itself, and closing the program.
 
-To create a preset you can use the + / - handles to increase and decrease the size of the soundboard grid. Currently you cannot make it wider than three cells. If that is undisireable let me know.
+To create new presets you can navigate to [http://localhost:5000/edit](http://localhost:5000/edit/) or click on the button for the preset editor in the control panel shown above.
 
-Once you have a chosen side, drag and drop playlists from the top menu into the slots of the grid. Any blank spaces will remain as empty area.
+![edit](/assets/img/edit.png)
 
-While a playlists is active ( clicked on ), you cna use the color picker box to set it to any color you want. The way this color picker looks depends on the browser you are using.
+While in the Preset Editor, you can set the name of the preset with the top text box, and build a preset by dragging playlists down into the grid. You can resize the grid with the + / - handles. As of right nor you cannot have more than three columns.
 
-Once you are finished click the save button to return to the main page
+When a playlist is active is will be highlighted. As shown above you can use the color picker box to change the color that playlost button will have. The color picker's appearance depends on your browser, and the colors are reset everytime you start the Preset Editor.
 
-One last thing to note is that as this can run in any browser, it can be used in obsidian with helpmate to streamline your gaming workflow:
+Once you the preset how you want, click the save button at the bottom to return to the main page.
 
-![alt text](assets/obsidian.png)
+When you click on a playlist button, it will randomly play a song from the playlist. All randomness in the program excludes playling the same file twice. While a playlist is playing the songs will appear in a list below the program. The actively playing song is displayed, and you can click on any other song in the list to play that one instead.
 
-## Planned Features
+You can play any number of sfx at a time, and they each have their own volume control. Addtionally you can select to repeat any of the sfx until you uncheck the option. While any sfx is playing, a stop button will appear in the bottom right of the control panel. Clicking this stop button will stop ALL playing sfx.
 
-- Upgrades to sfx Player
-- discord bot audio support
-- Volume Control
+The media controls in the Control Panel are fairly straitforward. You can pause / play the active song, and seek through the song. The next button will play a random song in the active playlist, and the rewind button will play the previously active song, not counting a track.
 
-for more info visit: <https://trello.com/b/AGAbDOw1/dungeon-lute>
+Below is an example of Dungeon Lute runnging inside of obsidian using Helpmate.
+
+![example](/assets/img/obsidian.png)
+
+### Stopping Dungeon Lute
+
+The easiest way to shudown the program is to use the Close Program button in the menu of the program, but if you must you can close the program with task manager, system monitor, or an eqivelent. Additionally if a dialog opened when you started the program you can close that to close the program.
+
+## Contributing
+
+I welcome contributions from everyone! Before you get started, please take a moment to review this guide to ensure a smooth contribution process.
+
+For a detailed list of future features visit [this trello board](https://trello.com/b/AGAbDOw1/dungeon-lute).
+
+### Reporting Bugs
+
+If you encounter any bugs, please report them by creating an issue on this GitHub page. When reporting a bug, please try to include:
+
+- A clear and descriptive title.
+- Detailed steps to reproduce the bug.
+- Expected behavior versus actual results.
+- Any relevant screenshots or error messages.
+- Information about your environment (e.g., operating system, Python version).
+
+### Suggesting Enhancements
+
+For feature requests or enhancements, please open an issue with a clear title and description. Explain why this enhancement would be useful and provide any additional context or examples where possible.
+
+### Pull Requests
+
+To submit a pull request:
+
+1. Fork the repository.
+2. Create a new branch for your changes (`git checkout -b my-feature-branch`).
+3. Make your changes and commit them (`git commit -am 'Add some feature'`).
+4. Push to the branch (`git push origin my-feature-branch`).
+5. Open a Pull Request against the main repository.
