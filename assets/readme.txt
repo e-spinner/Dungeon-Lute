@@ -34,23 +34,23 @@
 ║││╟──────────────────────────────────────────────────────────────────────────────────────────────╢
 ║││╟─ Steps                                                                                       ║
 ║││║                                                                                              ║
-║││║	1. Clone the Dungeon Lute repository to your local machine:                               ║
-║││║	                                                                                          ║
-║││║    	> git clone https://github.com/e-spinner/Dungeon-Lute.git                             ║
+║││║    1. Clone the Dungeon Lute repository to your local machine:                               ║
 ║││║                                                                                              ║
-║││║	2. Navigate to the cloned directory:                                                      ║
+║││║        > git clone https://github.com/e-spinner/Dungeon-Lute.git                             ║
 ║││║                                                                                              ║
-║││║    	> cd Dungeon-Lute                                                                     ║
+║││║    2. Navigate to the cloned directory:                                                      ║
 ║││║                                                                                              ║
-║││║	3. Install the required Python dependencies:                                              ║
+║││║        > cd Dungeon-Lute                                                                     ║
 ║││║                                                                                              ║
-║││║   		> pip install -r requirements.txt                                                     ║
+║││║    3. Install the required Python dependencies:                                              ║
 ║││║                                                                                              ║
-║││║	4. Build the program using the provided release script. Replace `<destination>`           ║
-║││║	   with the directory where you want the built program to be placed. Omit `-z`            ║
-║││║	   if you do not wish to automatically zip the output:                                    ║
+║││║        > pip install -r requirements.txt                                                     ║
 ║││║                                                                                              ║
-║││║   		> python release.py -d <destination> -z                                               ║
+║││║    4. Build the program using the provided release script. Replace `<destination>`           ║
+║││║       with the directory where you want the built program to be placed. Omit `-z`            ║
+║││║       if you do not wish to automatically zip the output:                                    ║
+║││║                                                                                              ║
+║││║        > python release.py -d <destination> -z                                               ║
 ║││║                                                                                              ║
 ║││║ This process will compile Dungeon Lute and place the executable (or optionally a             ║
 ║││║ zipped version) in the specified destination directory.                                      ║
@@ -98,7 +98,7 @@
 ║││                                                                                               ║
 ║││ For a rundown of how to use it, visit:                                                        ║
 ║││                                                                                               ║
-║││	> https://github.com/e-spinner/Dungeon-Lute/blob/main/README.md                               ║
+║││      > https://github.com/e-spinner/Dungeon-Lute/blob/main/README.md                          ║
 ║│├───────────────────────────────────────────────────────────────────────────────────────────────╢
 ║│├─ Stopping Dungeon Lute                                                                        ║
 ║││                                                                                               ║
@@ -117,11 +117,11 @@
 ║││ If you encounter any bugs, please report them by creating an issue on this GitHub page.       ║
 ║││ When reporting a bug, please try to include:                                                  ║
 ║││                                                                                               ║
-║││ 	- A clear and descriptive title.                                                          ║
-║││ 	- Detailed steps to reproduce the bug.                                                    ║
-║││ 	- Expected behavior versus actual results.                                                ║
-║││ 	- Any relevant screenshots or error messages.                                             ║
-║││ 	- Information about your environment (e.g., operating system, Python version).            ║
+║││     - A clear and descriptive title.                                                          ║
+║││     - Detailed steps to reproduce the bug.                                                    ║
+║││     - Expected behavior versus actual results.                                                ║
+║││     - Any relevant screenshots or error messages.                                             ║
+║││     - Information about your environment (e.g., operating system, Python version).            ║
 ║││                                                                                               ║
 ║│├───────────────────────────────────────────────────────────────────────────────────────────────╢
 ║│├─ Suggesting Enhancements                                                                      ║
@@ -135,11 +135,11 @@
 ║││                                                                                               ║
 ║││ To submit a pull request:                                                                     ║
 ║││                                                                                               ║
-║││ 	1. Fork the repository.                                                                   ║
-║││ 	2. Create a new branch for your changes (`git checkout -b my-feature-branch`).            ║
-║││ 	3. Make your changes and commit them (`git commit -am 'Add some feature'`).               ║
-║││ 	4. Push to the branch (`git push origin my-feature-branch`).                              ║
-║││ 	5. Open a Pull Request against the main repository.                                       ║
+║││     1. Fork the repository.                                                                   ║
+║││     2. Create a new branch for your changes (`git checkout -b my-feature-branch`).            ║
+║││     3. Make your changes and commit them (`git commit -am 'Add some feature'`).               ║
+║││     4. Push to the branch (`git push origin my-feature-branch`).                              ║
+║││     5. Open a Pull Request against the main repository.                                       ║
 ║││                                                                                               ║
 ╚╧╧═══════════════════════════════════════════════════════════════════════════════════════════════╝
 
