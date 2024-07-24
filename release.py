@@ -70,7 +70,9 @@ PyInstaller.__main__.run([
     '--add-data', './.release/static/js/*:static/js',
     '--add-data', './.release/templates/*:templates',
     '--noconfirm',
-    '--contents-directory', '.internal'
+    '--contents-directory', '.internal',
+    '--icon', './assets/favicon.ico',
+    '--icon', '/assets/favicon.icns'
 ])
 
 # Cleanup

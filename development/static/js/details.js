@@ -1,7 +1,7 @@
 // static/js/details.js
 
 function showPlaylist(p_idx) {
-    log('details', 'displaying playlist...');
+    log('details', 'displaying playlist...')
 
     fetch('/playlists')
         .then(response => response.json())
@@ -9,29 +9,33 @@ function showPlaylist(p_idx) {
             const playlist = playlists[p_idx];
 
             fetch(`/song/${playlist}`)
+                .then(response => response.json())
                 .then(songs => {
+
                     const details = document.getElementById('details');
                     const songList = document.getElementById('song-list');
 
-                    songList.innerHTML = '';
-
+                    songList.innerHTML = ''
                     songs.forEach((song, s_idx) => {
-                        const listItem = document.createElement('li');
-
+                        const listItem = document.createElement('li')
+                        listItem.innerHTML = song;
+                        listItem.id = song;
+                        listItem.className = 'song';
+                        listItem.dataset.index = s_idx;
                         listItem.addEventListener('click', () => {
+                            playSong(p_idx, s_idx);
+                            animateButton(song);
                         });
-
                         songList.appendChild(listItem);
                     });
 
                     details.classList.remove('fade-out');
                     details.classList.add('fade-in');
-
                     highlightPlayingSong(playlist);
-                });
-        });
 
-    log('details', 'playlist displayed');
+                });
+
+        });
 }
 
 function highlightPlayingSong(s_idx) {

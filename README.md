@@ -1,5 +1,5 @@
 
-# Dungeon lute
+![logo](/assets/img/logo.png)
 
 Dungeon Lute is a ttrpg sound manager. The main goal of this program is to create a way to play playlists of songs and layer ambiance on top, running in a browser. Its creation is a direct deflection  of working on my homebrew campaign; I switched to using Obsidian for DM'ing and wanted a sound manager in the side tab.
 

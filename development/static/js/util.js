@@ -54,6 +54,7 @@ function saveColors(c) {
   document.documentElement.style.setProperty('--secondary-background', c[2]);
   document.documentElement.style.setProperty('--hover', adjustLightless(c[2], 10));
   document.documentElement.style.setProperty('--primary-background', c[1]);
+  document.documentElement.style.setProperty('--logo', adjustLightless(c[1], 5));
   const primaryBackground = getComputedStyle(document.documentElement)
     .getPropertyValue('--primary-background')
     .trim();

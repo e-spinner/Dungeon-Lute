@@ -12,6 +12,7 @@
   --accent: #000;
   --hover-accent: #000;
   --border-color: #000;
+  --logo: #000;
 
   --shadow-color: rgba(0, 0, 0, 0.5);
 
@@ -38,7 +39,7 @@ body {
   align-items: center;
   padding: 20px;
   background-color: var(--primary-background);
-  color: var(--text)
+  color: var(--text);
 }
 
 h1 {
@@ -396,6 +397,12 @@ svg {
   background-color: var(--primary-background);
   box-shadow: 0 0 10px var(--shadow-color);
   opacity: 1
+}
+
+#tracks {
+  box-shadow: none;
+  border: none;
+
 }
 
 #effect-container,
@@ -913,8 +920,9 @@ table button:hover {
 }
 
 .side-text {
-  position: absolute;
+  position: fixed;
   top: 0;
+  bottom: 0;
   height: 100%;
   display: flex;
   align-items: center;
@@ -950,10 +958,29 @@ table button:hover {
   color: var(--hover-accent);
 }
 
-@media (max-width: 430px) {
+@media (max-width: 530px) {
 
   #side-text-left,
   #side-text-right {
     display: none;
   }
+}
+
+.logo {
+  fill: var(--logo);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: -5;
+}
+
+#logo-left {
+  right: 1300px;
+  transform: rotate(-15deg);
+}
+
+#logo-right {
+  left: 1300px;
+  transform: rotate(15deg);
 }
