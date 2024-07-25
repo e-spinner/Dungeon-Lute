@@ -2,7 +2,7 @@
 [![made-with-python](https://badgen.net/badge/made%20with%20python/3.9/1f425f)](https://www.python.org/)
 [![discord](https://badgen.net/badge/discord/join/2C2F33?icon=discord)](https://discord.gg/ym66nuTFut)
 [![trello](https://badgen.net/badge/development%20progress/Trello/70b500)](https://trello.com/b/AGAbDOw1/dungeon-lute)
-[![kofi](https://badgen.net/badge/support/kofi/ff5f5f?icon=kofi)](ko-fi.com/dungeonlute)
+[![kofi](https://badgen.net/badge/support/kofi/ff5f5f?icon=kofi)](https://ko-fi.com/dungeonlute)
 [![LICENSE](https://badgen.net/badge/liscense/MIT/blue)](https://github.com/e-spinner/Dungeon-Lute/blob/main/LICENSE)
 
 ![logo](/assets/img/logo.png)
