@@ -72,7 +72,7 @@ PyInstaller.__main__.run([
     '--noconfirm',
     '--contents-directory', '.internal',
     '--icon', './assets/favicon.ico',
-    '--icon', '/assets/favicon.icns'
+    '--icon', './assets/favicon.icns'
 ])
 
 # Cleanup

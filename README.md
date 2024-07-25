@@ -19,6 +19,8 @@ Dungeon Lute is avaiable in Binary for Linux Ubuntu and Windows 11, for other OS
 
 For users who prefer a straightforward installation process and wish to run Dungeon Lute as an executable program without compiling from source, download the latest binary release from the [Releases page](https://github.com/e-spinner/Dungeon-Lute/releases).
 
+*NOTE* For windows you will have to fight with windows defender to allow it to run
+
 ### Building from Source
 
 If you wish to build Dungeon Lute from source, follow these instructions. This method requires Python 3.9 or newer.
