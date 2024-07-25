@@ -1,4 +1,10 @@
 
+[![made-with-python](https://badgen.net/badge/made%20with%20python/3.9/1f425f)](https://www.python.org/)
+[![discord](https://badgen.net/badge/discord/join/2C2F33?icon=discord)](https://discord.gg/ym66nuTFut)
+[![trello](https://badgen.net/badge/development%20progress/Trello/70b500)](https://trello.com/b/AGAbDOw1/dungeon-lute)
+[![kofi](https://badgen.net/badge/support/kofi/ff5f5f?icon=kofi)](ko-fi.com/dungeonlute)
+[![LICENSE](https://badgen.net/badge/liscense/MIT/blue)](https://github.com/e-spinner/Dungeon-Lute/blob/main/LICENSE)
+
 ![logo](/assets/img/logo.png)
 
 Dungeon Lute is a ttrpg sound manager. The main goal of this program is to create a way to play playlists of songs and layer ambiance on top, running in a browser. Its creation is a direct deflection  of working on my homebrew campaign; I switched to using Obsidian for DM'ing and wanted a sound manager in the side tab.
@@ -127,6 +133,8 @@ The easiest way to shudown the program is to use the Close Program button in the
 I welcome contributions from everyone! Before you get started, please take a moment to review this guide to ensure a smooth contribution process.
 
 For a detailed list of future features visit [this trello board](https://trello.com/b/AGAbDOw1/dungeon-lute).
+
+For additional questions and help visit [this discord server](https://discord.gg/ym66nuTFut).
 
 ### Reporting Bugs
 
