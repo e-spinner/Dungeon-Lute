@@ -23,7 +23,7 @@ For users who prefer a straightforward installation process and wish to run Dung
 
 ### Building from Source
 
-If you wish to build Dungeon Lute from source, follow these instructions. This method requires Python 3.9 or newer.
+If you wish to build Dungeon Lute from source, follow these instructions. This method requires Python 3.9 or newer. And while I have made it to be Mac compatiable, this has not been tested.
 
 #### Prerequisites
 

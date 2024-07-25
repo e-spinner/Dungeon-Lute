@@ -286,7 +286,7 @@ if __name__ == '__main__':
         with open( data / 'color-default.json', 'w' ) as file:
             dump( ['#ffffff', '#292b2c', '#343a40', '#007bff'], file )
         with open( data / 'color.json', 'w' ) as file:
-            dump( ['#241f31', '#696969', '#c0bfbc', '#f66151'], file )
+            dump( ['#241f31', '#77767b', '#c0bfbc', '#f66151'], file )
         with open( data / 'color.css', 'w' ) as file:
             file.write( '' )
 
