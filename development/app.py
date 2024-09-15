@@ -40,12 +40,21 @@ SOUNDS_PATH = join( get_executable_path(), 'sfx' )
 TRACKS_PATH = join( get_executable_path(), 'tracks' )
 PRESETS_PATH = join( get_local_path(), 'presets' )
 DATA_PATH = join( get_local_path(), 'data' )
+TEMPLATES_PATH = join( get_executable_path(), 'templates' )
+
+from flask import render_template_string
+import pypugjs
+
+def pug_renderer( template_name ):
+    with open( f'{TEMPLATES_PATH}/{template_name}.pug' ) as f:
+        pug_content = f.read()
+    return render_template_string( pypugjs.html.process_pugjs( pug_content, basedir=TEMPLATES_PATH ) )
 
 @app.route( '/' )
 def index():
     """Render the main page."""
     s_log( 'index', 'Rendering main page' )
-    return render_template( 'index.html' )
+    return pug_renderer( 'index' )
 
 # ======== #
 # MENU-BAR #
@@ -173,7 +182,6 @@ def s_log( origin, message ):
     print( f'\033[31mPY-SERVER - - [{timestamp}][{origin.upper()}]: {message}\033[0m' )
     
     
-
 @app.route( '/save/data/<data>', methods=['POST'] )
 def save_data( data ):
     """Save JSON data to a file."""

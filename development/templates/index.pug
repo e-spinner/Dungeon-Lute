@@ -1,0 +1,74 @@
+//- ./templates/index.pug
+
+doctype html
+html(lang="en")
+
+    include includes/head
+
+    body
+
+        #media-controls
+            h1 Dungeon Lute
+            .menu-bar
+                include includes/menu-bar
+                
+            #progressContainer(title='seek track')
+                #progressBar
+                input#scrubber(type='range' value='0' max='100' step='0.01')
+
+            #time
+                span#current 00:00
+                span#duration 00:00
+
+            include includes/menu-controls
+ 
+        #display
+            #grad
+                #slider(style='transform: translateX(-33.3%);')
+                    
+                    #tab1.tab-content
+                        #tracks
+                            #track-display
+                                #track-container
+                                    ul#track-list
+
+                    #tab2.tab-content
+                        table#soundboard
+                            tbody#grid
+
+                        #details.fade-out
+                            h3#song-name
+                                #song-display
+                                    #song-container
+                                        ul#song-list
+
+                    #tab3.tab-content
+                        #effect-grid
+
+
+        #settings-menu.overlay
+            .accent-bar 
+                include includes/settings-btn 
+            
+            #settings.overlay-content 
+                h1 Settings 
+                a#presets-open.song(onclick="openMenu('presets')") Load Preset
+                a#colors-open.song(onclick="openMenu('colors')") Color Editor
+                a#close-program.song(onclick='closeProgram()') Close Program
+
+            #presets-menu.overlay 
+                .accent-bar 
+                    include includes/presets-btn 
+
+                #presets.overlay-content 
+                    h1 Load Preset
+
+            #color-menu.overlay
+                .accent-bar 
+                    include includes/colors-btn 
+                
+                #colors.overlay-content
+                    include includes/color-editor
+
+        script(src="{{ url_for('static', filename='js/dungeon-lute.js') }}")
+        script(src="{{ url_for('static', filename='js/spotify.js') }}")
