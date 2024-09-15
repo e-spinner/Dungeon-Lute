@@ -15,9 +15,14 @@
 
 <body>
 
+    <!-- SPOTIFY INTEGRATION -->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
+
     <!-- MEDIA CONTROLS -->
     <div id='media-controls'>
         <h1>Dungeon Lute</h1>
+
         <!-- MENU-BAR -->
         <div class="menu-bar">
 
@@ -313,7 +318,7 @@
 
     </div>
 
-    <div id="side-text-left" class="side-text">
+    <!-- <div id="side-text-left" class="side-text">
         Developed by Elijah Spinner. If you enjoy Dungeon Lute, consider supporting future development:
         <a href="https://ko-fi.com/dungeonlute" target="_blank">Support Dungeon Lute on Ko-fi</a>
     </div>
@@ -321,100 +326,13 @@
     <div id="side-text-right" class="side-text">
         Developed by Elijah Spinner. If you enjoy Dungeon Lute, consider supporting future development:
         <a href="https://ko-fi.com/dungeonlute" target="_blank">Support Dungeon Lute on Ko-fi</a>
-    </div>
+    </div> -->
 
 
     <!-- JS-START -->
-    <script src="{{ url_for('static', filename='js/menu-bar.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/soundboard.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/soundeffect.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/details.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dungeon-lute.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/spotify.js') }}"></script>
     <!-- JS-END -->
-
-    <svg id="logo-left" class="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 200 400" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
-        <rect width="20.645475" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.921809 0 0 1.308726 90.484408 109.354213)" stroke-width="0" />
-        <rect width="20.645475" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.921809 0 0 1.308726 90.484408 127.197105)" stroke-width="0" />
-        <rect width="20.645475" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.921809 0 0 1.308726 90.484408 145.039995)" stroke-width="0" />
-        <rect width="24.011235" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 89.485 162.882885)" stroke-width="0" />
-        <rect width="28.578279" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 87.485 180.725775)" stroke-width="0" />
-        <rect width="30.861801" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 86.485001 198.568665)" stroke-width="0" />
-        <rect width="35.428845" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 84.485001 216.411555)" stroke-width="0" />
-        <rect width="42.279412" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 81.485 234.254445)" stroke-width="0" />
-        <rect width="46.846456" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 79.485 252.097335)" stroke-width="0" />
-        <rect width="55.980544" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 75.485001 269.940225)" stroke-width="0" />
-        <rect width="55.980544" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 75.485001 269.940225)" stroke-width="0" />
-        <rect width="109.643314" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 51.985 287.783115)" stroke-width="0" />
-        <rect width="131.336774" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 42.485 359.154675)" stroke-width="0" />
-        <rect width="74.248721" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 67.485 376.997565)" stroke-width="0" />
-        <rect width="177.007216" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 22.485 305.626005)" stroke-width="0" />
-        <path
-            d="M35.25266,331.75258c-1.52853,0-2.76765-1.85156-2.76765-4.13557v-.01254c0-2.28401,1.23912-4.13557,2.76765-4.13557h52.94987c-.45506,1.29622-.70253,2.69013-.70253,4.14184s.24747,2.84562.70253,4.14184h-52.94987Zm129.49469-8.28368c1.52853,0,2.76765,1.85156,2.76765,4.13557v.01254c0,2.28401-1.23912,4.13557-2.76765,4.13557h-52.94988c.45506-1.29622.70253-2.69013.70253-4.14184s-.24747-2.84562-.70253-4.14184h52.94988Z"
-            stroke-width="0" />
-        <rect width="177.007216" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 22.485 341.311785)" stroke-width="0" />
-        <path
-            d="M81.485,84.65057l2.52032-9.01847h6.08235c1.60876,0,2.91292-1.85156,2.91292-4.13557v-.01254c0-2.28401-1.30416-4.13557-2.91292-4.13557h-3.76738l2.67144-9.55921h4.61153c1.60876,0,2.91292-1.85156,2.91292-4.13557v-.01254c0-2.28401-1.30416-4.13557-2.91292-4.13557h-2.29656l2.1777-7.79245h13.03118l2.17769,7.79245h-2.29656c-1.60876,0-2.91292,1.85156-2.91292,4.13557v.01254c0,2.28401,1.30416,4.13557,2.91292,4.13557h4.61153l2.67144,9.55921h-3.76738c-1.60876,0-2.91292,1.85156-2.91292,4.13557v.01254c0,2.28401,1.30416,4.13557,2.91292,4.13557h6.08235l2.52032,9.01847-.32132.54073h-10.28135c-1.60876,0-2.91292,1.85156-2.91292,4.13557v.01254c0,2.28401,1.30416,4.13557,2.91292,4.13557h5.35887l-3.7556,6.32002h-19.03118l-3.7556-6.32002h5.35887c1.60876,0,2.91292-1.85156,2.91292-4.13557v-.01254c0-2.28401-1.30416-4.13557-2.91292-4.13557h-10.28135l-.32131-.54073Z"
-            stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-
-    <svg id="logo-right" class="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 200 400" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
-        <rect width="20.645475" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.921809 0 0 1.308726 90.484408 109.354213)" stroke-width="0" />
-        <rect width="20.645475" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.921809 0 0 1.308726 90.484408 127.197105)" stroke-width="0" />
-        <rect width="20.645475" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.921809 0 0 1.308726 90.484408 145.039995)" stroke-width="0" />
-        <rect width="24.011235" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 89.485 162.882885)" stroke-width="0" />
-        <rect width="28.578279" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 87.485 180.725775)" stroke-width="0" />
-        <rect width="30.861801" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 86.485001 198.568665)" stroke-width="0" />
-        <rect width="35.428845" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 84.485001 216.411555)" stroke-width="0" />
-        <rect width="42.279412" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 81.485 234.254445)" stroke-width="0" />
-        <rect width="46.846456" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 79.485 252.097335)" stroke-width="0" />
-        <rect width="55.980544" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 75.485001 269.940225)" stroke-width="0" />
-        <rect width="55.980544" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 75.485001 269.940225)" stroke-width="0" />
-        <rect width="109.643314" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 51.985 287.783115)" stroke-width="0" />
-        <rect width="131.336774" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 42.485 359.154675)" stroke-width="0" />
-        <rect width="74.248721" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 67.485 376.997565)" stroke-width="0" />
-        <rect width="177.007216" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 22.485 305.626005)" stroke-width="0" />
-        <path
-            d="M35.25266,331.75258c-1.52853,0-2.76765-1.85156-2.76765-4.13557v-.01254c0-2.28401,1.23912-4.13557,2.76765-4.13557h52.94987c-.45506,1.29622-.70253,2.69013-.70253,4.14184s.24747,2.84562.70253,4.14184h-52.94987Zm129.49469-8.28368c1.52853,0,2.76765,1.85156,2.76765,4.13557v.01254c0,2.28401-1.23912,4.13557-2.76765,4.13557h-52.94988c.45506-1.29622.70253-2.69013.70253-4.14184s-.24747-2.84562-.70253-4.14184h52.94988Z"
-            stroke-width="0" />
-        <rect width="177.007216" height="6.32958" rx="3.16" ry="3.16"
-            transform="matrix(.87584 0 0 1.308726 22.485 341.311785)" stroke-width="0" />
-        <path
-            d="M81.485,84.65057l2.52032-9.01847h6.08235c1.60876,0,2.91292-1.85156,2.91292-4.13557v-.01254c0-2.28401-1.30416-4.13557-2.91292-4.13557h-3.76738l2.67144-9.55921h4.61153c1.60876,0,2.91292-1.85156,2.91292-4.13557v-.01254c0-2.28401-1.30416-4.13557-2.91292-4.13557h-2.29656l2.1777-7.79245h13.03118l2.17769,7.79245h-2.29656c-1.60876,0-2.91292,1.85156-2.91292,4.13557v.01254c0,2.28401,1.30416,4.13557,2.91292,4.13557h4.61153l2.67144,9.55921h-3.76738c-1.60876,0-2.91292,1.85156-2.91292,4.13557v.01254c0,2.28401,1.30416,4.13557,2.91292,4.13557h6.08235l2.52032,9.01847-.32132.54073h-10.28135c-1.60876,0-2.91292,1.85156-2.91292,4.13557v.01254c0,2.28401,1.30416,4.13557,2.91292,4.13557h5.35887l-3.7556,6.32002h-19.03118l-3.7556-6.32002h5.35887c1.60876,0,2.91292-1.85156,2.91292-4.13557v-.01254c0-2.28401-1.30416-4.13557-2.91292-4.13557h-10.28135l-.32131-.54073Z"
-            stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
 
 </body>
 
