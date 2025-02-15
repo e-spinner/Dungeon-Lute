@@ -1,15 +1,15 @@
 from flask import Flask, request, Response, render_template, jsonify, send_from_directory, redirect, url_for
 from pathlib import Path
 import sys
-from os import getenv, listdir, remove, kill, getpid
-from os.path import join, dirdeck, abspath, isdir
+from os import getenv, listdir, remove, kill, getpid, walk
+from os.path import join, abspath, isdir, dirname
 from json import load, dump, JSONDecodeError
 from datetime import datetime
 from time import sleep
 from threading import Thread
 from signal import SIGINT
 
-app = Flask( __name__ )
+app = Flask( __name__, template_folder='data/templates', static_folder='data/static' )
 
 def get_executable_path():
     """Get the path of the current executable or script."""
@@ -17,15 +17,14 @@ def get_executable_path():
         executable_path = sys.executable
     else:
         executable_path = __file__
-    executable_path = dirdeck( abspath( executable_path ) )
     
-    return executable_path
+    return dirname( abspath( executable_path ) )
 
 # Paths to directories
-PLAYLISTS_PATH = join( get_executable_path(), 'playlists' )
-SOUNDS_PATH = join( get_executable_path(), 'sfx' )
-TRACKS_PATH = join( get_executable_path(), 'tracks' )
-DECKS_PATH = join( get_executable_path(), 'data/decks' )
+PLAYLISTS_PATH = join( get_executable_path(), 'playlists'  )
+SOUNDS_PATH    = join( get_executable_path(), 'sfx'        )
+TRACKS_PATH    = join( get_executable_path(), 'tracks'     )
+DECKS_PATH     = join( get_executable_path(), 'data/decks' )
 
 @app.route( '/' )
 def index():
