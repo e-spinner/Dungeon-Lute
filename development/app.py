@@ -1,9 +1,8 @@
-from flask import Flask, request, Response, render_template, jsonify, send_from_directory, redirect, url_for
-from pathlib import Path
+from flask import Flask, request, render_template, jsonify, send_from_directory, redirect, url_for
 import sys
-from os import getenv, listdir, remove, kill, getpid, walk
+from os import listdir, remove, kill, getpid
 from os.path import join, abspath, isdir, dirname
-from json import load, dump, JSONDecodeError
+from json import load, dump
 from datetime import datetime
 from time import sleep
 from threading import Thread
@@ -12,114 +11,70 @@ from signal import SIGINT
 app = Flask( __name__, template_folder='data/templates', static_folder='data/static' )
 
 def get_executable_path():
-    """Get the path of the current executable or script."""
-    if getattr( sys, 'frozen', False ):
-        executable_path = sys.executable
-    else:
-        executable_path = __file__
-    
+    executable_path = sys.executable if getattr( sys, 'frozen', False ) else __file__
     return dirname( abspath( executable_path ) )
 
-# Paths to directories
-PLAYLISTS_PATH = join( get_executable_path(), 'playlists'  )
-SOUNDS_PATH    = join( get_executable_path(), 'sfx'        )
-TRACKS_PATH    = join( get_executable_path(), 'tracks'     )
-DECKS_PATH     = join( get_executable_path(), 'data/decks' )
+CONFIG = {
+    'playlist': {'path': join( get_executable_path(), 'playlists'  ), 
+                 'extensions': ['.mp3']},
+    'track':    {'path': join( get_executable_path(), 'sfx'        ),    
+                 'extensions': ['.mp3']},
+    'sound':    {'path': join( get_executable_path(), 'tracks'     ),    
+                 'extensions': ['.mp3', '.wav']},
+    'deck':     {'path': join( get_executable_path(), 'data/decks' ),     
+                 'extensions': ['.json']},
+    'color':    {'path': join( get_executable_path(), 'data'       ),     
+                 'extensions': ['.json']},
+}
 
 @app.route( '/' )
-def index():
-    """Render the main page."""
-    s_log( 'index', 'Rendering main page' )
-    return render_template( 'index.html' )
-
+def index(): return render_template( 'index.html' )
 @app.route( '/edit' )
-def edit():
-    """Render the edit page."""
-    s_log( 'edit', 'Switching to edit page' )
-    return render_template( 'edit.html' )
+def edit():  return render_template( 'edit.html'  )
 
 # =============== #
-# DECK MANAGEMENT #
+# FILE MANAGEMENT #
 # =============== #
 
-@app.route( '/save/<deck>', methods=['POST'] )
-def save_deck( deck ):
-    """Save the current setup as a deck."""
-    data = request.json
-    sound_board = data['soundBoard']
-    css_rules = data['cssRules']
+@app.route( '/save/<folder>/<item>', methods=['POST'] )
+def file_save( folder, item ):
+    data = request.json['save']
     
-    with open( join( DECKS_PATH, str( deck ) + '.json' ), 'w' ) as file:
+    with open( join( CONFIG[folder]['path'], str( item ) + '.json' ), 'w' ) as file:
         file.write( '' )
-        dump( sound_board, file )
+        dump( data, file )
         
-    s_log( 'edit', f'deck {deck} saved' )
+    s_log( 'file_mngr', f'file: {item} saved' )
     return jsonify( {'status': 'success'} )
 
-@app.route( '/load' )
-def get_decks():
-    """Return a list of available decks."""
-    decks = []
-    json_files = [f for f in listdir( DECKS_PATH ) if f.endswith( '.json' )]
-    
-    for deck in json_files:
-        deck = deck[:-5]
-        decks.append( deck )
-        
-    s_log( 'menu-bar', f'decks loaded: {decks}' )
-    return jsonify( decks )
-
-@app.route( '/load/<deck>' )
-def get_deck( deck ):
-    """Return the contents of a specific deck file."""
+@app.route( '/del/<folder>/<item>' )
+def file_delete( folder, item ):
     try:
-        with open( join( DECKS_PATH, str( deck ) + '.json' ), 'r' ) as file:
-            playlists = load( file )
-        s_log( 'menu-bar', f'deck {deck} loaded successfully' )
-        
-    except FileNotFoundError:
-        playlists = []
-        s_log( 'menu-bar', f'deck {deck} not found' )
-        
-    return jsonify( playlists )
-
-@app.route( '/del/<deck>' )
-def del_deck( deck ):
-    """Delete a specific deck file."""
-    try:
-        remove( join( DECKS_PATH, f'{deck}.json' ) )
-        s_log( 'menu-bar', f'deck {deck} deleted successfully' )
-        return jsonify( {'message': 'deck file deleted successfully'} ), 200
+        remove( join( CONFIG[folder]['path'], f'{item}.json' ) )
+        s_log( 'file_mngr', f'file: {item} deleted successfully' )
+        return jsonify( {'message': 'file deleted successfully'} ), 200
     
     except FileNotFoundError:
-        s_log( 'menu-bar', f'deck {deck} not found for deletion' )
-        return jsonify( {'error': 'deck file not found'} ), 404
+        s_log( 'file_mngr', f'deck {item} not found for deletion' )
+        return jsonify( {'error': 'file not found'} ), 404
     
     except PermissionError:
-        s_log( 'menu-bar', f'Permission denied when deleting deck {deck}' )
+        s_log( 'file_mngr', f'Permission denied when deleting file: {item}' )
         return jsonify( {'error': 'Permission denied'} ), 403
-
-# ========== #
-# SOUNDBOARD #
-# ========== #
         
-@app.route( '/media/<folder>/' )
-@app.route( '/media/<folder>/<item>/' )
-@app.route( '/media/<folder>/<item>/<sub>/' )
-def list_media( folder, item=None, sub=None ):
-
-    _config = {
-        'playlist': {'path': PLAYLISTS_PATH, 'extensions': ['.mp3', '.txt']},
-        'track':    {'path': TRACKS_PATH,    'extensions': ['.mp3', '.txt']},
-        'sound':    {'path': SOUNDS_PATH,    'extensions': ['.mp3', '.wav', '.txt']}
-    }
+@app.route( '/load/<folder>/' )
+@app.route( '/load/<folder>/<item>/' )
+@app.route( '/load/<folder>/<item>/<sub>/' )
+def file_handler( folder, item=None, sub=None ):
     
     # Validate folder type
-    if folder not in _config:
+    if folder not in CONFIG:
         return jsonify( {'error': 'Invalid folder type'} ), 400
     
-    config = _config[folder]
+    config = CONFIG[folder]
     path = config['path'] if sub == None else config['path'] + '/' + sub 
+    
+    print(path,item)
     
     # Handle listing requests (when item is None)
     if item is None:
@@ -128,15 +83,25 @@ def list_media( folder, item=None, sub=None ):
             if isdir( path  + '/' + i ) or 
                any( i.endswith( ext ) for ext in config['extensions'] )
         ]
-        s_log( 'soundboard', f'{folder.capitalize()}s loaded: {items}' )
+        s_log( 'file_mngr', f'{folder}s loaded: {items}' )
         return jsonify( items )
     
     # Handle file requests
+    if folder != 'deck':
+        s_log( 'file_mngr', f"{folder} requested: {item}" )
+        return send_from_directory( path, item )
     
-    print(path, item)
-        
-    s_log( 'soundboard', f"{folder.capitalize()} requested: {item}" )
-    return send_from_directory( path, item )
+    # Handle Playlist requests
+    else:
+        try:
+            with open( join( path, str( item ) + '.json' ), 'r' ) as file:
+                playlists = load( file )
+            s_log( 'file_mngr', f'deck {item} loaded successfully' )
+        except FileNotFoundError:
+            playlists = []
+            s_log( 'file_mngr', f'deck {item} not found' )
+            
+        return jsonify( playlists )
 
 
 # ========= #
@@ -159,32 +124,20 @@ def s_log( origin, message ):
     timestamp = datetime.now().strftime( '%d/%b/%Y %H:%M:%S' )
     print( f'\033[31mPY-SERVER - - [{timestamp}][{origin.upper()}]: {message}\033[0m' )
 
-# ============== #
-# SERVER CONTROL #
-# ============== #
-
 @app.route( '/stop' )
 def stop():
     """Stop the server."""
     Thread( target=shutdown_server ).start()
     
-    s_log( 'server-control', 'Server stop requested' )
     return redirect( url_for( 'index' ) )
 
 def shutdown_server():
     """Shut down the server."""
     sleep( 0.4 )
-    
     kill( getpid(), SIGINT )
-    s_log( 'server-control', 'Server shutting down' )
 
 # ====== #
 # DRIVER #
 # ====== #
 
-if __name__ == '__main__':
-    
-    s_log( 'driver', f'script path found: {get_executable_path()}' )
-    
-    s_log( 'driver', 'running flask app' )
-    app.run( debug=True )
+if __name__ == '__main__':  app.run( debug=True )
