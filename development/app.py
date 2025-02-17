@@ -102,60 +102,42 @@ def del_deck( deck ):
 # ========== #
 # SOUNDBOARD #
 # ========== #
+        
+@app.route( '/media/<folder>/' )
+@app.route( '/media/<folder>/<item>/' )
+@app.route( '/media/<folder>/<item>/<sub>/' )
+def list_media( folder, item=None, sub=None ):
 
-@app.route( '/playlists' )
-def get_playlists():
-    """Return a list of available playlists."""
-    playlists = [dir for dir in listdir( PLAYLISTS_PATH ) if isdir( join( PLAYLISTS_PATH, dir ) )]
+    _config = {
+        'playlist': {'path': PLAYLISTS_PATH, 'extensions': ['.mp3', '.txt']},
+        'track':    {'path': TRACKS_PATH,    'extensions': ['.mp3', '.txt']},
+        'sound':    {'path': SOUNDS_PATH,    'extensions': ['.mp3', '.wav', '.txt']}
+    }
     
-    s_log( 'soundboard', f'Playlists loaded: {playlists}' )
-    return jsonify( playlists )
+    # Validate folder type
+    if folder not in _config:
+        return jsonify( {'error': 'Invalid folder type'} ), 400
+    
+    config = _config[folder]
+    path = config['path'] if sub == None else config['path'] + '/' + sub 
+    
+    # Handle listing requests (when item is None)
+    if item is None:
+        items = [
+            i for i in listdir( path )
+            if isdir( path  + '/' + i ) or 
+               any( i.endswith( ext ) for ext in config['extensions'] )
+        ]
+        s_log( 'soundboard', f'{folder.capitalize()}s loaded: {items}' )
+        return jsonify( items )
+    
+    # Handle file requests
+    
+    print(path, item)
+        
+    s_log( 'soundboard', f"{folder.capitalize()} requested: {item}" )
+    return send_from_directory( path, item )
 
-@app.route( '/song/<playlist>' )
-def get_songs( playlist ):
-    """Return a list of songs in a specific playlist."""
-    playlist_path = join( PLAYLISTS_PATH, playlist )
-    songs = [file for file in listdir( playlist_path ) if file.endswith( '.mp3' )]
-    
-    s_log( 'soundboard', f'Songs in playlist {playlist} loaded: {songs}' )
-    return jsonify( songs )
-
-@app.route( '/song/<playlist>/<song>' )
-def get_song( playlist, song ):
-    """Return a specific song file."""
-    
-    s_log( 'soundboard', f'Song requested: {song} from playlist {playlist}' )
-    return send_from_directory( PLAYLISTS_PATH + '/' + playlist, song )
-
-@app.route( '/track' )
-def get_tracks():
-    """Return a list of available tracks."""
-    tracks = [track for track in listdir( TRACKS_PATH ) if track.endswith( '.mp3' )]
-    
-    s_log( 'soundboard', f'Tracks loaded: {tracks}' )
-    return jsonify( tracks )
-
-@app.route( '/track/<track>' )
-def get_track( track ):
-    """Return a specific track file."""
-    
-    s_log( 'soundboard', f'Track requested: {track}' )
-    return send_from_directory( TRACKS_PATH, track )
-
-@app.route( '/sound' )
-def get_sounds():
-    """Return a list of available sounds."""
-    sounds = [sound for sound in listdir( SOUNDS_PATH ) if sound.endswith( '.mp3' ) or sound.endswith( '.wav' )]
-    
-    s_log( 'soundboard', f'Sounds loaded: {sounds}' )
-    return jsonify( sounds )
-
-@app.route( '/sound/<sound>' )
-def get_sound( sound ):
-    """Return a specific sound file."""
-    
-    s_log( 'soundboard', f'Sound requested: {sound}' )
-    return send_from_directory( SOUNDS_PATH, sound )
 
 # ========= #
 # UTILITIES #
