@@ -17,9 +17,9 @@ def get_executable_path():
 CONFIG = {
     'playlist': {'path': join( get_executable_path(), 'playlists'  ), 
                  'extensions': ['.mp3']},
-    'track':    {'path': join( get_executable_path(), 'sfx'        ),    
+    'track':    {'path': join( get_executable_path(), 'tracks'        ),    
                  'extensions': ['.mp3']},
-    'sound':    {'path': join( get_executable_path(), 'tracks'     ),    
+    'sound':    {'path': join( get_executable_path(), 'sfx'     ),    
                  'extensions': ['.mp3', '.wav']},
     'deck':     {'path': join( get_executable_path(), 'data/decks' ),     
                  'extensions': ['.json']},
@@ -50,7 +50,7 @@ def file_save( folder, item ):
 @app.route( '/del/<folder>/<item>' )
 def file_delete( folder, item ):
     try:
-        remove( join( CONFIG[folder]['path'], f'{item}.json' ) )
+        remove( join( CONFIG[folder]['path'], f'{item}' ) )
         s_log( 'file_mngr', f'file: {item} deleted successfully' )
         return jsonify( {'message': 'file deleted successfully'} ), 200
     
@@ -73,11 +73,11 @@ def file_handler( folder, item=None, sub=None ):
     
     config = CONFIG[folder]
     path = config['path'] if sub == None else config['path'] + '/' + sub 
-    
+        
     print(path,item)
     
     # Handle listing requests (when item is None)
-    if item is None:
+    if item is None or item == 'None':
         items = [
             i for i in listdir( path )
             if isdir( path  + '/' + i ) or 
@@ -91,7 +91,7 @@ def file_handler( folder, item=None, sub=None ):
         s_log( 'file_mngr', f"{folder} requested: {item}" )
         return send_from_directory( path, item )
     
-    # Handle Playlist requests
+    # Handle deck requests
     else:
         try:
             with open( join( path, str( item ) + '.json' ), 'r' ) as file:
