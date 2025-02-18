@@ -14,6 +14,41 @@ function log(origin, message) {
     console.log( origin, ' -:- ', message )
 }
 
+function closeProgram() {
+    fetch( '/stop' )
+    setTimeout(() => {
+        location.reload()
+    }, 500 ); history
+}
+
+function edit() {
+    log( 'util', 'loading edit.html' )
+    animateButton( 'edit' )
+    window.location.href = '/edit'
+}
+
+function openMenu( menu ) {
+    animateButton( `${menu}-open` )
+    document.getElementById( `${menu}-menu` ).style.width = '100%';
+    setTimeout( () => {
+        document.getElementById( `${menu}` ).classList.add( 'active' );
+    }, 300 );
+}
+
+function closeMenu( menu ) {
+    animateButton( `${menu}-close` )
+    document.getElementById( `${menu}-menu` ).style.width = "0%";
+    document.getElementById( `${menu}` ).classList.remove( 'active' );
+}
+
+function animateButton( buttonId ) {
+    const button = document.getElementById( buttonId );
+    button.classList.add( "clicked" );
+    setTimeout( () => {
+        button.classList.remove( "clicked" );
+    }, 300 );
+}
+
 function resetColors() {
     animateButton('color-reset')
     document.documentElement.style.setProperty('--t-text', '#ffffff');
@@ -40,7 +75,7 @@ function HEXtoRGB( hex ) {
     return `${r}, ${g}, ${b}`;
 }
 
-function HEXtoHSL(hex) {
+function HEXtoHSL( hex ) {
     let r = parseInt( hex.slice( 1, 3 ), 16 ) / 255;
     let g = parseInt( hex.slice( 3, 5 ), 16 ) / 255;
     let b = parseInt( hex.slice( 5, 7 ), 16 ) / 255;
